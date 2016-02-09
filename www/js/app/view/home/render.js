@@ -81,20 +81,20 @@ Render.prototype = {
 
 		var render = this,
 
-			w = device.get('width'),
-			h = device.get('height'),
+			width = device.get('width'),
+			height = device.get('height'),
 
 		// create an new instance of a pixi stage
 			stage = new PIXI.Container(),
 
 		// create a renderer instance.
-			renderer = PIXI.autoDetectRenderer(w, h, {
+			renderer = PIXI.autoDetectRenderer(width, height, {
 				backgroundColor: 0x000000
 			});
 
 		render.set({
-			w: w,
-			h: h,
+			width: width,
+			height: height,
 			stage: stage,
 			renderer: renderer
 		});
@@ -104,7 +104,7 @@ Render.prototype = {
 	initWheelMeasure: function () {
 
 		var render = this,
-			width = render.get('w'),
+			width = render.get('width'),
 			itemWidth = width / render.get('wheelCount'),
 			itemScale = itemWidth / render.get('originalItemWidth'),
 			itemHeight = render.get('originalItemHeight') * itemScale;
