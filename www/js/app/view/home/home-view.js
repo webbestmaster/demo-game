@@ -12,8 +12,7 @@ var HomeView = BaseView.extend({
 
 	events: {
 		scroll: 'stopEvent',
-		'click .js-set-game-difficult': 'setGameDifficult',
-		'click .js-save-textures': 'saveTextures'
+		'click .js-spin': 'spin'
 	},
 
 	initialize: function () {
@@ -22,7 +21,7 @@ var HomeView = BaseView.extend({
 			wheelCollection = new WheelCollection(),
 			render = new Render();
 
-		//view.set('wheelCollection', wheelCollection);
+		view.set('wheelCollection', wheelCollection);
 		//view.set('render', render);
 
 		view.setElement(tm.get('home')());
@@ -45,15 +44,22 @@ var HomeView = BaseView.extend({
 
 			util.requestAnimationFrame(anim);
 
-			console.log(Date.now());
+			log(Date.now());
 
 		}
 */
 
 
-
-
 		return BaseView.prototype.initialize.apply(view, arguments);
+
+	},
+
+	spin: function () {
+
+		var view = this,
+			wheelCollection = view.get('wheelCollection');
+
+		wheelCollection.spin();
 
 	}
 

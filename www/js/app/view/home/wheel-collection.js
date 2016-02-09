@@ -86,6 +86,14 @@ var WheelCollection = Backbone.Collection.extend({
 
 		collection.add(data);
 
+	},
+
+	spin: function () {
+
+		log('start spin');
+
+
+
 	}
 
 

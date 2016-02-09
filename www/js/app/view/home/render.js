@@ -88,9 +88,15 @@ Render.prototype = {
 			stage = new PIXI.Container(),
 
 		// create a renderer instance.
-			renderer = PIXI.autoDetectRenderer(width, height, {
-				backgroundColor: 0x000000
-			});
+			renderer;
+
+		if (width < height) {
+			height = [width, width = height][0]; // trust me - I am engineer
+		}
+
+		renderer = PIXI.autoDetectRenderer(width, height, {
+			backgroundColor: 0x000000
+		});
 
 		render.set({
 			width: width,

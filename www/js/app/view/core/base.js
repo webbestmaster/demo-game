@@ -172,7 +172,7 @@ var win = window,
 
 	 	// still not implemented
 		//initialize: function() {
-		//	console.log('base initialize');
+		//	log('base initialize');
 		//},
 
 		changeSelect: function (e) { // external
@@ -505,19 +505,19 @@ var win = window,
 			if (lastShow && (now - lastShow < showPeriod)) {
 				log('do not show popup too often');
 				// do not show popup too often
-				//console.log('do not show popup too often');
+				//log('do not show popup too often');
 				return;
 			}
 
 			if (lastRateNow) {
 				log('rate by rate now');
 				// rate by rate now
-				//console.log('it had been rate by rate now');
+				//log('it had been rate by rate now');
 				return;
 			}
 
 			if (lastNoThanks && ( now - lastShow < noThanksPeriod )) {
-				//console.log('no thanks - 3 * showPeriod');
+				//log('no thanks - 3 * showPeriod');
 				return;
 			}
 
