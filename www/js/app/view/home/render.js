@@ -166,6 +166,8 @@ Render.prototype = {
 			y: itemScale
 		};
 
+		wheel.anchor.y = 0.5;
+
 		wheel.position.x = wheels.length * render.get('itemWidth');
 
 		wheels.push(wheel);
@@ -208,8 +210,6 @@ Render.prototype = {
 				defer.resolve();
 
 			});
-
-		//var sprite = new PIXI.Sprite(resources[itemName]texture);    });
 
 		return defer.promise();
 
