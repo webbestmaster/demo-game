@@ -15,10 +15,15 @@ function Render() {
 	mediator.installTo(render);
 
 	render.attr = {
+		originalItemWidth: 354,
+		originalItemHeight: 194,
+		wheelCount: 6,
 		wheels: []
 	};
 
 	render.initialize();
+
+	render.initWheelMeasure();
 
 	render.bindEventListeners();
 
@@ -96,6 +101,22 @@ Render.prototype = {
 
 	},
 
+	initWheelMeasure: function () {
+
+		var render = this,
+			width = render.get('w'),
+			itemWidth = width / render.get('wheelCount'),
+			itemScale = itemWidth / render.get('originalItemWidth'),
+			itemHeight = render.get('originalItemHeight') * itemScale;
+
+		render.set({
+			itemWidth: itemWidth,
+			itemHeight: itemHeight,
+			itemScale: itemScale
+		});
+
+	},
+
 	bindEventListeners: function () {
 
 		var render = this;
@@ -108,24 +129,13 @@ Render.prototype = {
 	drawWheels: function (data) {
 
 		var render = this,
-			width = render.get('w'),
-			height = render.get('h'),
 			wheelsData = data.wheels,
-			wheelsLength = wheelsData.length,
-			wheelWidth = width / wheelsLength,
-			itemHeight = wheelWidth / 354 * 234,
-			wheelScale = wheelWidth / 354,
-			wheelsSprite = render.get('wheels');
+			wheelsSprite = render.get('wheels'),
+			itemWidth = render.get('itemWidth'),
+			itemHeight = render.get('itemHeight');
 
 		wheelsSprite.forEach(function (sprite, index) {
-
-			sprite.scale.x = wheelScale;
-			sprite.scale.y = wheelScale;
-			sprite.position.x = index * wheelWidth;
 			sprite.position.y = wheelsData[index].position * itemHeight;
-
-			console.log(wheelsData[index].position);
-
 		});
 
 		render.rerender();
@@ -145,10 +155,18 @@ Render.prototype = {
 	increaseWheel: function () {
 
 		var render = this,
+			itemScale = render.get('itemScale'),
 			texture = render.get('itemsSprite').texture,
 			wheel = new PIXI.Sprite(texture),
 			stage = render.get('stage'),
 			wheels = render.get('wheels');
+
+		wheel.scale = {
+			x: itemScale,
+			y: itemScale
+		};
+
+		wheel.position.x = wheels.length * render.get('itemWidth');
 
 		wheels.push(wheel);
 
