@@ -16,8 +16,9 @@ var WheelModel = Backbone.Model.extend({
 		t: 0,
 		tIncrease: 0.1,
 		begin: {
-			a: 0.1
+			a: 0.5
 		},
+		wheelItemCount: 12,
 		beginSpinDefer: null
 	},
 
@@ -33,6 +34,7 @@ var WheelModel = Backbone.Model.extend({
 			defer = $.Deferred();
 
 		model.set({
+			position: model.get('position') % model.get('wheelItemCount'),
 			spinState: 'spin-begin',
 			beginSpinDefer: defer,
 			t: 0,
@@ -76,7 +78,8 @@ var WheelModel = Backbone.Model.extend({
 			v = a * t,
 			vMax = model.get('vMax'),
 			beginSpinStartPosition = model.get('beginSpinStartPosition'),
-			position = beginSpinStartPosition + v * t / 2;
+			//position = beginSpinStartPosition + v * t / 2;
+			position = beginSpinStartPosition  + v * t / 2 - Math.sin( v / vMax * Math.PI) * 1.5;
 
 		if (v > vMax) {
 
