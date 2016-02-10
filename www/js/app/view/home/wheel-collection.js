@@ -90,7 +90,15 @@ var WheelCollection = Backbone.Collection.extend({
 
 	spin: function () {
 
-		log('start spin');
+		var collection = this;
+
+		collection.beginSpin();
+
+	},
+
+	beginSpin: function () {
+
+		console.log('begin spin');
 
 
 
