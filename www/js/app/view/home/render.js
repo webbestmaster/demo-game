@@ -113,6 +113,8 @@ Render.prototype = {
 			renderer: renderer
 		});
 
+		render.updateWheelPosition = render.updateWheelPosition.bind(render);
+
 	},
 
 	detectCanvasSize: function () {
@@ -177,16 +179,13 @@ Render.prototype = {
 
 	drawWheels: function (collection) {
 
-		var render = this,
-			wheelsSprite = render.get('wheels'),
-			itemWidth = render.get('itemWidth'),
-			itemHeight = render.get('itemHeight');
-
+/*
 		collection.each(function (wheel, index) {
-
 			wheelsSprite[index].tilePosition.y = wheel.get('position') * itemHeight;
-
 		});
+*/
+
+		collection.each(this.updateWheelPosition);
 
 /*
 		wheelsSprite.forEach(function (sprite, index) {
@@ -194,7 +193,13 @@ Render.prototype = {
 		});
 */
 
-		render.rerender();
+		this.rerender();
+
+	},
+
+	updateWheelPosition: function (wheel, index) {
+
+		this.get('wheels')[index].tilePosition.y = wheel.get('position') * this.get('itemHeight');
 
 	},
 

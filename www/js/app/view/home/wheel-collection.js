@@ -37,6 +37,19 @@ var WheelCollection = Backbone.Collection.extend({
 
 	},
 
+	setSpinState: function (state) {
+
+		return this.attr.spinState = state;
+
+	},
+
+	getSpinState: function () {
+
+		return this.attr.spinState;
+
+	},
+
+
 	emptyData: function () {
 
 		this.attr = {};
@@ -58,6 +71,10 @@ var WheelCollection = Backbone.Collection.extend({
 		mediator.installTo(wheelCollection);
 
 		wheelCollection.initDataStore();
+
+		wheelCollection.setSpinState('ready');
+
+		wheelCollection.animateWheels = wheelCollection.animateWheels.bind(wheelCollection);
 
 	},
 
@@ -105,9 +122,32 @@ var WheelCollection = Backbone.Collection.extend({
 
 	spin: function () {
 
-		var collection = this;
+		var collection = this,
+			spinState = collection.getSpinState();
 
-		collection.beginSpin();
+		switch (spinState) {
+
+			case 'ready':
+
+				collection.setSpinState('spin-begin');
+
+				collection.startAnimateWheels();
+
+				collection.beginSpin();
+
+				break;
+
+			case 'spin':
+
+				collection.setSpinState('spin-end');
+
+				//collection.endSpin();
+
+				break;
+
+
+		}
+
 
 	},
 
@@ -116,33 +156,53 @@ var WheelCollection = Backbone.Collection.extend({
 		var collection = this;
 
 		collection.each(function (wheel, index) {
-
 			setTimeout(function () {
-				wheel.beginSpin().done(function () {
-
-					console.log('begin animation end')
-
-				});
+				wheel.beginSpin();
 			}, 300 * index);
-
 		});
 
-		function anim() {
+		collection.last().set('beginSpinCb', function () {
+			collection.setSpinState('spin');
+			console.log('spiiiin');
+		});
 
-			requestAnimationFrame(anim);
+	},
 
-			collection.each(function (wheel) {
-				wheel.updatePosition();
-			});
+	startAnimateWheels: function () {
 
-			collection.drawWheels();
+		var collection = this;
+
+		collection.setData('isAnimate', true);
+
+		collection.animateWheels();
+
+	},
+
+	animateWheels: function () {
+
+		if (this.getData('isAnimate')) {
+
+			requestAnimationFrame(this.animateWheels);
+
+			this.each(this.updateWheelPosition);
+
+			this.drawWheels();
 
 		}
 
-		requestAnimationFrame(anim);
+	},
 
+	stopAnimateWheels: function () {
+
+		var collection = this;
+
+		collection.setData('isAnimate', false);
+
+	},
+
+	updateWheelPosition: function (wheel) {
+		wheel.updatePosition();
 	}
-
 
 });
 

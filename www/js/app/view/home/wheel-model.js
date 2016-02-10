@@ -19,7 +19,7 @@ var WheelModel = Backbone.Model.extend({
 			a: 0.5
 		},
 		wheelItemCount: 12,
-		beginSpinDefer: null
+		beginSpinCb: null
 	},
 
 	initialize: function () {
@@ -35,21 +35,17 @@ var WheelModel = Backbone.Model.extend({
 
 	beginSpin: function () {
 
-		var model = this,
-			defer = $.Deferred();
+		var model = this;
 
 		model.set({
 			position: model.get('position') % model.get('wheelItemCount'),
 			spinState: 'spin-begin',
-			beginSpinDefer: defer,
 			t: 0,
 			a: model.get('begin').a,
 			beginSpinStartPosition: model.get('position')
 		});
 
 		model.updatePosition();
-
-		return defer.promise();
 
 	},
 
@@ -83,6 +79,7 @@ var WheelModel = Backbone.Model.extend({
 			v = a * t,
 			vMax = model.get('vMax'),
 			beginSpinStartPosition = model.get('beginSpinStartPosition'),
+			beginSpinCb = model.get('beginSpinCb'),
 			//position = beginSpinStartPosition + v * t / 2;
 			position = beginSpinStartPosition  + v * t / 2 - Math.sin( v / vMax * Math.PI) * 1.5;
 
@@ -94,7 +91,9 @@ var WheelModel = Backbone.Model.extend({
 
 			model.set('spinState', 'spin-main');
 
-			model.get('beginSpinDefer').resolve();
+			if (beginSpinCb) {
+				beginSpinCb();
+			}
 
 			return;
 
