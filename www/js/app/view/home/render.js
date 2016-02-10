@@ -35,18 +35,18 @@ function Render() {
 
 Render.prototype = {
 
-/*
-	images: [
-		'item-bonus',
-		'item-elli',
-		'item-lame',
-		'item-lion',
-		'item-metal-man',
-		'item-wild',
-		'item-wild-small-1',
-		'item-wild-small-2'
-	],
-*/
+	/*
+	 images: [
+	 'item-bonus',
+	 'item-elli',
+	 'item-lame',
+	 'item-lion',
+	 'item-metal-man',
+	 'item-wild',
+	 'item-wild-small-1',
+	 'item-wild-small-2'
+	 ],
+	 */
 
 	set: function (keyOrObj, value) {
 
@@ -94,15 +94,17 @@ Render.prototype = {
 		// create a renderer instance.
 			renderer;
 
-/*
-		if (width < height) {
-			height = [width, width = height][0]; // trust me - I'm engineer
-		}
-*/
+		/*
+		 if (width < height) {
+		 height = [width, width = height][0]; // trust me - I'm engineer
+		 }
+		 */
 		renderer = PIXI.autoDetectRenderer(width, height, {
-			transparent: true
+			transparent: false
 			//resolution: 2
 		});
+
+		log('isWebGL - ' + (renderer instanceof PIXI.WebGLRenderer));
 
 		render.set({
 			width: width,
@@ -123,7 +125,7 @@ Render.prototype = {
 			maxWheelVisibleHeight = render.get('maxWheelVisibleHeight'),
 			height;
 
-		height = originalItemHeight * maxWheelVisibleHeight * width / (originalItemWidth * wheelCount);
+		height = Math.floor(originalItemHeight * maxWheelVisibleHeight * width / (originalItemWidth * wheelCount));
 
 		return {
 			width: width,
@@ -157,16 +159,15 @@ Render.prototype = {
 
 	},
 
-	drawWheels: function (data) {
+	drawWheels: function (wheelsData) {
 
 		var render = this,
-			wheelsData = data.wheels,
 			wheelsSprite = render.get('wheels'),
 			itemWidth = render.get('itemWidth'),
 			itemHeight = render.get('itemHeight');
 
 		wheelsSprite.forEach(function (sprite, index) {
-			sprite.tilePosition.y = wheelsData[index].position * itemHeight;
+			sprite.tilePosition.y = wheelsData[index] * itemHeight;
 		});
 
 		render.rerender();
@@ -207,11 +208,6 @@ Render.prototype = {
 		wheel = new PIXI.extras.TilingSprite(texture, render.get('itemWidth'), wheelVisibleItemSize * itemHeight);
 		stage = render.get('stage');
 
-		wheel.tileScale = {
-			x: itemScale,
-			y: itemScale
-		};
-
 		wheel.position = {
 			x: wheelLength * render.get('itemWidth'),
 			y: itemHeight * (maxWheelVisibleHeight - wheelVisibleItemSize) / 2
@@ -223,32 +219,32 @@ Render.prototype = {
 
 	},
 
-/*
-	increaseWheel: function () {
+	/*
+	 increaseWheel: function () {
 
-		var render = this,
-			itemScale = render.get('itemScale'),
-			texture = render.get('itemsSprite').texture,
-			wheel = new PIXI.Sprite(texture),
-			stage = render.get('stage'),
-			wheels = render.get('wheels');
+	 var render = this,
+	 itemScale = render.get('itemScale'),
+	 texture = render.get('itemsSprite').texture,
+	 wheel = new PIXI.Sprite(texture),
+	 stage = render.get('stage'),
+	 wheels = render.get('wheels');
 
-		wheel.scale = {
-			x: itemScale,
-			y: itemScale
-		};
+	 wheel.scale = {
+	 x: itemScale,
+	 y: itemScale
+	 };
 
-		wheel.anchor.y = 0.5;
+	 wheel.anchor.y = 0.5;
 
-		wheel.position.x = wheels.length * render.get('itemWidth');
+	 wheel.position.x = wheels.length * render.get('itemWidth');
 
-		wheels.push(wheel);
+	 wheels.push(wheel);
 
-		stage.addChild(wheel);
+	 stage.addChild(wheel);
 
-	},
+	 },
 
-*/
+	 */
 	appendTo: function (node) {
 
 		var render = this,
@@ -266,26 +262,59 @@ Render.prototype = {
 			loader = PIXI.loader,
 			defer = $.Deferred();
 
-/*
-		render.images.forEach(function (item) {
-			loader = loader.add(item, 'i/item/' + item + '.png');
+		/*
+		 render.images.forEach(function (item) {
+		 loader = loader.add(item, 'i/item/' + item + '.png');
+		 });
+		 */
+
+		render.resizeImage('i/items-sprite.png').done(function (base64) {
+
+			loader = loader.add('itemsSprite', base64);
+
+			loader
+				.on('progress', function () {
+					log('on loading progress');
+				})
+				.load(function (loader, resources) {
+					log('on loading complete');
+
+					render.set(resources);
+
+					defer.resolve();
+
+				});
 		});
-*/
 
-		loader = loader.add('itemsSprite', 'i/items-sprite.png');
 
-		loader
-			.on('progress', function () {
-				log('on loading progress');
-			})
-			.load(function (loader, resources) {
-				log('on loading complete');
+		return defer.promise();
 
-				render.set(resources);
+	},
 
-				defer.resolve();
+	resizeImage: function (pathToImage) {
 
-			});
+		var render = this,
+			newWidth = render.get('itemWidth'),
+			defer = $.Deferred(),
+			img = new Image();
+
+		img.onload = function () {
+
+			var canvas = document.createElement('canvas'),
+				ctx = canvas.getContext('2d');
+
+			canvas.width = newWidth;
+			canvas.height = newWidth * (img.height / img.width);
+
+			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+			img.onload = null;
+
+			defer.resolve(canvas.toDataURL());
+
+		};
+
+		img.src = pathToImage;
 
 		return defer.promise();
 
