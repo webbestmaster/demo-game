@@ -99,10 +99,9 @@ Render.prototype = {
 		 height = [width, width = height][0]; // trust me - I'm engineer
 		 }
 		 */
-		renderer = PIXI.autoDetectRenderer(width, height, {
-			transparent: false
-			//resolution: 2
-		});
+		renderer = PIXI.autoDetectRenderer(width, height);
+
+		//alert( 'isWebGL - ' + (renderer instanceof PIXI.WebGLRenderer) );
 
 		log('isWebGL - ' + (renderer instanceof PIXI.WebGLRenderer));
 

@@ -102,15 +102,15 @@ var WheelCollection = Backbone.Collection.extend({
 
 	},
 
-/*
-	getWheelPositions: function () {
+	/*
+	 getWheelPositions: function () {
 
-		return this.map(function (wheel) {
-			return wheel.get('position');
-		});
+	 return this.map(function (wheel) {
+	 return wheel.get('position');
+	 });
 
-	},
-*/
+	 },
+	 */
 
 	initializeWheel: function () {
 
@@ -141,7 +141,7 @@ var WheelCollection = Backbone.Collection.extend({
 
 				collection.setSpinState('spin-end');
 
-				//collection.endSpin();
+				collection.endSpin();
 
 				break;
 
@@ -163,7 +163,25 @@ var WheelCollection = Backbone.Collection.extend({
 
 		collection.last().set('beginSpinCb', function () {
 			collection.setSpinState('spin');
-			console.log('spiiiin');
+			console.log('collection state is - spin');
+		});
+
+	},
+
+	endSpin: function () {
+
+		var collection = this;
+
+		collection.each(function (wheel, index) {
+			setTimeout(function () {
+				wheel.endSpin(Math.floor(Math.random() * wheel.get('wheelItemCount')));
+			}, 300 * index);
+		});
+
+		collection.last().set('endSpinCb', function () {
+			collection.setSpinState('ready');
+			collection.setData('isAnimate', false);
+			console.log('collection state is - ready');
 		});
 
 	},

@@ -14,9 +14,9 @@ var WheelModel = Backbone.Model.extend({
 		v: 0,
 		vMax: 3,
 		t: 0,
-		tIncrease: 0.1,
+		tIncrease: 0.02, // 0.1
 		begin: {
-			a: 0.5
+			a: 0.4
 		},
 		wheelItemCount: 12,
 		beginSpinCb: null
@@ -42,10 +42,30 @@ var WheelModel = Backbone.Model.extend({
 			spinState: 'spin-begin',
 			t: 0,
 			a: model.get('begin').a,
+			v: 0,
 			beginSpinStartPosition: model.get('position')
 		});
 
 		model.updatePosition();
+
+	},
+
+	endSpin: function (position) {
+
+		var model = this;
+
+		//model.set('endPosition', position);
+
+		//var model = this;
+
+		model.set({
+			//position: model.get('position') % model.get('wheelItemCount'),
+			spinState: 'spin-end',
+			t: 0,
+			a: -model.get('begin').a,
+			//v: 0,
+			endSpinStopPosition: position
+		});
 
 	},
 
@@ -67,6 +87,12 @@ var WheelModel = Backbone.Model.extend({
 
 				break;
 
+			case 'spin-end':
+
+				model.updateSpinEnd();
+
+				break;
+
 		}
 
 	},
@@ -78,45 +104,102 @@ var WheelModel = Backbone.Model.extend({
 			a = model.get('a'),
 			v = a * t,
 			vMax = model.get('vMax'),
-			beginSpinStartPosition = model.get('beginSpinStartPosition'),
 			beginSpinCb = model.get('beginSpinCb'),
 			//position = beginSpinStartPosition + v * t / 2;
-			position = beginSpinStartPosition  + v * t / 2 - Math.sin( v / vMax * Math.PI) * 1.5;
+			position = model.get('beginSpinStartPosition') + v * t / 2 - Math.sin( v / vMax * Math.PI) * 1.2;
+
+		model.set('position', position);
 
 		if (v > vMax) {
 
 			model.set({
-				position: position
+				v: v,
+				spinState: 'spin-main',
+				beginTime: t,
+				beginPath: position - model.get('beginSpinStartPosition')
 			});
 
-			model.set('spinState', 'spin-main');
+			//console.log(model.get('beginPath'));
 
 			if (beginSpinCb) {
 				beginSpinCb();
+				model.set('beginSpinCb', null);
 			}
 
 			return;
 
 		}
 
-		model.set({
-			t: t,
-			position: position
-		});
+		model.set('t', t);
 
 	},
 
 	updateSpinMain: function () {
 
 		var model = this,
-			vMax = model.get('vMax'),
+			v = model.get('v'),
 			position = model.get('position');
 
-		position = position + vMax * model.get('tIncrease');
+		position = position + v * model.get('tIncrease');
 
-		model.set({
-			position: position
-		});
+		model.set('position', position);
+
+	},
+
+	updateSpinEnd: function () {
+
+		// detect
+		var model = this,
+			v = model.get('v'),
+			tIncrease = model.get('tIncrease'),
+			t = model.get('t'),
+			position;
+
+		if (!v) {
+			return;
+		}
+
+		position = model.get('position');
+
+		if ( Math.abs( ( position + 11.32 ) % 12 - model.get('endSpinStopPosition') ) > v * tIncrease && t === 0) { // wait for position to begin ending
+
+			position = position + v * tIncrease;
+
+			model.set('position', position);
+
+			model.set('lastPosition', position);
+
+			return;
+
+		}
+
+		var a = model.get('a'),
+			endSpinCb = model.get('endSpinCb');
+
+		position = model.get('lastPosition') + v * t + a * t * t / 2 + Math.sin(Math.PI - (v + a * t) / model.get('vMax') * Math.PI) * 1.2;
+
+		t += tIncrease;
+
+		model.set('t', t);
+
+		model.set('position', position);
+
+		if (t === model.get('beginTime')) {
+
+			model.set({
+				position: model.get('endSpinStopPosition'),
+				v: 0
+			});
+
+			if (endSpinCb) {
+				endSpinCb();
+				model.set('endSpinCb', null);
+			}
+
+			return;
+		}
+
+
 
 	}
 
