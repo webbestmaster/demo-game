@@ -144,8 +144,7 @@ Render.prototype = {
 
 		render.set({
 			itemWidth: itemWidth,
-			itemHeight: itemHeight,
-			itemScale: itemScale
+			itemHeight: itemHeight
 		});
 
 	},
@@ -186,14 +185,14 @@ Render.prototype = {
 
 	increaseWheel: function () {
 
-		var render, itemScale, texture, wheel, wheelLength, stage, wheels, wheelVisibleItemSize, minWheelVisibleHeight, maxWheelVisibleHeight, itemHeight;
+		var render, texture, wheel, wheelLength, stage, wheels, wheelVisibleItemSize, minWheelVisibleHeight, maxWheelVisibleHeight, itemHeight;
 
 		render = this;
 		wheels = render.get('wheels');
 
 		itemHeight = render.get('itemHeight');
 
-		itemScale = render.get('itemScale');
+		//itemScale = render.get('itemScale');
 		texture = render.get('itemsSprite').texture;
 
 		wheelLength = wheels.length;

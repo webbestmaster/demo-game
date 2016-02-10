@@ -82,8 +82,6 @@ var WheelCollection = Backbone.Collection.extend({
 
 		var collection = this;
 
-		console.log(collection.getWheelPositions());
-
 		collection.publish('render:draw-wheels', collection.getWheelPositions());
 
 	},
