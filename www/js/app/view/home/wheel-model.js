@@ -26,6 +26,11 @@ var WheelModel = Backbone.Model.extend({
 
 		log('wheel was initialized!');
 
+		var model = this,
+			wheelItemCount = model.get('wheelItemCount');
+
+		model.set('position', Math.floor(wheelItemCount * Math.random()));
+
 	},
 
 	beginSpin: function () {

@@ -68,9 +68,7 @@ var WheelCollection = Backbone.Collection.extend({
 			len = data.wheelCount;
 
 		for (i = 0; i < len; i += 1) {
-			collection.initializeWheel({
-				position: i
-			});
+			collection.initializeWheel();
 			collection.publish('render:increase-wheel');
 		}
 
@@ -97,11 +95,11 @@ var WheelCollection = Backbone.Collection.extend({
 	},
 */
 
-	initializeWheel: function (data) {
+	initializeWheel: function () {
 
 		var collection = this;
 
-		collection.add(data);
+		collection.add({});
 
 	},
 
