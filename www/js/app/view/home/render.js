@@ -18,6 +18,8 @@ function Render() {
 		originalItemWidth: 354,
 		originalItemHeight: 194,
 		wheelCount: 6,
+		minWheelVisibleHeight: 3,
+		maxWheelVisibleHeight: 7,
 		wheels: []
 	};
 
@@ -81,8 +83,10 @@ Render.prototype = {
 
 		var render = this,
 
-			width = device.get('width'),
-			height = device.get('height'),
+			canvasSize = render.detectCanvasSize(),
+
+			width = canvasSize.width,
+			height = canvasSize.height,
 
 		// create an new instance of a pixi stage
 			stage = new PIXI.Container(),
@@ -90,12 +94,14 @@ Render.prototype = {
 		// create a renderer instance.
 			renderer;
 
+/*
 		if (width < height) {
-			height = [width, width = height][0]; // trust me - I am engineer
+			height = [width, width = height][0]; // trust me - I'm engineer
 		}
-
+*/
 		renderer = PIXI.autoDetectRenderer(width, height, {
-			backgroundColor: 0x000000
+			transparent: true
+			//resolution: 2
 		});
 
 		render.set({
@@ -104,6 +110,25 @@ Render.prototype = {
 			stage: stage,
 			renderer: renderer
 		});
+
+	},
+
+	detectCanvasSize: function () {
+
+		var render = this,
+			width = Math.max(device.get('width'), device.get('height')),
+			wheelCount = render.get('wheelCount'),
+			originalItemWidth = render.get('originalItemWidth'),
+			originalItemHeight = render.get('originalItemHeight'),
+			maxWheelVisibleHeight = render.get('maxWheelVisibleHeight'),
+			height;
+
+		height = originalItemHeight * maxWheelVisibleHeight * width / (originalItemWidth * wheelCount);
+
+		return {
+			width: width,
+			height: height
+		};
 
 	},
 
@@ -141,7 +166,7 @@ Render.prototype = {
 			itemHeight = render.get('itemHeight');
 
 		wheelsSprite.forEach(function (sprite, index) {
-			sprite.position.y = wheelsData[index].position * itemHeight;
+			sprite.tilePosition.y = wheelsData[index].position * itemHeight;
 		});
 
 		render.rerender();
@@ -158,6 +183,47 @@ Render.prototype = {
 
 	},
 
+	increaseWheel: function () {
+
+		var render, itemScale, texture, wheel, wheelLength, stage, wheels, wheelVisibleItemSize, minWheelVisibleHeight, maxWheelVisibleHeight, itemHeight;
+
+		render = this;
+		wheels = render.get('wheels');
+
+		itemHeight = render.get('itemHeight');
+
+		itemScale = render.get('itemScale');
+		texture = render.get('itemsSprite').texture;
+
+		wheelLength = wheels.length;
+
+		minWheelVisibleHeight = render.get('minWheelVisibleHeight');
+		maxWheelVisibleHeight = render.get('maxWheelVisibleHeight');
+
+		wheelVisibleItemSize = wheelLength + minWheelVisibleHeight;
+
+		wheelVisibleItemSize = util.getBetween(minWheelVisibleHeight, wheelVisibleItemSize, maxWheelVisibleHeight);
+
+		wheel = new PIXI.extras.TilingSprite(texture, render.get('itemWidth'), wheelVisibleItemSize * itemHeight);
+		stage = render.get('stage');
+
+		wheel.tileScale = {
+			x: itemScale,
+			y: itemScale
+		};
+
+		wheel.position = {
+			x: wheelLength * render.get('itemWidth'),
+			y: itemHeight * (maxWheelVisibleHeight - wheelVisibleItemSize) / 2
+		};
+
+		wheels.push(wheel);
+
+		stage.addChild(wheel);
+
+	},
+
+/*
 	increaseWheel: function () {
 
 		var render = this,
@@ -182,11 +248,15 @@ Render.prototype = {
 
 	},
 
+*/
 	appendTo: function (node) {
 
-		var render = this;
+		var render = this,
+			view = render.get('renderer').view;
 
-		node.appendChild(render.get('renderer').view);
+		view.className = 'wheel-canvas';
+
+		node.appendChild(view);
 
 	},
 
