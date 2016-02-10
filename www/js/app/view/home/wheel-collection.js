@@ -82,10 +82,12 @@ var WheelCollection = Backbone.Collection.extend({
 
 		var collection = this;
 
-		collection.publish('render:draw-wheels', collection.getWheelPositions());
+		//collection.publish('render:draw-wheels', collection.getWheelPositions());
+		collection.publish('render:draw-wheels', collection);
 
 	},
 
+/*
 	getWheelPositions: function () {
 
 		return this.map(function (wheel) {
@@ -93,6 +95,7 @@ var WheelCollection = Backbone.Collection.extend({
 		});
 
 	},
+*/
 
 	initializeWheel: function (data) {
 

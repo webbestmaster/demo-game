@@ -158,6 +158,7 @@ Render.prototype = {
 
 	},
 
+/*
 	drawWheels: function (wheelsData) {
 
 		var render = this,
@@ -168,6 +169,30 @@ Render.prototype = {
 		wheelsSprite.forEach(function (sprite, index) {
 			sprite.tilePosition.y = wheelsData[index] * itemHeight;
 		});
+
+		render.rerender();
+
+	},
+*/
+
+	drawWheels: function (collection) {
+
+		var render = this,
+			wheelsSprite = render.get('wheels'),
+			itemWidth = render.get('itemWidth'),
+			itemHeight = render.get('itemHeight');
+
+		collection.each(function (wheel, index) {
+
+			wheelsSprite[index].tilePosition.y = wheel.get('position') * itemHeight;
+
+		});
+
+/*
+		wheelsSprite.forEach(function (sprite, index) {
+			sprite.tilePosition.y = wheelsData[index] * itemHeight;
+		});
+*/
 
 		render.rerender();
 
