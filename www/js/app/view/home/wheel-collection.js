@@ -74,6 +74,14 @@ var WheelCollection = Backbone.Collection.extend({
 			collection.publish('render:increase-wheel');
 		}
 
+		collection.drawWheels();
+
+	},
+
+	drawWheels: function () {
+
+		var collection = this;
+
 		collection.publish('render:draw-wheels', {
 			wheels: collection.toJSON()
 		});
@@ -98,9 +106,31 @@ var WheelCollection = Backbone.Collection.extend({
 
 	beginSpin: function () {
 
-		console.log('begin spin');
+		var collection = this;
 
+		collection.each(function (wheel) {
 
+			wheel.beginSpin().done(function () {
+
+				console.log('begin animation end')
+
+			});
+
+		});
+
+		function anim() {
+
+			requestAnimationFrame(anim);
+
+			collection.each(function (wheel) {
+				wheel.updatePosition();
+			});
+
+			collection.drawWheels();
+
+		}
+
+		requestAnimationFrame(anim);
 
 	}
 
