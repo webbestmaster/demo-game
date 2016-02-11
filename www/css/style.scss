@@ -1,7 +1,13 @@
+.wrapper {
+  overflow: auto;
+}
+
 .screen {
   background-image: url(../i/main-bg.jpg);
   background-position: center center;
+  overflow: auto;
   @include prefix(background-size, cover);
+  background-attachment: fixed;
 }
 
 .spin-btn {
@@ -12,6 +18,7 @@
   right: 0.5rem;
   top: 0.5rem;
   opacity: 0.5;
+  z-index: 1;
   //box-shadow: 0.2rem 0.2rem 0 #000;
 }
 
@@ -20,17 +27,16 @@
 }
 
 .wheel-canvas-frame {
-  position: fixed;
+  position: relative;
   display: block;
   width: 76.2%;
+  height: auto;
   z-index: 1;
-  top: 49.8%;
-  left: 50%;
-  @include prefix(transform, translate3d(-50%, -50%, 0));
+  margin: 0 auto;
 }
 
 .wheel-canvas {
-  position: fixed;
+  position: absolute;
   display: block;
   width: 75%;
   z-index: 0;
@@ -39,7 +45,13 @@
   @include prefix(transform, translate3d(-50%, -50%, 0));
 }
 
-
+.wheel-canvas-wrapper {
+  margin-top: 10rem;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
 
 
 

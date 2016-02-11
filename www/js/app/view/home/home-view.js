@@ -11,7 +11,7 @@ import Render from './render';
 var HomeView = BaseView.extend({
 
 	events: {
-		scroll: 'stopEvent',
+		//scroll: 'stopEvent',
 		'click .js-spin': 'spin'
 	},
 
@@ -28,7 +28,7 @@ var HomeView = BaseView.extend({
 
 		view.set('$spinButton', view.$el.find('.js-spin'));
 
-		render.appendTo(view.$el.get(0));
+		render.appendTo(view.$el.find('.js-wheel-canvas-wrapper').get(0));
 
 		view.render();
 
