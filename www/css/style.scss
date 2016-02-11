@@ -5,7 +5,12 @@
   background-color: #fff;
   right: 0.5rem;
   top: 0.5rem;
+  opacity: 0.5;
   //box-shadow: 0.2rem 0.2rem 0 #000;
+}
+
+.spin-btn_ready {
+  opacity: 1;
 }
 
 .wheel-canvas {

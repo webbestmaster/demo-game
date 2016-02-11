@@ -39,7 +39,14 @@ var WheelCollection = Backbone.Collection.extend({
 
 	setSpinState: function (state) {
 
-		return this.attr.spinState = state;
+		var collection = this;
+
+		collection.publish('view:setSpinButtonState', state);
+
+		console.log('state');
+		console.log(state);
+
+		return collection.attr.spinState = state;
 
 	},
 

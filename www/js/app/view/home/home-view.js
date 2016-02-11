@@ -26,6 +26,8 @@ var HomeView = BaseView.extend({
 
 		view.setElement(tm.get('home')());
 
+		view.set('$spinButton', view.$el.find('.js-spin'));
+
 		render.appendTo(view.$el.get(0));
 
 		view.render();
@@ -36,6 +38,7 @@ var HomeView = BaseView.extend({
 			});
 		});
 
+		view.bindEventListeners();
 
 /*
 		util.requestAnimationFrame(anim);
@@ -51,6 +54,27 @@ var HomeView = BaseView.extend({
 
 
 		return BaseView.prototype.initialize.apply(view, arguments);
+
+	},
+
+	bindEventListeners: function () {
+
+		var view = this;
+
+		view.subscribe('view:setSpinButtonState', view.setSpinButtonState);
+
+	},
+
+	setSpinButtonState: function (state) {
+
+		var view = this,
+			$spinButton = view.get('$spinButton');
+
+		if (state === 'ready') {
+			$spinButton.addClass('spin-btn_ready');
+		} else {
+			$spinButton.removeClass('spin-btn_ready');
+		}
 
 	},
 
