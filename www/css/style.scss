@@ -1,3 +1,9 @@
+.screen {
+  background-image: url(../i/main-bg.jpg);
+  background-position: center center;
+  @include prefix(background-size, cover);
+}
+
 .spin-btn {
   position: absolute;
   font-size: 1rem;
@@ -13,11 +19,25 @@
   opacity: 1;
 }
 
-.wheel-canvas {
+.wheel-canvas-frame {
+  position: fixed;
   display: block;
-  max-width: 100%;
+  width: 76.2%;
+  z-index: 1;
+  top: 49.8%;
+  left: 50%;
+  @include prefix(transform, translate3d(-50%, -50%, 0));
 }
 
+.wheel-canvas {
+  position: fixed;
+  display: block;
+  width: 75%;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  @include prefix(transform, translate3d(-50%, -50%, 0));
+}
 
 
 
