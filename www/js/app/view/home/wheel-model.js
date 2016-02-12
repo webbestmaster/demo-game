@@ -12,12 +12,12 @@ var WheelModel = Backbone.Model.extend({
 		position: 0,
 		//a: 0,
 		v: 0,
-		vMax: 3,
+		vMax: 6, // 3
 		t: 0,
-		tIncrease: 0.1, // 0.1
+		tIncrease: 0.2, // 0.1
 		sIncrease: 0,
 		begin: {
-			a: 0.2
+			a: 0.4
 		},
 		wheelItemCount: 12,
 		beginSpinCb: null
