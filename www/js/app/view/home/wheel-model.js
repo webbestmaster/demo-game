@@ -141,7 +141,7 @@ var WheelModel = Backbone.Model.extend({
 		var model = this,
 			position = model.get('position') + model.get('sIncrease');
 
-		model.set('position', position);
+		model.set('position', position % model.get('wheelItemCount'));
 
 	},
 
