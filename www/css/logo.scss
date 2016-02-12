@@ -1,0 +1,39 @@
+.game-logo {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20.3%;
+  z-index: -1;
+  opacity: 0;
+  @include prefix(transform, translate3d(-175%, 0, 0));
+}
+
+.game-logo_shown {
+  @include prefix(animation-name, logo-show-animation);
+  @include prefix(animation-timing-function, cubic-bezier(0, 0, 0.77, 1.1));
+  @include prefix(animation-duration, 1s);
+  @include prefix(animation-iteration-count, 1);
+  @include prefix(animation-fill-mode, forwards);
+  @include prefix(animation-delay, 1s);
+}
+
+@keyframes logo-show-animation {
+  0% {
+    transform: translate3d(-175%, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    @include prefix(transform, translate3d(-175%,-172%,0));
+  }
+}
+
+@-webkit-keyframes logo-show-animation {
+  0% {
+    transform: translate3d(-175%, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    @include prefix(transform, translate3d(-175%,-172%,0));
+  }
+}

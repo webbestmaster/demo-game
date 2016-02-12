@@ -22,7 +22,7 @@
 	});
 
 	// watch
-	gulp.task('watch', ['html', 'css', 'js', 'copy-data'], function () {
+	gulp.task('watch', ['html', 'css', 'js-watch', 'copy-data'], function () {
 		gulp.watch('./www/*.html', ['html']);
 		gulp.watch('./www/css/**/*', ['css']);
 		gulp.watch('./www/js/**/*', ['js-watch']);

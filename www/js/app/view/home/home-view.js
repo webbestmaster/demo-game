@@ -36,6 +36,7 @@ var HomeView = BaseView.extend({
 			wheelCollection.initializeWheels({
 				wheelCount: 6
 			});
+			view.$el.find('.js-game-logo').addClass('game-logo_shown');
 		});
 
 		view.bindEventListeners();
