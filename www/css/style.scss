@@ -1,65 +1,33 @@
-.wrapper {
-  overflow: auto;
-}
-
-.screen {
-  //background-image: url(../i/main-bg.jpg);
-  background-position: center center;
-  overflow: auto;
-  @include prefix(background-size, cover);
-  background-attachment: fixed;
-}
-
-.spin-btn {
-  //display: none;
-  position: absolute;
-  left: 50%;
-  //bottom: -10.5%;
-  opacity: 0.5;
-  @include prefix(transform, translate3d(213%,0,0));
-  z-index: 1;
-  width: 12%;
-}
-
-.spin-btn_ready {
-  opacity: 1;
-}
-
-.wheel-canvas-frame {
-  display: block;
-  width: 76.2%;
-  height: auto;
-  margin: 3rem auto 0;
-  position: relative;
-  z-index: 1;
-}
-
-.wheel-canvas {
-  display: block;
-  margin: 0 auto;
-}
-
-.wheel-canvas-frame {
-  background-image: url(../i/frame.png);
-  background-repeat: no-repeat;
-  background-position: center center;
-  position: absolute;
-  -webkit-background-size: contain;
-  background-size: contain;
-}
-
-.wheel-canvas,
-.wheel-canvas-frame {
-  //margin-top: 1rem;
-}
-
 /*
-.wheel-canvas-wrapper {
-  margin-top: 4rem;
-  position: relative;
-  width: 100%;
-  //overflow: hidden;
+.effect-renderer,
+.game-renderer,
+.frame-renderer {
+  //width: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.game-renderer {
   z-index: 0;
 }
 
+.frame-renderer {
+  z-index: 1;
+}
+
+.effect-renderer {
+  z-index: 2;
+}
+
 */
+
+body {
+  //background-color: #1e8716;
+}
+
+.game-renderer {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+}
+

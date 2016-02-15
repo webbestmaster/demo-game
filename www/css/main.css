@@ -1,14 +1,5 @@
-@import url(_var.scss);
 @import url(_reset.scss);
-@import url(_my-reset.scss);
-@import url(_popup.scss);
-@import url(_screen.scss);
-@import url(_share.scss);
-@import url(_hint.scss);
-@import url(_external-link.scss);
+@import url(_var.scss);
 
 @import url(style.scss);
-@import url(logo.scss);
-
-
 
