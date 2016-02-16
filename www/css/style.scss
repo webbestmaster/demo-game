@@ -33,6 +33,8 @@ body {
   display: block;
   max-width: 100%;
   margin: 50px auto;
+  z-index: -1; // canvas can not scroll without this hack
+  position: relative; // canvas can not scroll without this hack
 }
 
 .spin-btn {
