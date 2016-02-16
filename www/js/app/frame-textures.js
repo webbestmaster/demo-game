@@ -5,7 +5,7 @@ var frameTextures = {
 			path: 'i/game/frame/logo.png',
 			texture: null,
 			sprite: null,
-			x: 48,
+			x: 25,
 			y: 13,
 			w: 209,
 			h: 145

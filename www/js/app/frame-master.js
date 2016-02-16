@@ -10,6 +10,14 @@ var frameMaster = {
 		}
 	},
 
+	update: function () {
+
+		var frame = this;
+
+		frame.updateAnimateLogo();
+
+	},
+
 	initSprites: function () {
 
 		var frame = this;
@@ -30,36 +38,44 @@ var frameMaster = {
 
 		});
 
-		//frame.updateAnimateLogo();
+		frame.logoZeroPosition = {
+			x: frameTextures.textures.logo.sprite.position.x,
+			y: frameTextures.textures.logo.sprite.position.y
+		}
 
-	}
+	},
 
-/*
 	// todo: remove this code -> create normal animator object and logic
 	logoFrame: 100,
+	logoCount: 0,
 
 	updateAnimateLogo: function () {
 
 		var frame = this;
 
+		frame.logoCount = frame.logoCount + 0.001;
+
 		var logoSprite = frameTextures.textures.logo.sprite;
 
-		var filter = new PIXI.filters.PixelateFilter();
+		if (frame.logoFrame) {
 
-		filter.size = new PIXI.Point(frame.logoFrame / 10, frame.logoFrame / 10);
+			var filter = new PIXI.filters.PixelateFilter();
 
-		logoSprite.filters = [filter];
+			filter.size = new PIXI.Point(frame.logoFrame / 5, frame.logoFrame / 5);
 
-		frame.logoFrame -= 1;
+			logoSprite.filters = [filter];
 
-		if (frame.logoFrame < 0) {
-			logoSprite.filters = null;
-			frame.isAnimate = false;
-			frame.draw();
+			frame.logoFrame -= 1;
+
+			if (frame.logoFrame <= 0) {
+				logoSprite.filters = null;
+			}
+
 		}
 
+		logoSprite.position.x = frame.logoZeroPosition.x + Math.sin(frame.logoCount) * 10;
+
 	}
-*/
 
 };
 

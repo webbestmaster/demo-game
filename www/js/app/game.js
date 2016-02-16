@@ -237,6 +237,7 @@ var game = {
 		requestAnimationFrame(this.redraw);
 
 		effectMaster.update();
+		frameMaster.update();
 /*
 		// do not each frame, draw odd frame only
 		if (this.i = !this.i) { // here use single "=" for small optimization
