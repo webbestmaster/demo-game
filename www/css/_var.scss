@@ -1,11 +1,23 @@
+//@mixin prefix($property, $value) {
+//  @each $prefix in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+//    #{$prefix + $property}: $value;
+//  }
+//}
+//
+//@mixin prefix-property($property, $value) {
+//  @each $prefix in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+//    #{$property}: #{$prefix + $value};
+//  }
+//}
+
 @mixin prefix($property, $value) {
-  @each $prefix in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+  @each $prefix in ('-webkit-', '') {
     #{$prefix + $property}: $value;
   }
 }
 
 @mixin prefix-property($property, $value) {
-  @each $prefix in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+  @each $prefix in ('-webkit-', '') {
     #{$property}: #{$prefix + $value};
   }
 }

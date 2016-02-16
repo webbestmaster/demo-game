@@ -1,3 +1,13 @@
+html {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
 }
+
+.no-highlight {
+  @include prefix(tap-highlight-color, transparent);
+}
+
+

@@ -165,10 +165,11 @@ var game = {
 			stageMain, stageWheels, stageFrame, stageEffect;
 
 		// init renderer
-		renderer = PIXI.autoDetectRenderer(width, height, {transparent: true});
+		renderer = PIXI.autoDetectRenderer(width, height, {
+			transparent: true,
+			view: document.querySelector('.game-renderer')
+		});
 		game.renderer = renderer;
-		renderer.view.className = 'game-renderer';
-		document.body.appendChild(renderer.view);
 
 		// init main stage
 		stageMain = new PIXI.Container();

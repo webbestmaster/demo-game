@@ -1,5 +1,5 @@
-@import url(_reset.scss);
 @import url(_var.scss);
+@import url(_reset.scss);
 
 @import url(style.scss);
 

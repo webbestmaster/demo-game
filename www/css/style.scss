@@ -21,21 +21,25 @@
 
 */
 
-html {
-  min-height: 100%;
-}
-
 body {
   background-image: url(../i/bg-main.jpg);
   background-repeat: no-repeat;
   background-position: center center;
-  -webkit-background-size: cover;
-  background-size: cover;
+  @include prefix(background-size, cover);
+  padding-bottom: 50px;
 }
 
 .game-renderer {
   display: block;
   max-width: 100%;
-  margin: 0 auto;
+  margin: 50px auto;
 }
 
+.spin-btn {
+  width: 107px;
+  height: 36px;
+  background-image: url(../i/button-spin.png);
+  background-repeat: no-repeat;
+  @include prefix(background-size, contain);
+  margin: 0 auto;
+}
