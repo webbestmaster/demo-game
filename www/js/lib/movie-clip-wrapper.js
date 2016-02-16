@@ -87,6 +87,10 @@ MovieClipWrapper.prototype.hide = function () {
 	this.clip.visible = false;
 };
 
+MovieClipWrapper.prototype.show = function () {
+	this.clip.visible = true;
+};
+
 MovieClipWrapper.prototype.loop = function (isLoop) {
 	this.clip.loop = isLoop;
 };

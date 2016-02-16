@@ -26,7 +26,7 @@ var game = {
 
 	state: 'ready',
 
-	isAnimate: false,
+	//isAnimate: false,
 
 	initialize: function (cd) {
 
@@ -69,6 +69,8 @@ var game = {
 		switch (spinState) {
 
 			case 'ready':
+
+				effectMaster.hideWinClubs();
 
 				game.state = 'spin-begin';
 
@@ -113,17 +115,50 @@ var game = {
 
 		var wheels = game.wheels;
 
+		var getEndPositions = game.getEndPositions();
+
 		wheels.forEach(function (wheel, index) {
 			setTimeout(function () {
-				wheel.endSpin(Math.floor(Math.random() * wheel.wheelItemCount));
+				wheel.endSpin(getEndPositions[index]);
 			}, 500 * index);
 		});
 
 		wheels[wheels.length - 1].endSpinCb = function () {
 			game.state = 'ready';
-			game.isAnimate = false;
+
+			effectMaster.showWinClubs(getEndPositions);
+			//game.isAnimate = false;
 			console.log('collection state is - ready');
+
+
 		};
+
+	},
+
+	getEndPositions: function () {
+
+		var firstPosition = Math.floor(Math.random() * 3);
+
+		var minPosition;
+
+		var positions = [
+			firstPosition,
+			firstPosition += Math.floor(Math.random() * 3) - 1,
+			firstPosition += Math.floor(Math.random() * 3) - 1,
+			firstPosition += Math.floor(Math.random() * 3) - 1,
+			firstPosition += Math.floor(Math.random() * 3) - 1,
+			firstPosition
+		];
+
+		minPosition = Math.min.apply(Math, positions);
+
+		if (minPosition < 0) {
+			positions = positions.map(function (position) {
+				return position - minPosition;
+			});
+		}
+
+		return positions;
 
 	},
 

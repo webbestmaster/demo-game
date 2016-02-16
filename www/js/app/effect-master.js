@@ -47,13 +47,11 @@ var effectMaster = {
 		var effect = this;
 
 		effect.initClubsMovies();
-		effect.initSparklesMovies();
+		//effect.initSparklesMovies();
 
 	},
 
 	initClubsMovies: function () {
-
-		return;
 
 		var effect = this;
 
@@ -85,7 +83,13 @@ var effectMaster = {
 
 				movieClipWrapper.className = 'club';
 
-				movieClipWrapper.play();
+				// extraData
+				movieClipWrapper.x = i;
+				movieClipWrapper.y = j;
+
+				movieClipWrapper.hide();
+
+				//movieClipWrapper.play();
 
 			}
 
@@ -125,6 +129,55 @@ var effectMaster = {
 		movieClipWrapper.className = 'sparkle';
 
 		movieClipWrapper.play();
+
+	},
+
+	showWinClubs: function (positions) {
+
+		var clubs = [];
+
+		var effect = this;
+		var clips = effect.clips;
+
+		positions.forEach(function (y, x) {
+
+			clips.forEach(function (clip) {
+
+				if (clip.className !== 'club') {
+					return;
+				}
+
+				if (clip.x !== x || clip.y !== y) {
+					return;
+				}
+
+				clubs.push(clip);
+
+			});
+
+			console.log(y, x);
+
+
+		});
+
+		clubs.forEach(function (club) {
+
+			club.show();
+			club.play();
+
+		});
+
+	},
+
+	hideWinClubs: function () {
+
+		var effect = this;
+		var clips = effect.clips;
+
+		clips.forEach(function (clip) {
+			clip.stop();
+			clip.hide();
+		});
 
 	}
 
