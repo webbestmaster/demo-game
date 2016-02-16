@@ -9,8 +9,8 @@ var frameTextures = {
 			y: 13,
 			w: 209,
 			h: 145
-		}
-/*
+		},
+
 		frame: {
 			path: 'i/game/frame/frame.png',
 			texture: null,
@@ -20,7 +20,7 @@ var frameTextures = {
 			w: 761,
 			h: 495
 		}
-*/
+
 	}
 
 };

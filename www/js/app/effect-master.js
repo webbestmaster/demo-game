@@ -53,6 +53,8 @@ var effectMaster = {
 
 	initClubsMovies: function () {
 
+		return;
+
 		var effect = this;
 
 		var frames = [];
@@ -93,6 +95,7 @@ var effectMaster = {
 
 	initSparklesMovies: function () {
 
+		return;
 
 		var effect = this;
 
