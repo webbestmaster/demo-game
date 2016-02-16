@@ -13,6 +13,8 @@ var textureMaster = {
 
 		var loader = PIXI.loader;
 
+		//loader.baseUrl = 'hi/';
+
 		var frameTexturesData = frameTextures.textures;
 		var gameTexturesData = gameTextures.textures;
 		var effectTexturesData = effectTextures.textures;

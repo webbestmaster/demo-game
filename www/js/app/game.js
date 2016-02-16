@@ -206,7 +206,8 @@ var game = {
 		// init renderer
 		renderer = PIXI.autoDetectRenderer(width, height, {
 			transparent: true,
-			view: document.querySelector('.game-renderer')
+			view: document.querySelector('.game-renderer'),
+			resolution: 1 // set 2 or 3 to use higher resolution
 		});
 		game.renderer = renderer;
 
