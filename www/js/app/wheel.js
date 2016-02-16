@@ -26,10 +26,15 @@ function Wheel(data) {
 	wheel.lastPosition = 0;
 	wheel.deltaPath = 0;
 
-	wheel.BEGIN_A = 0.2; // const
-	wheel.END_A = -0.2; // const
+	wheel.BEGIN_A = 0.5; // const
+	wheel.END_A = -0.5; // const
 	wheel.T_INC = 0.1; // const
-	wheel.V_MAX = 3.1; // const
+	wheel.V_MAX = 5; // const
+
+	//wheel.BEGIN_A = 0.2; // const
+	//wheel.END_A = -0.2; // const
+	//wheel.T_INC = 0.1; // const
+	//wheel.V_MAX = 3.1; // const
 
 	util.eachHash(data, function (value, key) {
 		wheel[key] = value;
