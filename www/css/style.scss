@@ -21,8 +21,16 @@
 
 */
 
+html {
+  min-height: 100%;
+}
+
 body {
-  //background-color: #1e8716;
+  background-image: url(../i/bg-main.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  background-size: cover;
 }
 
 .game-renderer {
