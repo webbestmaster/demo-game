@@ -70,7 +70,7 @@ var game = {
 
 			case 'ready':
 
-				effectMaster.hideWinClubs();
+				effectMaster.hideClips();
 
 				game.state = 'spin-begin';
 
@@ -127,7 +127,11 @@ var game = {
 			game.state = 'ready';
 
 			effectMaster.showWinClubs(getEndPositions);
-			//game.isAnimate = false;
+
+			if (Math.random() > 0.07) {
+				effectMaster.showFreeSpinPopUp();
+			}
+
 			console.log('collection state is - ready');
 
 

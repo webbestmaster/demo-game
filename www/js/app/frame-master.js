@@ -14,7 +14,9 @@ var frameMaster = {
 
 		var frame = this;
 
-		frame.updateAnimateLogo();
+		if (frame.logoFrame) {
+			frame.updateAnimateLogo();
+		}
 
 	},
 
@@ -47,33 +49,24 @@ var frameMaster = {
 
 	// todo: remove this code -> create normal animator object and logic
 	logoFrame: 100,
-	logoCount: 0,
 
 	updateAnimateLogo: function () {
 
 		var frame = this;
 
-		frame.logoCount = frame.logoCount + 0.001;
-
 		var logoSprite = frameTextures.textures.logo.sprite;
 
-		if (frame.logoFrame) {
+		var filter = new PIXI.filters.PixelateFilter();
 
-			var filter = new PIXI.filters.PixelateFilter();
+		filter.size = new PIXI.Point(frame.logoFrame / 5, frame.logoFrame / 5);
 
-			filter.size = new PIXI.Point(frame.logoFrame / 5, frame.logoFrame / 5);
+		logoSprite.filters = [filter];
 
-			logoSprite.filters = [filter];
+		frame.logoFrame -= 1;
 
-			frame.logoFrame -= 1;
-
-			if (frame.logoFrame <= 0) {
-				logoSprite.filters = null;
-			}
-
+		if (frame.logoFrame <= 0) {
+			logoSprite.filters = null;
 		}
-
-		logoSprite.position.x = frame.logoZeroPosition.x + Math.sin(frame.logoCount) * 10;
 
 	}
 

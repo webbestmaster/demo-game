@@ -30,6 +30,7 @@ var textureMaster = {
 		});
 
 		loader.add('i/game/effect/club-win-animation.json');
+		loader.add('i/game/effect/respin-pop-up.json');
 
 		loader
 			.on('progress', function () {

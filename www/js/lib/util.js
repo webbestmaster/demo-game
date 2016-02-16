@@ -71,3 +71,44 @@ util.createClubJSON = function () {
 	console.log(JSON.stringify(jsonObj.frames));
 
 };
+
+util.createRespinPupUpJSON = function () {
+
+	var x,
+		y,
+		maxX = 8,
+		maxY = 11,
+		jsonObj = {
+			frames: {}
+		},
+		index = 0,
+		frameWidth = 466,
+		frameHeight = 302,
+		frameNamePrefix = 'respin-pop-up-';
+
+	for (y = 0; y < maxY; y += 1) {
+		for (x = 0; x < maxX; x += 1) {
+			if (index === 81) {
+				continue;
+			}
+			jsonObj.frames[frameNamePrefix + index] = {
+				frame: {
+					x: x * frameWidth,
+					y: y * frameHeight,
+					w: frameWidth,
+					h: frameHeight
+				},
+				rotated: false,
+				sourceSize: {
+					w: frameWidth,
+					h: frameHeight
+				}
+			};
+
+			index += 1;
+		}
+	}
+
+	console.log(JSON.stringify(jsonObj.frames));
+
+};

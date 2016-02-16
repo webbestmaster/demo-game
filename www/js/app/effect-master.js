@@ -15,6 +15,12 @@ var effectMaster = {
 
 	clips: [],
 
+	freeSpinPupUp: {
+		clip: null,
+		x: 780 / 2,
+		y: 520 / 2
+	},
+
 	update: function () {
 
 		// update clips states
@@ -31,7 +37,7 @@ var effectMaster = {
 
 		var wheel = wheelsData.wheels[x];
 
-		if (wheel.hi <= y){
+		if (wheel.hi <= y) {
 			return null;
 		}
 
@@ -47,6 +53,7 @@ var effectMaster = {
 		var effect = this;
 
 		effect.initClubsMovies();
+		effect.initRespinPopUpMovies();
 		//effect.initSparklesMovies();
 
 	},
@@ -97,6 +104,36 @@ var effectMaster = {
 
 	},
 
+	initRespinPopUpMovies: function () {
+
+		var effect = this;
+
+		var frames = [];
+
+		for (var i = 0; i < 81; i++) {
+			frames.push('respin-pop-up-' + i);
+		}
+
+		var movie = PIXI.extras.MovieClip.fromFrames(frames);
+		effect.stage.addChild(movie);
+
+		movie.anchor.x = 0.5;
+		movie.anchor.y = 0.5;
+
+		movie.position.x = effect.freeSpinPupUp.x;
+		movie.position.y = effect.freeSpinPupUp.y;
+
+		var movieClipWrapper = new MovieClipWrapper(movie);
+		//effect.clips.push(movieClipWrapper);
+
+		effect.freeSpinPupUp.clip = movieClipWrapper;
+
+		movieClipWrapper.hide();
+
+		//movieClipWrapper.play();
+
+	},
+
 	initSparklesMovies: function () {
 
 		return;
@@ -118,8 +155,8 @@ var effectMaster = {
 		movie.rotation = Math.PI / 2;
 		movie.anchor.x = 0.2;
 		movie.anchor.y = 0.2;
-		movie.scale.x = 0.3333;
-		movie.scale.y = 0.3333;
+		//movie.scale.x = 0.3333;
+		//movie.scale.y = 0.3333;
 
 		movie.animationSpeed = 0.1;
 
@@ -155,21 +192,16 @@ var effectMaster = {
 
 			});
 
-			console.log(y, x);
-
-
 		});
 
 		clubs.forEach(function (club) {
-
 			club.show();
 			club.play();
-
 		});
 
 	},
 
-	hideWinClubs: function () {
+	hideClips: function () {
 
 		var effect = this;
 		var clips = effect.clips;
@@ -178,6 +210,18 @@ var effectMaster = {
 			clip.stop();
 			clip.hide();
 		});
+
+		effect.freeSpinPupUp.clip.stop();
+		effect.freeSpinPupUp.clip.hide();
+
+	},
+
+	showFreeSpinPopUp: function () {
+
+		var freeSpinPupUp = this.freeSpinPupUp.clip;
+
+		freeSpinPupUp.show();
+		freeSpinPupUp.play();
 
 	}
 
