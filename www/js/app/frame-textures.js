@@ -16,9 +16,9 @@ var frameTextures = {
 			texture: null,
 			sprite: null,
 			x: 9,
-			y: 15,
-			w: 761,
-			h: 495
+			y: 10,
+			w: 767,
+			h: 506
 		}
 
 	}

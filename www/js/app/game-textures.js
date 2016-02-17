@@ -1,3 +1,4 @@
+/*
 var gameTextures = {
 
 	textures: {
@@ -10,3 +11,4 @@ var gameTextures = {
 };
 
 export default gameTextures;
+*/

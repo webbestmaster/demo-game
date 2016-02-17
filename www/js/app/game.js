@@ -166,29 +166,29 @@ var game = {
 
 	},
 
-/*
-	startAnimateWheels: function () {
+	/*
+	 startAnimateWheels: function () {
 
-		var game = this;
+	 var game = this;
 
-		game.isAnimate = true;
+	 game.isAnimate = true;
 
-		game.animateWheels();
+	 game.animateWheels();
 
-	},
-*/
+	 },
+	 */
 
 	animateWheels: function () {
 
 		//if (this.isAnimate) {
 
-			requestAnimationFrame(this.animateWheels);
+		requestAnimationFrame(this.animateWheels);
 
-			var wheels = this.wheels;
+		var wheels = this.wheels;
 
-			for (var i = 0, len = wheels.length; i < len; i += 1) {
-				wheels[i].updatePosition();
-			}
+		for (var i = 0, len = wheels.length; i < len; i += 1) {
+			wheels[i].updatePosition();
+		}
 
 		//}
 
@@ -208,8 +208,8 @@ var game = {
 			transparent: true,
 			view: document.querySelector('.game-renderer'),
 			resolution: 1 // set 2 or 3 to use higher resolution
-			 //clearBeforeRender: false, // right now canvas is cleared every tick,
-			 //preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
+			//clearBeforeRender: false, // right now canvas is cleared every tick,
+			//preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
 		});
 		game.renderer = renderer;
 
@@ -222,15 +222,17 @@ var game = {
 		stageWheels = new PIXI.Container();
 		stageFrame = new PIXI.Container();
 		stageEffect = new PIXI.Container();
-/*
-		stageEffect = new PIXI.ParticleContainer(100, {
-			uvs: true
-		});
-*/
+		/*
+		 stageEffect = new PIXI.ParticleContainer(100, {
+		 uvs: true
+		 });
+		 */
 
 		stageMain.addChild(stageWheels);
 		stageMain.addChild(stageFrame);
 		stageMain.addChild(stageEffect);
+
+		//stageFrame.alpha = 0.5;
 
 		// link stage with frameMaster and effectMaster
 		frameMaster.stage = stageFrame;
@@ -248,21 +250,64 @@ var game = {
 		var game = this;
 
 		var wheels = game.wheels;
-		var mainSpriteTexture = gameTextures.textures.mainSprite.texture.texture;
+		//var mainSpriteTexture = gameTextures.textures.mainSprite.texture.texture;
 
 		wheelsData.wheels.forEach(function (wheelData) {
 
+			var wheelStage = new PIXI.Container();
+
+			var items = [
+				//'item-wild-x3',
+				//'item-bonus-x3',
+				//'item-wild-violet',
+				//'item-wild-green',
+				//'item-girl',
+				'item-lion',
+				'item-woodcutter',
+				'item-scarecrow',
+				'item-dog',
+				'item-poppy',
+				'item-crow',
+				'item-diamond',
+				'item-club',
+				'item-spades',
+				'item-heart'
+			];
+
+			items.forEach(function (itemName, i) {
+
+				var sprite = new PIXI.Sprite.fromFrame(itemName);
+
+				sprite.position.y = i * 70;
+
+				wheelStage.addChild(sprite);
+
+			});
+
+			game.stageWheels.addChild(wheelStage);
+
+			var graphics = new PIXI.Graphics();
+			graphics.beginFill(0, 0);
+
+			wheelStage.mask = graphics.drawRect(wheelData.x, wheelData.y, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
+
+			wheelStage.position.x = wheelData.x;
+			wheelStage.position.y = wheelData.y;
+
+			return;
+
+/*
 			var tilingSprite = new PIXI.extras.TilingSprite(mainSpriteTexture, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
 
-			tilingSprite.position.x = wheelData.x;
-			tilingSprite.position.y = wheelData.y;
+
 
 			game.stageWheels.addChild(tilingSprite);
+*/
 
 			var newWheel = new Wheel({
 				itemHeight: wheelsData.item.h,
 				position: Math.floor(Math.random() * wheelsData.wheelItemCount),
-				tilingSprite: tilingSprite,
+				tilingSprite: wheelStage,
 				wheelItemCount: wheelsData.wheelItemCount
 			});
 
@@ -280,12 +325,12 @@ var game = {
 
 		effectMaster.update();
 		frameMaster.update();
-/*
-		// do not each frame, draw odd frame only
-		if (this.i = !this.i) { // here use single "=" for small optimization
-			return;
-		}
-*/
+		/*
+		 // do not each frame, draw odd frame only
+		 if (this.i = !this.i) { // here use single "=" for small optimization
+		 return;
+		 }
+		 */
 
 		var wheels = this.wheels,
 			i, len;

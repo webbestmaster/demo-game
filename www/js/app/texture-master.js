@@ -1,6 +1,6 @@
 import Deferred from './../lib/deferred';
 import frameTextures from './frame-textures';
-import gameTextures from './game-textures';
+//import gameTextures from './game-textures';
 import effectTextures from './effect-textures';
 import util from './../lib/util';
 import log from './../services/log';
@@ -16,16 +16,18 @@ var textureMaster = {
 		//loader.baseUrl = 'hi/';
 
 		var frameTexturesData = frameTextures.textures;
-		var gameTexturesData = gameTextures.textures;
+		//var gameTexturesData = gameTextures.textures;
 		var effectTexturesData = effectTextures.textures;
 
 		util.eachHash(frameTexturesData, function (item, key) {
 			loader.add('frameTextures/' + key, item.path);
 		});
 
+/*
 		util.eachHash(gameTexturesData, function (item, key) {
 			loader.add('gameTextures/' + key, item.path);
 		});
+*/
 
 		util.eachHash(effectTexturesData, function (item, key) {
 			loader.add('effectTextures/' + key, item.path);
@@ -33,6 +35,7 @@ var textureMaster = {
 
 		loader.add('i/game/effect/club-win-animation.json');
 		loader.add('i/game/effect/respin-pop-up.json');
+		loader.add('i/game/game/items.json');
 
 		loader
 			.on('progress', function () {
@@ -51,9 +54,11 @@ var textureMaster = {
 							frameTexturesData[name].texture = value;
 							break;
 
+/*
 						case 'gameTextures':
 							gameTexturesData[name].texture = value;
 							break;
+*/
 
 						case 'effectTextures':
 							effectTexturesData[name].texture = value;
