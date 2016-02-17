@@ -208,6 +208,8 @@ var game = {
 			transparent: true,
 			view: document.querySelector('.game-renderer'),
 			resolution: 1 // set 2 or 3 to use higher resolution
+			 //clearBeforeRender: false, // right now canvas is cleared every tick,
+			 //preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
 		});
 		game.renderer = renderer;
 
