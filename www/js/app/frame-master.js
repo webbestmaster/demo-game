@@ -56,11 +56,13 @@ var frameMaster = {
 
 		var logoSprite = frameTextures.textures.logo.sprite;
 
+/*
 		var filter = new PIXI.filters.PixelateFilter();
 
 		filter.size = new PIXI.Point(frame.logoFrame / 5, frame.logoFrame / 5);
 
 		logoSprite.filters = [filter];
+*/
 
 		frame.logoFrame -= 1;
 
