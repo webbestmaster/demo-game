@@ -1,4 +1,5 @@
 import util from './../lib/util';
+import itemsData from './items-data';
 
 function Wheel(data) {
 
@@ -6,8 +7,7 @@ function Wheel(data) {
 
 	wheel.itemHeight = 0; // get from dataArguments
 	wheel.position = 0; // get from dataArguments
-	wheel.tilingSprite = null; // get from dataArguments
-	wheel.wheelItemCount = 0; // get from dataArguments
+	wheel.stage = null; // get from dataArguments
 
 	wheel.state = '';
 	wheel.t = 0;
@@ -40,7 +40,42 @@ function Wheel(data) {
 		wheel[key] = value;
 	});
 
+	wheel.selfFill();
+
+
+
 }
+
+Wheel.prototype.selfFill = function () {
+
+	var wheel = this;
+
+	var size = Math.round(Math.random() * 10 + 10);
+
+	var items = [];
+
+	for (var i = 0; i < size; i += 1) {
+		items.push(Math.floor( Math.random() * 13));
+	}
+
+	//wheel.size = size;
+	//wheel.items = items;
+
+
+	var stage = wheel.stage;
+
+	items.forEach(function (index) {
+
+		var key = itemsData.list[index];
+
+		var sprite = new PIXI.Sprite.fromFrame(itemsData[key].frame);
+
+		stage.addChild(sprite);
+
+	});
+
+
+};
 
 Wheel.prototype.updatePosition = function () {
 
@@ -65,7 +100,7 @@ Wheel.prototype.updatePosition = function () {
 
 	}
 
-	this.tilingSprite.tilePosition.y = this.position * this.itemHeight;
+	this.stage.position.y = this.position * this.itemHeight;
 
 };
 
@@ -73,7 +108,7 @@ Wheel.prototype.beginSpin = function () {
 
 	var wheel = this;
 
-	wheel.position = wheel.position % wheel.wheelItemCount;
+	wheel.position = wheel.position % wheel.size;
 	wheel.state = 'spin-begin';
 	wheel.t = 0;
 	wheel.v = 0;
@@ -125,9 +160,9 @@ Wheel.prototype.updateSpinMain = function () {
 
 	this.position += this.sIncrease;
 
-	if (this.position >= this.wheelItemCount) {
+	if (this.position >= this.size) {
 
-		this.position %= this.wheelItemCount;
+		this.position %= this.size;
 	}
 
 };
@@ -152,7 +187,7 @@ Wheel.prototype.updateSpinEnd = function () {
 		t = wheel.t,
 		position = wheel.position,
 		sIncrease = wheel.sIncrease,
-		wheelItemCount = wheel.wheelItemCount,
+		size = wheel.size,
 		needStopping = wheel.needStopping;
 
 	if (!v) {
@@ -166,7 +201,7 @@ Wheel.prototype.updateSpinEnd = function () {
 		wheel.position = position;
 
 		// detect starting of ending
-		var deltaPath = (position + wheel.beginPath - wheel.endSpinStopPosition) % wheelItemCount;
+		var deltaPath = (position + wheel.beginPath - wheel.endSpinStopPosition) % size;
 
 		if (Math.abs(deltaPath) >= sIncrease) {
 			return;
@@ -186,7 +221,7 @@ Wheel.prototype.updateSpinEnd = function () {
 	position += wheel.deltaPath * ( a * t / v );
 	position -= Math.sin((v - a * t) / v * Math.PI) * 1.2;
 
-	wheel.position = position % wheelItemCount;
+	wheel.position = position % size;
 
 	t += T_INC;
 

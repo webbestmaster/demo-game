@@ -32,7 +32,7 @@ var game = {
 
 		var game = this;
 
-		game.animateWheels = game.animateWheels.bind(game);
+		//game.animateWheels = game.animateWheels.bind(game);
 
 		game.initCanvas();
 
@@ -178,6 +178,7 @@ var game = {
 	 },
 	 */
 
+/*
 	animateWheels: function () {
 
 		//if (this.isAnimate) {
@@ -193,6 +194,7 @@ var game = {
 		//}
 
 	},
+*/
 
 	initCanvas: function () {
 
@@ -256,12 +258,13 @@ var game = {
 
 			var wheelStage = new PIXI.Container();
 
+/*
 			var items = [
-				//'item-wild-x3',
-				//'item-bonus-x3',
-				//'item-wild-violet',
-				//'item-wild-green',
-				//'item-girl',
+				'item-wild-x3',
+				'item-bonus-x3',
+				'item-wild-violet',
+				'item-wild-green',
+				'item-girl',
 				'item-lion',
 				'item-woodcutter',
 				'item-scarecrow',
@@ -283,6 +286,7 @@ var game = {
 				wheelStage.addChild(sprite);
 
 			});
+*/
 
 			game.stageWheels.addChild(wheelStage);
 
@@ -294,21 +298,10 @@ var game = {
 			wheelStage.position.x = wheelData.x;
 			wheelStage.position.y = wheelData.y;
 
-			return;
-
-/*
-			var tilingSprite = new PIXI.extras.TilingSprite(mainSpriteTexture, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
-
-
-
-			game.stageWheels.addChild(tilingSprite);
-*/
-
 			var newWheel = new Wheel({
 				itemHeight: wheelsData.item.h,
-				position: Math.floor(Math.random() * wheelsData.wheelItemCount),
-				tilingSprite: wheelStage,
-				wheelItemCount: wheelsData.wheelItemCount
+				position: 0,
+				stage: wheelStage
 			});
 
 			wheels.push(newWheel);
