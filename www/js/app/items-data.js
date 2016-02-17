@@ -2,12 +2,12 @@ var itemsData = {
 
 	wildX3: {
 		frame: 'item-wild-x3',
-		hi: 1,
+		hi: 3,
 		index: 0
 	},
 	bonusX3: {
 		frame: 'item-bonus-x3',
-		hi: 1,
+		hi: 3,
 		index: 1
 	},
 	wildViolet: {

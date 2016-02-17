@@ -291,14 +291,15 @@ var game = {
 			game.stageWheels.addChild(wheelStage);
 
 			var graphics = new PIXI.Graphics();
-			graphics.beginFill(0, 0);
+			//graphics.beginFill(0, 0);
 
-			wheelStage.mask = graphics.drawRect(wheelData.x, wheelData.y, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
+			//wheelStage.mask = graphics.drawRect(wheelData.x, wheelData.y, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
 
 			wheelStage.position.x = wheelData.x;
 			wheelStage.position.y = wheelData.y;
 
 			var newWheel = new Wheel({
+				hi: wheelData.hi,
 				itemHeight: wheelsData.item.h,
 				position: 0,
 				stage: wheelStage

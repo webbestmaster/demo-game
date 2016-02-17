@@ -8,6 +8,7 @@ function Wheel(data) {
 	wheel.itemHeight = 0; // get from dataArguments
 	wheel.position = 0; // get from dataArguments
 	wheel.stage = null; // get from dataArguments
+	wheel.hi = 0; // get from dataArguments
 
 	wheel.state = '';
 	wheel.t = 0;
@@ -42,42 +43,109 @@ function Wheel(data) {
 
 	wheel.selfFill();
 
-
-
 }
+
+Wheel.prototype.getNewItem = function (index) {
+
+	var key = itemsData.list[index],
+		itemData = itemsData[key],
+		sprite = new PIXI.Sprite.fromFrame(itemData.frame);
+
+	return {
+		sprite: sprite,
+		hi: itemData.hi
+	};
+
+};
 
 Wheel.prototype.selfFill = function () {
 
+	// todo: split this function to several procedures
+	// 1 - create items
+	// 2 (1.1) - create extra items
+	// 3 - set default position of sprites
+
 	var wheel = this;
 
-	var size = Math.round(Math.random() * 10 + 10);
+	var realSizeInItems = Math.round(Math.random() * 10 + 5);
 
 	var items = [];
 
-	for (var i = 0; i < size; i += 1) {
-		items.push(Math.floor( Math.random() * 13));
+	var i;
+
+	var len;
+	// magic block - begin
+
+	// todo: note: try to use texture to fast change sprite state
+	// see example here -> http://pixijs.github.io/examples/index.html?s=demos&f=texture-swap.js&title=Texture%20Swap
+
+	// add "real" items
+	for (i = 0; i < realSizeInItems; i += 1) {
+		items.push(i);
+		//items.push(8);
 	}
 
-	//wheel.size = size;
-	//wheel.items = items;
-
-
-	var stage = wheel.stage;
-
-	items.forEach(function (index) {
-
-		var key = itemsData.list[index];
-
-		var sprite = new PIXI.Sprite.fromFrame(itemsData[key].frame);
-
-		stage.addChild(sprite);
-
+	items = items.sort(function () {
+		return Math.random() - 0.5;
 	});
 
+	// add zero hidden item
+	// add object the same as last object to start of arr
+	items.unshift(items[items.length - 1]);
+	//items.unshift(5);
+
+	// add last items, the same as first items
+	for (i = 1, len = wheel.hi + 1; i <= len; i += 1) { // i = 1, i <= len !!, it is not a mistake
+		items.push(items[i]);
+		//items.push(5);
+	}
+
+	items = items.map(function (item) {
+		return wheel.getNewItem(item);
+	});
+	items[items.length-1].sprite.alpha = 0.5;
+
+	// magic block - end
+
+	// count needed stage height
+	var stageHeightInItems = -2; // reduce	for first and last items
+	items.forEach(function (item) {
+		stageHeightInItems += item.hi;
+	});
+
+	// set sprite positions
+	items.forEach(function (item, index) {
+
+		setTimeout(function () {
+
+
+
+
+
+			var sprite = item.sprite;
+
+			wheel.stage.addChild(sprite);
+
+			if (index) { // do not use zero extra item
+				stageHeightInItems -= item.hi;
+			}
+			sprite.position.y = stageHeightInItems * wheel.itemHeight - (94-70)/2; //TODO: REMOVE HARD CODE
+
+
+
+
+
+
+
+		}, 300 * index);
+
+	});
 
 };
 
 Wheel.prototype.updatePosition = function () {
+
+	return;
 
 	switch (this.state) {
 		case 'spin-begin':
