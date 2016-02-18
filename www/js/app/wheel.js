@@ -46,7 +46,14 @@ function Wheel(data) {
 		wheel[key] = value;
 	});
 
-	wheel.innerStage = new PIXI.Container();
+	//wheel.innerStage = new PIXI.Container();
+	wheel.innerStage = new PIXI.ParticleContainer(500, {
+		scale: false,
+		position: false,
+		rotation: false,
+		uvs: false,
+		alpha: false
+	});
 
 	wheel.bg = null;
 	wheel.setBg('normal');
@@ -66,6 +73,8 @@ Wheel.prototype.setBg = function (type) {
 	var sprite = new PIXI.Sprite.fromFrame('wheels-' + type + '-bg-x' + wheel.hi);
 
 	wheel.stage.addChild(sprite);
+
+	//sprite.cacheAsBitmap = this;
 
 	sprite.height = wheel.hi * wheelsData.item.h;
 

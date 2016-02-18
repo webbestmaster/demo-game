@@ -43,7 +43,9 @@ var frameMaster = {
 		frame.logoZeroPosition = {
 			x: frameTextures.textures.logo.sprite.position.x,
 			y: frameTextures.textures.logo.sprite.position.y
-		}
+		};
+
+		//frameStage.cacheAsBitmap = true;
 
 	},
 
