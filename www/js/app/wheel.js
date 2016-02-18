@@ -60,8 +60,6 @@ function Wheel(data) {
 
 	wheel.stage.addChild(wheel.innerStage);
 
-	wheel.zeroStagePosition = 0;
-
 	wheel.selfFill();
 
 }
@@ -171,8 +169,6 @@ Wheel.prototype.selfFill = function () {
 
 	});
 
-	this.zeroStagePosition = this.position * this.itemHeight;
-
 };
 
 Wheel.prototype.updatePosition = function () {
@@ -198,14 +194,13 @@ Wheel.prototype.updatePosition = function () {
 
 	}
 
-	//this.innerStage.position.y = this.position * this.itemHeight;
 	this.innerStage.position.y = this.getYPosition();
 
 };
 
 Wheel.prototype.getYPosition = function () {
 
-	return this.zeroStagePosition + this.getRoundPosition() * this.itemHeight;
+	return this.getRoundPosition() * this.itemHeight | 0;
 
 };
 
