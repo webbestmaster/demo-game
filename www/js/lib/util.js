@@ -20,13 +20,13 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
 	window.oRequestAnimationFrame ||
 	window.msRequestAnimationFrame ||
 	function (callback) {
-		window.setTimeout(callback, 16.6666);
+		window.setTimeout(callback, 0);
 	};
-
 
 export default util;
 
 
+/*
 window.util = util;
 
 
@@ -112,3 +112,4 @@ util.createRespinPupUpJSON = function () {
 	console.log(JSON.stringify(jsonObj.frames));
 
 };
+*/
