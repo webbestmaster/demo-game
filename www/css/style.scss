@@ -23,6 +23,7 @@
 
 body {
   background-image: url(../i/bg-main.jpg);
+  //background-color: #00ff00;
   background-repeat: no-repeat;
   background-position: center center;
   @include prefix(background-size, cover);

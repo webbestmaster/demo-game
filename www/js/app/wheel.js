@@ -28,14 +28,14 @@ function Wheel(data) {
 	wheel.lastPosition = 0;
 	wheel.deltaPath = 0;
 
-	wheel.BEGIN_A = 0.1; // const
-	wheel.END_A = -0.1; // const
-	wheel.T_INC = 0.05; // const
-	wheel.V_MAX = 1; // const
-	//wheel.BEGIN_A = 0.5; // const
-	//wheel.END_A = -0.5; // const
-	//wheel.T_INC = 0.1; // const
-	//wheel.V_MAX = 3; // const
+	//wheel.BEGIN_A = 0.1; // const
+	//wheel.END_A = -0.1; // const
+	//wheel.T_INC = 0.05; // const
+	//wheel.V_MAX = 1; // const
+	wheel.BEGIN_A = 0.5; // const
+	wheel.END_A = -0.5; // const
+	wheel.T_INC = 0.1; // const
+	wheel.V_MAX = 3; // const
 
 	//wheel.BEGIN_A = 0.2; // const
 	//wheel.END_A = -0.2; // const
@@ -47,11 +47,29 @@ function Wheel(data) {
 	});
 
 	wheel.innerStage = new PIXI.Container();
+
+	wheel.bg = null;
+	wheel.setBg('normal');
+
 	wheel.stage.addChild(wheel.innerStage);
+
+	wheel.zeroStagePosition = 0;
 
 	wheel.selfFill();
 
 }
+
+Wheel.prototype.setBg = function (type) {
+
+	var wheel = this;
+
+	var sprite = new PIXI.Sprite.fromFrame('wheels-' + type + '-bg-x' + wheel.hi);
+
+	wheel.stage.addChild(sprite);
+
+	sprite.height = wheel.hi * wheelsData.item.h;
+
+};
 
 Wheel.prototype.getNewItem = function (index) {
 
@@ -112,8 +130,8 @@ Wheel.prototype.selfFill = function () {
 	});
 
 	// TODO: just mark first and last items - remove it for production
-	items[items.length - 1].sprite.alpha = 0.5;
-	items[0].sprite.alpha = 0.5;
+	//items[items.length - 1].sprite.alpha = 0.5;
+	//items[0].sprite.alpha = 0.5;
 
 	// magic block - end
 
