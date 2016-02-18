@@ -6,7 +6,7 @@ var log,
 	slice = Array.prototype.slice,
 	logger = {
 		isEnable: true,
-		remoteLog: !false,
+		remoteLog: false,
 		xhr: new XMLHttpRequest(),
 		log: function () {
 			console.log.apply(console, arguments);
