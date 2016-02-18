@@ -11,8 +11,6 @@ import gameTextures from './game-textures';
 
 var game = {
 
-	//wheelsData: wheelsData,
-
 	wheels: [],
 
 	original: {
@@ -26,13 +24,9 @@ var game = {
 
 	state: 'ready',
 
-	//isAnimate: false,
-
 	initialize: function (cd) {
 
 		var game = this;
-
-		//game.animateWheels = game.animateWheels.bind(game);
 
 		game.initCanvas();
 
@@ -128,12 +122,9 @@ var game = {
 
 			effectMaster.showWinClubs(getEndPositions);
 
-			if (Math.random() > 0.07) {
-				effectMaster.showFreeSpinPopUp();
-			}
+			effectMaster.showFreeSpinPopUp();
 
 			console.log('collection state is - ready');
-
 
 		};
 
@@ -165,36 +156,6 @@ var game = {
 		return positions;
 
 	},
-
-	/*
-	 startAnimateWheels: function () {
-
-	 var game = this;
-
-	 game.isAnimate = true;
-
-	 game.animateWheels();
-
-	 },
-	 */
-
-/*
-	animateWheels: function () {
-
-		//if (this.isAnimate) {
-
-		requestAnimationFrame(this.animateWheels);
-
-		var wheels = this.wheels;
-
-		for (var i = 0, len = wheels.length; i < len; i += 1) {
-			wheels[i].updatePosition();
-		}
-
-		//}
-
-	},
-*/
 
 	initCanvas: function () {
 
@@ -252,47 +213,16 @@ var game = {
 		var game = this;
 
 		var wheels = game.wheels;
-		//var mainSpriteTexture = gameTextures.textures.mainSprite.texture.texture;
 
 		wheelsData.wheels.forEach(function (wheelData) {
 
 			var wheelStage = new PIXI.Container();
 
-/*
-			var items = [
-				'item-wild-x3',
-				'item-bonus-x3',
-				'item-wild-violet',
-				'item-wild-green',
-				'item-girl',
-				'item-lion',
-				'item-woodcutter',
-				'item-scarecrow',
-				'item-dog',
-				'item-poppy',
-				'item-crow',
-				'item-diamond',
-				'item-club',
-				'item-spades',
-				'item-heart'
-			];
-
-			items.forEach(function (itemName, i) {
-
-				var sprite = new PIXI.Sprite.fromFrame(itemName);
-
-				sprite.position.y = i * 70;
-
-				wheelStage.addChild(sprite);
-
-			});
-*/
-
 			game.stageWheels.addChild(wheelStage);
 
+			// add mask
 			var graphics = new PIXI.Graphics();
 			graphics.beginFill(0, 0);
-
 			wheelStage.mask = graphics.drawRect(wheelData.x, wheelData.y, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
 
 			wheelStage.position.x = wheelData.x;
@@ -319,12 +249,6 @@ var game = {
 
 		effectMaster.update();
 		frameMaster.update();
-		/*
-		 // do not each frame, draw odd frame only
-		 if (this.i = !this.i) { // here use single "=" for small optimization
-		 return;
-		 }
-		 */
 
 		var wheels = this.wheels,
 			i, len;
@@ -332,6 +256,13 @@ var game = {
 		for (i = 0, len = wheels.length; i < len; i += 1) {
 			wheels[i].updatePosition();
 		}
+
+/*
+		// do not each frame, draw odd frame only
+		if (this.i = !this.i) { // here use single "=" for small optimization
+			return;
+		}
+*/
 
 		this.renderer.render(this.stageMain);
 

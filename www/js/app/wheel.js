@@ -28,10 +28,14 @@ function Wheel(data) {
 	wheel.lastPosition = 0;
 	wheel.deltaPath = 0;
 
+	//wheel.BEGIN_A = 0.1; // const
+	//wheel.END_A = -0.1; // const
+	//wheel.T_INC = 0.05; // const
+	//wheel.V_MAX = 1; // const
 	wheel.BEGIN_A = 0.5; // const
 	wheel.END_A = -0.5; // const
 	wheel.T_INC = 0.1; // const
-	wheel.V_MAX = 5; // const
+	wheel.V_MAX = 3; // const
 
 	//wheel.BEGIN_A = 0.2; // const
 	//wheel.END_A = -0.2; // const
@@ -41,6 +45,9 @@ function Wheel(data) {
 	util.eachHash(data, function (value, key) {
 		wheel[key] = value;
 	});
+
+	wheel.innerStage = new PIXI.Container();
+	wheel.stage.addChild(wheel.innerStage);
 
 	wheel.selfFill();
 
@@ -68,7 +75,9 @@ Wheel.prototype.selfFill = function () {
 
 	var wheel = this;
 
-	var realSizeInItems = Math.round(Math.random() * 10) + 10;
+	var realSizeInItems = Math.round(Math.random() * 10)  + 5;
+
+	wheel.size = realSizeInItems;
 
 	var items = [];
 
@@ -102,9 +111,9 @@ Wheel.prototype.selfFill = function () {
 		return wheel.getNewItem(item % itemsData.list.length);
 	});
 
-	// just mark first and last items - remove it for production
-	items[items.length - 1].sprite.alpha = 0.5;
-	items[0].sprite.alpha = 0.5;
+	// TODO: just mark first and last items - remove it for production
+	//items[items.length - 1].sprite.alpha = 0.5;
+	//items[0].sprite.alpha = 0.5;
 
 	// magic block - end
 
@@ -118,26 +127,26 @@ Wheel.prototype.selfFill = function () {
 
 	});
 
+	var stageHeightInPixels = stageHeightInItems * wheel.itemHeight;
+
 	// set sprite positions
 	items.forEach(function (item, index) {
 
 		var sprite = item.sprite;
 
-		wheel.stage.addChild(sprite);
+		wheel.innerStage.addChild(sprite);
 
 		if (index) { // do not count zero extra item
 			stageHeightInItems -= item.hi;
 		}
 
-		sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop; //TODO: REMOVE HARD CODE
+		sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop - stageHeightInPixels + wheel.hi * wheel.itemHeight;
 
 	});
 
 };
 
 Wheel.prototype.updatePosition = function () {
-
-	return;
 
 	switch (this.state) {
 		case 'spin-begin':
@@ -160,7 +169,7 @@ Wheel.prototype.updatePosition = function () {
 
 	}
 
-	this.stage.position.y = this.position * this.itemHeight;
+	this.innerStage.position.y = this.position * this.itemHeight;
 
 };
 
@@ -220,9 +229,9 @@ Wheel.prototype.updateSpinMain = function () {
 
 	this.position += this.sIncrease;
 
-	if (this.position >= this.size) {
-
+	if ( (this.position - 3) >= this.size ) {
 		this.position %= this.size;
+		this.position -= 4;
 	}
 
 };
