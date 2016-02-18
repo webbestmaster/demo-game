@@ -29,6 +29,7 @@
 		//gulp.watch('./www/images/**/*', ['copy-data']);
 		//gulp.watch('./www/app-cache.mf', ['app-cache']);
 		gulp.watch('./www/i/**/*', ['copy-data']);
+		gulp.watch('./www/hi/**/*', ['copy-data']);
 		//gulp.watch('./www/font/**/*', ['copy-data']);
 	});
 
@@ -139,7 +140,7 @@
 	// copy data
 	gulp.task('copy-data', function () {
 
-		[ /*'images', */ 'i' /*, 'font'*/].forEach(function (dir) {
+		[ /*'images', */ 'i', 'hi' /*, 'font'*/].forEach(function (dir) {
 			return gulp.src('./www/' + dir + '/**/*')
 				.pipe(gulp.dest('./dist/www/' + dir));
 		});
