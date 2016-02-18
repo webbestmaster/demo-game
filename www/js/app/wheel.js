@@ -75,7 +75,7 @@ Wheel.prototype.selfFill = function () {
 
 	var wheel = this;
 
-	var realSizeInItems = Math.round(Math.random() * 10)  + 5;
+	var realSizeInItems = Math.round(Math.random() * 10) + 5;
 
 	wheel.size = realSizeInItems;
 
@@ -185,25 +185,25 @@ Wheel.prototype.getYPosition = function () {
 Wheel.prototype.getRoundPosition = function () {
 
 	var position = this.position;
-	var size = this.size;
+	var size = this.size + 4;
 
-	if (position <= (size + 4)) {
+	if (position <= size) {
 		return position;
 	}
 
-	return position % (size + 4);
+	return position % size;
 
 };
 
 Wheel.prototype.roundPosition = function (position) {
 
-	var size = this.size;
+	var size = this.size + 4;
 
-	if (position <= (size + 4)) {
+	if (position <= size) {
 		return position;
 	}
 
-	return position % (size + 4);
+	return position % size;
 
 };
 
