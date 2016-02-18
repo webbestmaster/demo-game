@@ -28,14 +28,14 @@ function Wheel(data) {
 	wheel.lastPosition = 0;
 	wheel.deltaPath = 0;
 
-	//wheel.BEGIN_A = 0.1; // const
-	//wheel.END_A = -0.1; // const
-	//wheel.T_INC = 0.05; // const
-	//wheel.V_MAX = 1; // const
-	wheel.BEGIN_A = 0.5; // const
-	wheel.END_A = -0.5; // const
-	wheel.T_INC = 0.1; // const
-	wheel.V_MAX = 3; // const
+	wheel.BEGIN_A = 0.1; // const
+	wheel.END_A = -0.1; // const
+	wheel.T_INC = 0.05; // const
+	wheel.V_MAX = 1; // const
+	//wheel.BEGIN_A = 0.5; // const
+	//wheel.END_A = -0.5; // const
+	//wheel.T_INC = 0.1; // const
+	//wheel.V_MAX = 3; // const
 
 	//wheel.BEGIN_A = 0.2; // const
 	//wheel.END_A = -0.2; // const
@@ -112,8 +112,8 @@ Wheel.prototype.selfFill = function () {
 	});
 
 	// TODO: just mark first and last items - remove it for production
-	//items[items.length - 1].sprite.alpha = 0.5;
-	//items[0].sprite.alpha = 0.5;
+	items[items.length - 1].sprite.alpha = 0.5;
+	items[0].sprite.alpha = 0.5;
 
 	// magic block - end
 
@@ -144,6 +144,8 @@ Wheel.prototype.selfFill = function () {
 
 	});
 
+	this.zeroStagePosition = this.position * this.itemHeight;
+
 };
 
 Wheel.prototype.updatePosition = function () {
@@ -169,7 +171,39 @@ Wheel.prototype.updatePosition = function () {
 
 	}
 
-	this.innerStage.position.y = this.position * this.itemHeight;
+	//this.innerStage.position.y = this.position * this.itemHeight;
+	this.innerStage.position.y = this.getYPosition();
+
+};
+
+Wheel.prototype.getYPosition = function () {
+
+	return this.zeroStagePosition + this.getRoundPosition() * this.itemHeight;
+
+};
+
+Wheel.prototype.getRoundPosition = function () {
+
+	var position = this.position;
+	var size = this.size;
+
+	if (position <= (size + 4)) {
+		return position;
+	}
+
+	return position % (size + 4);
+
+};
+
+Wheel.prototype.roundPosition = function (position) {
+
+	var size = this.size;
+
+	if (position <= (size + 4)) {
+		return position;
+	}
+
+	return position % (size + 4);
 
 };
 
@@ -177,7 +211,7 @@ Wheel.prototype.beginSpin = function () {
 
 	var wheel = this;
 
-	wheel.position = wheel.position % wheel.size;
+	wheel.position = wheel.getRoundPosition();
 	wheel.state = 'spin-begin';
 	wheel.t = 0;
 	wheel.v = 0;
@@ -229,11 +263,6 @@ Wheel.prototype.updateSpinMain = function () {
 
 	this.position += this.sIncrease;
 
-	if ( (this.position - 3) >= this.size ) {
-		this.position %= this.size;
-		this.position -= 4;
-	}
-
 };
 
 Wheel.prototype.endSpin = function (position) {
@@ -256,7 +285,6 @@ Wheel.prototype.updateSpinEnd = function () {
 		t = wheel.t,
 		position = wheel.position,
 		sIncrease = wheel.sIncrease,
-		size = wheel.size,
 		needStopping = wheel.needStopping;
 
 	if (!v) {
@@ -270,7 +298,7 @@ Wheel.prototype.updateSpinEnd = function () {
 		wheel.position = position;
 
 		// detect starting of ending
-		var deltaPath = (position + wheel.beginPath - wheel.endSpinStopPosition) % size;
+		var deltaPath = wheel.roundPosition(position + wheel.beginPath - wheel.endSpinStopPosition);
 
 		if (Math.abs(deltaPath) >= sIncrease) {
 			return;
@@ -290,7 +318,7 @@ Wheel.prototype.updateSpinEnd = function () {
 	position += wheel.deltaPath * ( a * t / v );
 	position -= Math.sin((v - a * t) / v * Math.PI) * 1.2;
 
-	wheel.position = position % size;
+	wheel.position = position;
 
 	t += T_INC;
 
@@ -308,7 +336,6 @@ Wheel.prototype.updateSpinEnd = function () {
 		wheel.endSpinCb();
 		wheel.endSpinCb = null;
 	}
-
 
 };
 
