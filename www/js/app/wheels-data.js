@@ -1,5 +1,6 @@
 var itemWidth = 125;
 var itemHeight = 70;
+var itemSpriteHeight = 94;
 var itemHalfHeight = 35;
 var startX = 18;
 var startY = 160;
@@ -40,7 +41,8 @@ var wheelsData = {
 	],
 	item: {
 		w: itemWidth,
-		h: itemHeight
+		h: itemHeight,
+		itemDeltaTop: (itemSpriteHeight - itemHeight) / 2 // 94 - real sprite height, 70 visible sprite height
 	}
 };
 

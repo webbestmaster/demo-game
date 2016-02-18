@@ -1,5 +1,6 @@
 import util from './../lib/util';
 import itemsData from './items-data';
+import wheelsData from './wheels-data';
 
 function Wheel(data) {
 
@@ -67,7 +68,7 @@ Wheel.prototype.selfFill = function () {
 
 	var wheel = this;
 
-	var realSizeInItems = Math.round(Math.random() * 10 + 5);
+	var realSizeInItems = Math.round(Math.random() * 10) + 10;
 
 	var items = [];
 
@@ -82,7 +83,6 @@ Wheel.prototype.selfFill = function () {
 	// add "real" items
 	for (i = 0; i < realSizeInItems; i += 1) {
 		items.push(i);
-		//items.push(8);
 	}
 
 	items = items.sort(function () {
@@ -92,52 +92,44 @@ Wheel.prototype.selfFill = function () {
 	// add zero hidden item
 	// add object the same as last object to start of arr
 	items.unshift(items[items.length - 1]);
-	//items.unshift(5);
 
 	// add last items, the same as first items
 	for (i = 1, len = wheel.hi + 1; i <= len; i += 1) { // i = 1, i <= len !!, it is not a mistake
 		items.push(items[i]);
-		//items.push(5);
 	}
 
 	items = items.map(function (item) {
-		return wheel.getNewItem(item);
+		return wheel.getNewItem(item % itemsData.list.length);
 	});
-	items[items.length-1].sprite.alpha = 0.5;
+
+	// just mark first and last items - remove it for production
+	items[items.length - 1].sprite.alpha = 0.5;
+	items[0].sprite.alpha = 0.5;
 
 	// magic block - end
 
 	// count needed stage height
-	var stageHeightInItems = -2; // reduce	for first and last items
-	items.forEach(function (item) {
-		stageHeightInItems += item.hi;
+	var stageHeightInItems = -1; // reduce for last items
+	items.forEach(function (item, index) {
+
+		if (index) { // do not count zero extra item
+			stageHeightInItems += item.hi;
+		}
+
 	});
 
 	// set sprite positions
 	items.forEach(function (item, index) {
 
-		setTimeout(function () {
+		var sprite = item.sprite;
 
+		wheel.stage.addChild(sprite);
 
+		if (index) { // do not count zero extra item
+			stageHeightInItems -= item.hi;
+		}
 
-
-
-			var sprite = item.sprite;
-
-			wheel.stage.addChild(sprite);
-
-			if (index) { // do not use zero extra item
-				stageHeightInItems -= item.hi;
-			}
-			sprite.position.y = stageHeightInItems * wheel.itemHeight - (94-70)/2; //TODO: REMOVE HARD CODE
-
-
-
-
-
-
-
-		}, 300 * index);
+		sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop; //TODO: REMOVE HARD CODE
 
 	});
 
