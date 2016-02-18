@@ -170,9 +170,9 @@ var game = {
 		renderer = PIXI.autoDetectRenderer(width, height, {
 			transparent: true,
 			view: document.querySelector('.game-renderer'),
-			resolution: 1, // set 2 or 3 to use higher resolution
-			clearBeforeRender: false, // right now canvas is cleared every tick,
-			preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
+			resolution: 1 // set 2 or 3 to use higher resolution
+			//,clearBeforeRender: false // right now canvas is cleared every tick,
+			//,preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
 		});
 		game.renderer = renderer;
 
@@ -185,17 +185,10 @@ var game = {
 		stageWheels = new PIXI.Container();
 		stageFrame = new PIXI.Container();
 		stageEffect = new PIXI.Container();
-		/*
-		 stageEffect = new PIXI.ParticleContainer(100, {
-		 uvs: true
-		 });
-		 */
 
 		stageMain.addChild(stageWheels);
 		stageMain.addChild(stageFrame);
 		stageMain.addChild(stageEffect);
-
-		//stageFrame.alpha = 0.5;
 
 		// link stage with frameMaster and effectMaster
 		frameMaster.stage = stageFrame;

@@ -46,23 +46,57 @@ function Wheel(data) {
 		wheel[key] = value;
 	});
 
-	//wheel.innerStage = new PIXI.Container();
-	wheel.innerStage = new PIXI.ParticleContainer(500, {
-		scale: false,
-		position: false,
-		rotation: false,
-		uvs: false,
-		alpha: false
-	});
+	wheel.innerStage = new PIXI.Container();
 
 	wheel.bg = null;
 	wheel.setBg('normal');
 
 	wheel.stage.addChild(wheel.innerStage);
 
+	wheel.items = [];
+	wheel.size = 0;
+
 	wheel.selfFill();
 
 }
+
+Wheel.prototype.updatePosition = function () {
+
+	switch (this.state) {
+		case 'spin-begin':
+
+			this.updateSpinBegin();
+
+			break;
+
+		case 'spin-main':
+
+			this.updateSpinMain();
+
+			break;
+
+		case 'spin-end':
+
+			this.updateSpinEnd();
+
+			break;
+
+	}
+
+	//this.innerStage.position.y = this.getYPosition();
+	this.detectVisibleItems(this.innerStage.position.y = this.getRoundPosition() * this.itemHeight | 0);
+
+};
+
+/*
+ Wheel.prototype.getYPosition = function () {
+
+ return this.getRoundPosition() * this.itemHeight | 0;
+
+ };
+ */
+
+
 
 Wheel.prototype.setBg = function (type) {
 
@@ -78,6 +112,34 @@ Wheel.prototype.setBg = function (type) {
 
 };
 
+Wheel.prototype.detectVisibleItems = function (y) {
+
+	var wheel = this;
+	var hi = wheel.hi;
+	var items = wheel.items;
+	var item;
+
+	var bottom = -y;
+	var top = bottom + hi * wheel.itemHeight;
+
+	for (var i = 0, len = items.length; i < len; i += 1) {
+
+		item = items[i];
+
+		if (item.top >= top || item.bottom <= bottom) {
+			if (item.sprite.visible) {
+				item.sprite.visible = false;
+			}
+		} else {
+			if (!item.sprite.visible) {
+				item.sprite.visible = true;
+			}
+		}
+
+	}
+
+};
+
 Wheel.prototype.getNewItem = function (index) {
 
 	var key = itemsData.list[index],
@@ -86,7 +148,9 @@ Wheel.prototype.getNewItem = function (index) {
 
 	return {
 		sprite: sprite,
-		hi: itemData.hi
+		hi: itemData.hi,
+		top: 0,
+		bottom: 0
 	};
 
 };
@@ -100,9 +164,7 @@ Wheel.prototype.selfFill = function () {
 
 	var wheel = this;
 
-	var realSizeInItems = Math.round(Math.random() * 10) + 5;
-
-	wheel.size = realSizeInItems;
+	var realSizeInItems = Math.round(Math.random() * 10) + 7;
 
 	var items = [];
 
@@ -136,6 +198,10 @@ Wheel.prototype.selfFill = function () {
 		return wheel.getNewItem(item % itemsData.list.length);
 	});
 
+	for (i = 1; i <= realSizeInItems; i += 1) {
+		wheel.size += items[i].hi;
+	}
+
 	// TODO: just mark first and last items - remove it for production
 	//items[items.length - 1].sprite.alpha = 0.5;
 	//items[0].sprite.alpha = 0.5;
@@ -167,47 +233,19 @@ Wheel.prototype.selfFill = function () {
 
 		sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop - stageHeightInPixels + wheel.hi * wheel.itemHeight;
 
+		item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
+		item.bottom = item.top + item.hi * wheel.itemHeight;
+
 	});
 
-};
-
-Wheel.prototype.updatePosition = function () {
-
-	switch (this.state) {
-		case 'spin-begin':
-
-			this.updateSpinBegin();
-
-			break;
-
-		case 'spin-main':
-
-			this.updateSpinMain();
-
-			break;
-
-		case 'spin-end':
-
-			this.updateSpinEnd();
-
-			break;
-
-	}
-
-	this.innerStage.position.y = this.getYPosition();
-
-};
-
-Wheel.prototype.getYPosition = function () {
-
-	return this.getRoundPosition() * this.itemHeight | 0;
+	wheel.items = items;
 
 };
 
 Wheel.prototype.getRoundPosition = function () {
 
 	var position = this.position;
-	var size = this.size + 4;
+	var size = this.size;
 
 	if (position <= size) {
 		return position;
@@ -219,7 +257,7 @@ Wheel.prototype.getRoundPosition = function () {
 
 Wheel.prototype.roundPosition = function (position) {
 
-	var size = this.size + 4;
+	var size = this.size;
 
 	if (position <= size) {
 		return position;
