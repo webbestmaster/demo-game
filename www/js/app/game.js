@@ -1,5 +1,4 @@
 import PIXI from './../lib/pixi';
-import FPSMeter from './../lib/fpsmeter';
 import util from './../lib/util';
 import Deferred from './../lib/deferred';
 import log from './../services/log';
@@ -31,38 +30,54 @@ var game = {
 
 		game.initCanvas();
 
-		game.initFPSMeter();
-
 		game.redraw = game.redraw.bind(game);
 
 		textureMaster.initTextures().done(function () {
 			frameMaster.initSprites();
 			effectMaster.initSprites();
 			game.createWheels();
-			game.redraw();
 			game.bindEventListeners();
+			game.initTicker(game.redraw); // START GAME!!!
 			cd();
 		});
 
 	},
 
-	initFPSMeter: function () {
+	initTicker: function (fn) {
 
 		var game = this;
 
-/*
-		fpsMeter = new FPSMeter({
-			theme: 'dark', // / Meter theme. Build in: 'dark', 'light', 'transparent', 'colorful'
-			show: 'fps',
-			graph: 1, // Whether to show history graph.
-			history: 20
+		var ticker = new PIXI.ticker.Ticker();
+
+		ticker.add(fn);
+
+
+		//todo: detect dev mode to avoid it - begin
+		game.addFPSNode();
+		ticker.add(function () {
+			// update fps node
+			game.fpsNode.textContent = (1000 / ticker.elapsedMS).toFixed(1);
 		});
-*/
-		var fpsMeter = new FPSMeter();
+		//todo: detect dev mode to avoid it - end
 
-		fpsMeter.showFps();
 
-		game.fpsMeter = fpsMeter;
+		ticker.start();
+
+		game.ticker = ticker;
+
+	},
+
+	addFPSNode: function () {
+
+		var game = this;
+
+		var fpsNode = document.createElement('div');
+
+		fpsNode.className = 'fps-meter';
+
+		document.body.appendChild(fpsNode);
+
+		game.fpsNode = fpsNode;
 
 	},
 
@@ -268,10 +283,6 @@ var game = {
 	},
 
 	redraw: function () {
-
-		requestAnimationFrame(this.redraw);
-
-		this.fpsMeter.tick();
 
 		effectMaster.update();
 		//frameMaster.update();

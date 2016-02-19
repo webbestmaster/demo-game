@@ -2,4 +2,5 @@
 @import url(_reset.scss);
 
 @import url(style.scss);
+@import url(fps.scss);
 
