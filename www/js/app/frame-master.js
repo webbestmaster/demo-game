@@ -10,6 +10,7 @@ var frameMaster = {
 		}
 	},
 
+/*
 	update: function () {
 
 		var frame = this;
@@ -19,6 +20,7 @@ var frameMaster = {
 		}
 
 	},
+*/
 
 	initSprites: function () {
 
@@ -47,24 +49,25 @@ var frameMaster = {
 
 		//frameStage.cacheAsBitmap = true;
 
-	},
+	}
 
 	// todo: remove this code -> create normal animator object and logic
-	logoFrame: 100,
+//	logoFrame: 100,
 
+/*
 	updateAnimateLogo: function () {
 
 		var frame = this;
 
 		var logoSprite = frameTextures.textures.logo.sprite;
 
-/*
+/!*
 		var filter = new PIXI.filters.PixelateFilter();
 
 		filter.size = new PIXI.Point(frame.logoFrame / 5, frame.logoFrame / 5);
 
 		logoSprite.filters = [filter];
-*/
+*!/
 
 		frame.logoFrame -= 1;
 
@@ -73,6 +76,7 @@ var frameMaster = {
 		}
 
 	}
+*/
 
 };
 

@@ -1,4 +1,5 @@
 import PIXI from './../lib/pixi';
+import FPSMeter from './../lib/fpsmeter';
 import util from './../lib/util';
 import Deferred from './../lib/deferred';
 import log from './../services/log';
@@ -30,6 +31,8 @@ var game = {
 
 		game.initCanvas();
 
+		game.initFPSMeter();
+
 		game.redraw = game.redraw.bind(game);
 
 		textureMaster.initTextures().done(function () {
@@ -40,6 +43,26 @@ var game = {
 			game.bindEventListeners();
 			cd();
 		});
+
+	},
+
+	initFPSMeter: function () {
+
+		var game = this;
+
+/*
+		fpsMeter = new FPSMeter({
+			theme: 'dark', // / Meter theme. Build in: 'dark', 'light', 'transparent', 'colorful'
+			show: 'fps',
+			graph: 1, // Whether to show history graph.
+			history: 20
+		});
+*/
+		var fpsMeter = new FPSMeter();
+
+		fpsMeter.showFps();
+
+		game.fpsMeter = fpsMeter;
 
 	},
 
@@ -240,8 +263,10 @@ var game = {
 
 		requestAnimationFrame(this.redraw);
 
+		this.fpsMeter.tick();
+
 		effectMaster.update();
-		frameMaster.update();
+		//frameMaster.update();
 
 		var wheels = this.wheels,
 			i, len;
@@ -250,12 +275,12 @@ var game = {
 			wheels[i].updatePosition();
 		}
 
-/*
-		// do not each frame, draw odd frame only
-		if (this.i = !this.i) { // here use single "=" for small optimization
-			return;
-		}
-*/
+		/*
+		 // do not each frame, draw odd frame only
+		 if (this.i = !this.i) { // here use single "=" for small optimization
+		 return;
+		 }
+		 */
 
 		this.renderer.render(this.stageMain);
 

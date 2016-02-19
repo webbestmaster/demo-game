@@ -11,8 +11,7 @@
 	import PIXI from './lib/pixi';
 	import Deferred from './lib/deferred';
 	import util from './lib/util';
-
-
+	import FPSMeter from './lib/fpsmeter';
 
 	import log from './services/log';
 
