@@ -225,12 +225,14 @@ Wheel.prototype.selfFill = function () {
 
 	var stageHeightInPixels = stageHeightInItems * wheel.itemHeight;
 
+	var innerStage = wheel.innerStage;
+
 	// set sprite positions
 	items.forEach(function (item, index) {
 
 		var sprite = item.sprite;
 
-		wheel.innerStage.addChild(sprite);
+		innerStage.addChild(sprite);
 
 		if (index) { // do not count zero extra item
 			stageHeightInItems -= item.hi;
@@ -244,6 +246,9 @@ Wheel.prototype.selfFill = function () {
 	});
 
 	wheel.items = items;
+
+	// reverse draw order
+	innerStage.children = innerStage.children.reverse();
 
 };
 
