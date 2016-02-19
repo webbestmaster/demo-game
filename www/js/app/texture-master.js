@@ -1,5 +1,4 @@
 import Deferred from './../lib/deferred';
-import frameTextures from './frame-textures';
 //import gameTextures from './game-textures';
 import effectTextures from './effect-textures';
 import util from './../lib/util';
@@ -15,13 +14,8 @@ var textureMaster = {
 
 		//loader.baseUrl = 'hi/';
 
-		var frameTexturesData = frameTextures.textures;
 		//var gameTexturesData = gameTextures.textures;
 		var effectTexturesData = effectTextures.textures;
-
-		util.eachHash(frameTexturesData, function (item, key) {
-			loader.add('frameTextures/' + key, item.path);
-		});
 
 /*
 		util.eachHash(gameTexturesData, function (item, key) {
@@ -37,6 +31,7 @@ var textureMaster = {
 		loader.add('i/game/effect/respin-pop-up.json');
 		loader.add('i/game/game/items.json');
 		loader.add('i/game/game/bg-wheels.json');
+		loader.add('i/game/frame/frame.json');
 
 		loader
 			.on('progress', function () {
@@ -51,9 +46,6 @@ var textureMaster = {
 						name = path[1];
 
 					switch (root) {
-						case 'frameTextures':
-							frameTexturesData[name].texture = value;
-							break;
 
 /*
 						case 'gameTextures':

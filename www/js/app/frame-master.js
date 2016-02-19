@@ -1,5 +1,4 @@
 import util from './../lib/util';
-import frameTextures from './frame-textures';
 
 var frameMaster = {
 
@@ -26,28 +25,27 @@ var frameMaster = {
 
 		var frame = this;
 		var frameStage = frame.stage;
+		var sprite;
+		var data = PIXI.loader.resources['i/game/frame/frame.json'].data;
+		var frames = data.frames;
+		var frameId;
+		var frameData;
+		var delta = data.meta.delta;
 
-		util.eachHash(frameTextures.textures, function (spriteData) {
+		for (var i = 0; i <= 16; i += 1) {
 
-			var sprite = new PIXI.Sprite(spriteData.texture.texture);
+			frameId = 'frame-part-' + i;
 
-			spriteData.sprite = sprite;
+			sprite = new PIXI.Sprite.fromFrame(frameId);
 
-			sprite.position.x = spriteData.x;
-			sprite.position.y = spriteData.y;
-			sprite.width = spriteData.w;
-			sprite.height = spriteData.h;
+			frameData = frames[frameId].frame;
+
+			sprite.position.x = frameData.x + delta.x;
+			sprite.position.y = frameData.y + delta.y;
 
 			frameStage.addChild(sprite);
 
-		});
-
-		frame.logoZeroPosition = {
-			x: frameTextures.textures.logo.sprite.position.x,
-			y: frameTextures.textures.logo.sprite.position.y
-		};
-
-		//frameStage.cacheAsBitmap = true;
+		}
 
 	}
 
@@ -58,8 +56,6 @@ var frameMaster = {
 	updateAnimateLogo: function () {
 
 		var frame = this;
-
-		var logoSprite = frameTextures.textures.logo.sprite;
 
 /!*
 		var filter = new PIXI.filters.PixelateFilter();

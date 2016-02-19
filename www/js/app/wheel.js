@@ -164,7 +164,7 @@ Wheel.prototype.selfFill = function () {
 
 	var wheel = this;
 
-	var realSizeInItems = Math.round(Math.random() * 10) + 7;
+	var realSizeInItems = Math.round(Math.random() * 10) + 5;
 
 	var items = [];
 
