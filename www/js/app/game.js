@@ -56,7 +56,13 @@ var game = {
 		game.addFPSNode();
 		ticker.add(function () {
 			// update fps node
-			game.fpsNode.textContent = (1000 / ticker.elapsedMS).toFixed(1);
+			var fps = game.fps;
+			fps.counter += 1;
+			if (fps.counter < 15) {
+				return;
+			}
+			fps.counter = 0;
+			fps.node.textContent = (1000 / ticker.elapsedMS).toFixed(1);
 		});
 		//todo: detect dev mode to avoid it - end
 
@@ -77,7 +83,10 @@ var game = {
 
 		document.body.appendChild(fpsNode);
 
-		game.fpsNode = fpsNode;
+		game.fps = {
+			node: fpsNode,
+			counter: 0
+		};
 
 	},
 
