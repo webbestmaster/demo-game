@@ -58,6 +58,11 @@ function Wheel(data) {
 
 	wheel.selfFill();
 
+    //playing with gl filters
+    wheel.currentFilter = new PIXI.filters.BlurFilter();
+    wheel.currentFilter.blur = 1;
+    wheel.stage.filters = [wheel.currentFilter];
+
 }
 
 Wheel.prototype.updatePosition = function () {
@@ -267,6 +272,7 @@ Wheel.prototype.roundPosition = function (position) {
 
 };
 
+
 Wheel.prototype.beginSpin = function () {
 
 	var wheel = this;
@@ -280,6 +286,7 @@ Wheel.prototype.beginSpin = function () {
 
 	wheel.updatePosition();
 
+    wheel.currentFilter.blur = 6;    //blurring while it spins
 };
 
 Wheel.prototype.updateSpinBegin = function () {
@@ -333,6 +340,8 @@ Wheel.prototype.endSpin = function (position) {
 	wheel.t = 0;
 	wheel.a = wheel.END_A;
 	wheel.endSpinStopPosition = position;
+
+    wheel.currentFilter.blur = 1;
 
 };
 

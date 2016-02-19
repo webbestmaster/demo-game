@@ -125,17 +125,17 @@
 		return gulp.start('es6-import');
 	});
 
-		gulp.task('es6-import', function () {
-			return gulp.src('./www/js/main.js')
-				.pipe(es6Import())
-				.pipe(gulp.dest('./dist/www/js/'));
-		});
+    gulp.task('es6-import', function () {
+        return gulp.src('./www/js/main.js')
+            .pipe(es6Import())
+            .pipe(gulp.dest('./dist/www/js/'));
+    });
 
-		gulp.task('uglify-js', ['es6-import'], function () {
-			return gulp.src('./dist/www/js/main.js')
-				.pipe(uglify())
-				.pipe(gulp.dest('./dist/www/js'));
-		});
+    gulp.task('uglify-js', ['es6-import'], function () {
+        return gulp.src('./dist/www/js/main.js')
+            .pipe(uglify())
+            .pipe(gulp.dest('./dist/www/js'));
+    });
 
 	// copy data
 	gulp.task('copy-data', function () {
