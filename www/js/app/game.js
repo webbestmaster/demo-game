@@ -206,7 +206,15 @@ var game = {
 
 		// init child stages
 		stageWheels = new PIXI.Container();
-		stageFrame = new PIXI.Container();
+
+		stageFrame = new PIXI.ParticleContainer(18, {
+			scale: false,
+			position: false,
+			rotation: false,
+			uvs: false,
+			alpha: false
+		});
+
 		stageEffect = new PIXI.Container();
 
 		stageMain.addChild(stageWheels);
