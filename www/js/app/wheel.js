@@ -88,8 +88,11 @@ Wheel.prototype.updatePosition = function () {
 
 	}
 
-	//this.innerStage.position.y = this.getYPosition();
-	this.detectVisibleItems(this.innerStage.position.y = this.getRoundPosition() * this.itemHeight | 0);
+	var roundPosition = this.getRoundPosition();
+
+	this.innerStage.position.y = roundPosition * this.itemHeight | 0;
+
+	this.detectVisibleItems(Math.ceil(roundPosition));
 
 };
 
@@ -100,7 +103,6 @@ Wheel.prototype.updatePosition = function () {
 
  };
  */
-
 
 
 Wheel.prototype.setBg = function (type) {
@@ -117,27 +119,42 @@ Wheel.prototype.setBg = function (type) {
 
 };
 
-Wheel.prototype.detectVisibleItems = function (y) {
+Wheel.prototype.detectVisibleItems = function (roundPosition) {
+
+	if (this.lastDetectVisiblePosition === roundPosition) {
+		return;
+	}
+
+	this.lastDetectVisiblePosition = roundPosition;
 
 	var wheel = this;
+
 	var hi = wheel.hi;
 	var items = wheel.items;
 	var item;
 
-	var bottom = -y;
-	var top = bottom + hi * wheel.itemHeight;
+	var itemHeight = wheel.itemHeight;
+
+	var bottom = -roundPosition * itemHeight;
+	var top = bottom + ( hi + 1) * itemHeight;
+
+	var sprite;
+
+
 
 	for (var i = 0, len = items.length; i < len; i += 1) {
 
 		item = items[i];
 
+		sprite = item.sprite;
+
 		if (item.top >= top || item.bottom <= bottom) {
-			if (item.sprite.visible) {
-				item.sprite.visible = false;
+			if (sprite.visible) {
+				sprite.visible = false;
 			}
 		} else {
-			if (!item.sprite.visible) {
-				item.sprite.visible = true;
+			if (!sprite.visible) {
+				sprite.visible = true;
 			}
 		}
 
@@ -242,6 +259,8 @@ Wheel.prototype.selfFill = function () {
 
 		item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
 		item.bottom = item.top + item.hi * wheel.itemHeight;
+
+		sprite.visible = false;
 
 	});
 
