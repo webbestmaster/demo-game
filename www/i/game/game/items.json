@@ -79,7 +79,7 @@
     },
 
     "item-diamond": {
-      "frame": { "x": 696, "y": 130, "w": 125, "h": 94 },
+      "frame": { "x": 693, "y": 130, "w": 125, "h": 94 },
       "rotated": false, "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
       "sourceSize": { "w": 125, "h": 94 }
