@@ -79,6 +79,7 @@ var game = {
 
 		var fpsNode = document.createElement('div');
 
+		fpsNode.textContent = '0.0';
 		fpsNode.className = 'fps-meter';
 
 		document.body.appendChild(fpsNode);
