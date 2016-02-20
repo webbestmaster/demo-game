@@ -1,6 +1,7 @@
 import PIXI from './../lib/pixi';
 import util from './../lib/util';
 import Deferred from './../lib/deferred';
+import EndlessArray from './../lib/endless-array';
 import log from './../services/log';
 import wheelsData from './wheels-data';
 import Wheel from './wheel';
@@ -58,11 +59,20 @@ var game = {
 			// update fps node
 			var fps = game.fps;
 			fps.counter += 1;
-			if (fps.counter < 15) {
+			if (fps.counter < 10) {
 				return;
 			}
 			fps.counter = 0;
-			fps.node.textContent = (1000 / ticker.elapsedMS).toFixed(1);
+
+			var log = fps.log;
+
+			var tickerFPS = ticker.FPS;
+			var displayedFps = tickerFPS .toFixed(1);
+			var averageDisplayedFps = (log.average() || 0).toFixed(1);
+			log.push(tickerFPS);
+
+			fps.node.textContent = displayedFps + '\n' + averageDisplayedFps;
+
 		});
 		//todo: detect dev mode to avoid it - end
 
@@ -86,7 +96,8 @@ var game = {
 
 		game.fps = {
 			node: fpsNode,
-			counter: 0
+			counter: 0,
+			log: new EndlessArray(10)
 		};
 
 	},
