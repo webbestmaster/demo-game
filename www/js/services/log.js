@@ -41,11 +41,14 @@ gOldOnError = window.onerror;
 window.onerror = function (errorMsg, url, lineNumber) {
 
 
+	log.apply(null, arguments);
 
+/*
 	// todo: this is extra: REMOVE IT ASAP!!!
 	if (errorMsg.indexOf('DOM Exception 1') !== -1) {
 		log.apply(null, arguments);
 	}
+*/
 
 	if (gOldOnError) {
 		return gOldOnError(errorMsg, url, lineNumber);
