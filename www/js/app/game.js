@@ -21,6 +21,7 @@ var game = {
 		}
 	},
 
+	
 	i: true,
 
 	state: 'ready',
