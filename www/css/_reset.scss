@@ -10,4 +10,7 @@ body {
   @include prefix(tap-highlight-color, transparent);
 }
 
-
+.disabled {
+  opacity: 0.45;
+  @include prefix(pointer-events, none);
+}

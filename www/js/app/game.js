@@ -42,6 +42,8 @@ var game = {
 			cd();
 		});
 
+		game.spinButton = document.querySelector('.js-spin');
+
 	},
 
 	initTicker: function (fn) {
@@ -67,7 +69,7 @@ var game = {
 
 		var game = this;
 
-		document.querySelector('.js-spin').addEventListener('click', function () {
+		game.spinButton.addEventListener('click', function () {
 
 			game.spin();
 
@@ -82,16 +84,15 @@ var game = {
 			return;
 		}
 
-		var game = this,
-			spinState = game.state;
+		var game = this;
 
-		switch (spinState) {
+		switch (game.state) {
 
 			case 'ready':
 
 				effectMaster.hideClips();
 
-				game.state = 'spin-begin';
+				game.setGameState('spin-begin');
 
 				game.beginSpin();
 
@@ -99,12 +100,26 @@ var game = {
 
 			case 'spin':
 
-				game.state = 'spin-end';
+				game.setGameState('spin-end');
 
 				game.endSpin();
 
 				break;
 
+		}
+
+	},
+
+	setGameState: function (state) {
+
+		console.log('game state is - ', state);
+
+		this.state = state;
+
+		if (state === 'ready' || state === 'spin') {
+			this.spinButton.className = 'spin-btn';
+		} else {
+			this.spinButton.className = 'spin-btn spin-btn_disabled';
 		}
 
 	},
@@ -126,8 +141,7 @@ var game = {
 		});
 
 		wheels[wheels.length - 1].beginSpinCb = function () {
-			game.state = 'spin';
-			console.log('collection state is - spin');
+			game.setGameState('spin');
 		};
 
 	},
@@ -155,13 +169,12 @@ var game = {
 
 
 		wheels[wheels.length - 1].endSpinCb = function () {
-			game.state = 'ready';
+
+			game.setGameState('ready');
 
 			effectMaster.showWinClubs(getEndPositions);
 
 			effectMaster.showFreeSpinPopUp();
-
-			console.log('collection state is - ready');
 
 		};
 

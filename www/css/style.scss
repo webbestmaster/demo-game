@@ -39,10 +39,15 @@ body {
 }
 
 .spin-btn {
+  @extend .no-highlight;
   width: 107px;
   height: 36px;
   background-image: url(../i/button-spin.png);
   background-repeat: no-repeat;
   @include prefix(background-size, contain);
   margin: 0 auto;
+}
+
+.spin-btn_disabled {
+  @extend .disabled;
 }
