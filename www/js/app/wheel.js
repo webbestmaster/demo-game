@@ -47,11 +47,13 @@ function Wheel(data) {
 		wheel[key] = value;
 	});
 
+	wheel.bgStage = new PIXI.Container();
 	wheel.innerStage = new PIXI.Container();
 
-	wheel.bg = null;
-	wheel.setBg('normal');
+	//wheel.bg = null;
+	//wheel.setBg('normal');
 
+	wheel.stage.addChild(wheel.bgStage);
 	wheel.stage.addChild(wheel.innerStage);
 
 	wheel.items = [];
@@ -60,9 +62,9 @@ function Wheel(data) {
 	wheel.selfFill();
 
     //playing with gl filters
-    wheel.currentFilter = new PIXI.filters.BlurFilter();
+    wheel.currentFilter = new PIXI.filters.BlurYFilter();
     wheel.currentFilter.blur = 1;
-    wheel.stage.filters = [wheel.currentFilter];
+    wheel.innerStage.filters = [wheel.currentFilter];
 
 }
 
@@ -91,7 +93,7 @@ Wheel.prototype.updatePosition = function () {
 
 	var roundPosition = this.getRoundPosition();
 
-	this.innerStage.position.y = roundPosition * this.itemHeight | 0;
+	this.bgStage.position.y = this.innerStage.position.y = roundPosition * this.itemHeight | 0;
 
 	this.detectVisibleItems(Math.ceil(roundPosition));
 
@@ -106,6 +108,7 @@ Wheel.prototype.updatePosition = function () {
  */
 
 
+/*
 Wheel.prototype.setBg = function (type) {
 
 	var wheel = this;
@@ -114,11 +117,10 @@ Wheel.prototype.setBg = function (type) {
 
 	wheel.stage.addChild(sprite);
 
-	//sprite.cacheAsBitmap = this;
-
 	sprite.height = wheel.hi * wheelsData.item.h;
 
 };
+*/
 
 Wheel.prototype.detectVisibleItems = function (roundPosition) {
 
@@ -140,22 +142,28 @@ Wheel.prototype.detectVisibleItems = function (roundPosition) {
 	var top = bottom + ( hi + 1) * itemHeight;
 
 	var sprite;
-
-
+	var bg;
 
 	for (var i = 0, len = items.length; i < len; i += 1) {
 
 		item = items[i];
 
 		sprite = item.sprite;
+		bg = item.bg;
 
 		if (item.top >= top || item.bottom <= bottom) {
 			if (sprite.visible) {
 				sprite.visible = false;
+				if (bg) {
+					bg.visible = false
+				}
 			}
 		} else {
 			if (!sprite.visible) {
 				sprite.visible = true;
+				if (bg) {
+					bg.visible = true;
+				}
 			}
 		}
 
@@ -167,13 +175,17 @@ Wheel.prototype.getNewItem = function (index) {
 
 	var key = itemsData.list[index],
 		itemData = itemsData[key],
-		sprite = new PIXI.Sprite.fromFrame(itemData.frame);
+		sprite = new PIXI.Sprite.fromFrame(itemData.frame),
+		bg = itemData.bg ?
+			new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal',  wheelsData.item.w, wheelsData.item.h) :
+			null;
 
 	return {
 		sprite: sprite,
 		hi: itemData.hi,
 		top: 0,
-		bottom: 0
+		bottom: 0,
+		bg: bg
 	};
 
 };
@@ -244,11 +256,13 @@ Wheel.prototype.selfFill = function () {
 	var stageHeightInPixels = stageHeightInItems * wheel.itemHeight;
 
 	var innerStage = wheel.innerStage;
+	var bgStage = wheel.bgStage;
 
 	// set sprite positions
 	items.forEach(function (item, index) {
 
 		var sprite = item.sprite;
+		var bg = item.bg;
 
 		innerStage.addChild(sprite);
 
@@ -260,6 +274,12 @@ Wheel.prototype.selfFill = function () {
 
 		item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
 		item.bottom = item.top + item.hi * wheel.itemHeight;
+
+		if (bg) {
+			bgStage.addChild(bg);
+			bg.position.y = sprite.position.y + wheelsData.item.itemDeltaTop;
+			bg.visible = false;
+		}
 
 		sprite.visible = false;
 

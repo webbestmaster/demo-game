@@ -50,13 +50,14 @@ var game = {
 
 		var game = this;
 
-		var ticker = new PIXI.ticker.Ticker();
+		//var ticker = new PIXI.ticker.Ticker();
+		var ticker = PIXI.ticker.shared;
 
 		ticker.add(fn);
 
 		fpsMeter.init(ticker);
 
-		//todo: detect dev mode to avoid it - begin
+		//todo: detect dev mode to avoid it
 		fpsMeter.addNode();
 
 		ticker.start();
