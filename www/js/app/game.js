@@ -227,7 +227,7 @@ var game = {
 			stageMain, stageWheels, stageFrame, stageEffect;
 
 		// init renderer
-		renderer = PIXI.autoDetectRenderer(width, height, {
+		renderer = new PIXI.autoDetectRenderer(width, height, {
 			transparent: true,
 			view: document.querySelector('.game-renderer'),
 			resolution: 1 // set 2 or 3 to use higher resolution
