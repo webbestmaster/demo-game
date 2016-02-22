@@ -1,457 +1,456 @@
-import util from './../lib/util';
-import itemsData from './items-data';
-import wheelsData from './wheels-data';
+define (['./../lib/util', './items-data', './wheels-data'], function (util, itemsData, wheelsData) {
 
-function Wheel(data) {
+	function Wheel(data) {
 
-	var wheel = this;
+		var wheel = this;
 
-	wheel.itemHeight = 0; // get from dataArguments
-	wheel.position = 0; // get from dataArguments
-	wheel.stage = null; // get from dataArguments
-	wheel.hi = 0; // get from dataArguments
+		wheel.itemHeight = 0; // get from dataArguments
+		wheel.position = 0; // get from dataArguments
+		wheel.stage = null; // get from dataArguments
+		wheel.hi = 0; // get from dataArguments
 
-	wheel.state = '';
-	wheel.t = 0;
-	wheel.v = 0;
-	wheel.a = 0;
-	wheel.beginSpinStartPosition = 0;
+		wheel.state = '';
+		wheel.t = 0;
+		wheel.v = 0;
+		wheel.a = 0;
+		wheel.beginSpinStartPosition = 0;
 
-	wheel.beginTime = 0;
-	wheel.beginPath = 0;
-	wheel.sInc = 0;
-	wheel.tInc = 0; // will set by beginSpin
-	wheel.needStopping = false;
-	wheel.beginSpinCb = null;
-	wheel.endSpinCb = null;
+		wheel.beginTime = 0;
+		wheel.beginPath = 0;
+		wheel.sInc = 0;
+		wheel.tInc = 0; // will set by beginSpin
+		wheel.needStopping = false;
+		wheel.beginSpinCb = null;
+		wheel.endSpinCb = null;
 
-	wheel.endSpinStopPosition = 0;
-	wheel.lastPosition = 0;
-	wheel.deltaPath = 0;
+		wheel.endSpinStopPosition = 0;
+		wheel.lastPosition = 0;
+		wheel.deltaPath = 0;
 
-	//wheel.BEGIN_A = 0.1; // const
-	//wheel.END_A = -0.1; // const
-	//wheel.T_INC = 0.05; // const
-	//wheel.V_MAX = 1; // const
-	wheel.BEGIN_A = 0.5; // const
-	wheel.END_A = -0.5; // const
-	wheel.T_INC = 0.1; // const
-	wheel.V_MAX = 3; // const
+		//wheel.BEGIN_A = 0.1; // const
+		//wheel.END_A = -0.1; // const
+		//wheel.T_INC = 0.05; // const
+		//wheel.V_MAX = 1; // const
+		wheel.BEGIN_A = 0.5; // const
+		wheel.END_A = -0.5; // const
+		wheel.T_INC = 0.1; // const
+		wheel.V_MAX = 3; // const
 
-	//wheel.BEGIN_A = 0.2; // const
-	//wheel.END_A = -0.2; // const
-	//wheel.T_INC = 0.1; // const
-	//wheel.V_MAX = 3.1; // const
+		//wheel.BEGIN_A = 0.2; // const
+		//wheel.END_A = -0.2; // const
+		//wheel.T_INC = 0.1; // const
+		//wheel.V_MAX = 3.1; // const
 
-	util.eachHash(data, function (value, key) {
-		wheel[key] = value;
-	});
+		util.eachHash(data, function (value, key) {
+			wheel[key] = value;
+		});
 
-	wheel.bgStage = new PIXI.Container();
-	wheel.innerStage = new PIXI.Container();
+		wheel.bgStage = new PIXI.Container();
+		wheel.innerStage = new PIXI.Container();
 
-	//wheel.bg = null;
-	//wheel.setBg('normal');
+		//wheel.bg = null;
+		//wheel.setBg('normal');
 
-	wheel.stage.addChild(wheel.bgStage);
-	wheel.stage.addChild(wheel.innerStage);
+		wheel.stage.addChild(wheel.bgStage);
+		wheel.stage.addChild(wheel.innerStage);
 
-	wheel.items = [];
-	wheel.size = 0;
+		wheel.items = [];
+		wheel.size = 0;
 
-	wheel.selfFill();
+		wheel.selfFill();
 
-    //playing with gl filters
-    wheel.currentFilter = new PIXI.filters.BlurYFilter();
-    wheel.currentFilter.blur = 1;
-    wheel.innerStage.filters = [wheel.currentFilter];
-
-}
-
-Wheel.prototype.updatePosition = function () {
-
-	switch (this.state) {
-		case 'spin-begin':
-
-			this.updateSpinBegin();
-
-			break;
-
-		case 'spin-main':
-
-			this.updateSpinMain();
-
-			break;
-
-		case 'spin-end':
-
-			this.updateSpinEnd();
-
-			break;
+		//playing with gl filters
+		wheel.currentFilter = new PIXI.filters.BlurYFilter();
+		wheel.currentFilter.blur = 1;
+		wheel.innerStage.filters = [wheel.currentFilter];
 
 	}
 
-	var roundPosition = this.getRoundPosition();
+	Wheel.prototype.updatePosition = function () {
 
-	this.bgStage.position.y = this.innerStage.position.y = roundPosition * this.itemHeight | 0;
+		switch (this.state) {
+			case 'spin-begin':
 
-	this.detectVisibleItems(Math.ceil(roundPosition));
+				this.updateSpinBegin();
 
-};
+				break;
 
-/*
- Wheel.prototype.getYPosition = function () {
+			case 'spin-main':
 
- return this.getRoundPosition() * this.itemHeight | 0;
+				this.updateSpinMain();
 
- };
- */
+				break;
 
+			case 'spin-end':
 
-/*
-Wheel.prototype.setBg = function (type) {
+				this.updateSpinEnd();
 
-	var wheel = this;
+				break;
 
-	var sprite = new PIXI.Sprite.fromFrame('wheels-' + type + '-bg-x' + wheel.hi);
-
-	wheel.stage.addChild(sprite);
-
-	sprite.height = wheel.hi * wheelsData.item.h;
-
-};
-*/
-
-Wheel.prototype.detectVisibleItems = function (roundPosition) {
-
-	if (this.lastDetectVisiblePosition === roundPosition) {
-		return;
-	}
-
-	this.lastDetectVisiblePosition = roundPosition;
-
-	var wheel = this;
-
-	var hi = wheel.hi;
-	var items = wheel.items;
-	var item;
-
-	var itemHeight = wheel.itemHeight;
-
-	var bottom = -roundPosition * itemHeight;
-	var top = bottom + ( hi + 1) * itemHeight;
-
-	var sprite;
-	var bg;
-
-	for (var i = 0, len = items.length; i < len; i += 1) {
-
-		item = items[i];
-
-		sprite = item.sprite;
-		bg = item.bg;
-
-		if (item.top >= top || item.bottom <= bottom) {
-			if (sprite.visible) {
-				sprite.visible = false;
-				if (bg) {
-					bg.visible = false
-				}
-			}
-		} else {
-			if (!sprite.visible) {
-				sprite.visible = true;
-				if (bg) {
-					bg.visible = true;
-				}
-			}
 		}
 
-	}
+		var roundPosition = this.getRoundPosition();
 
-};
+		this.bgStage.position.y = this.innerStage.position.y = roundPosition * this.itemHeight | 0;
 
-Wheel.prototype.getNewItem = function (index) {
+		this.detectVisibleItems(Math.ceil(roundPosition));
 
-	var key = itemsData.list[index],
-		itemData = itemsData[key],
-		sprite = new PIXI.Sprite.fromFrame(itemData.frame),
-		bg = itemData.bg ?
-			new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal',  wheelsData.item.w, wheelsData.item.h) :
-			null;
-
-	return {
-		sprite: sprite,
-		hi: itemData.hi,
-		top: 0,
-		bottom: 0,
-		bg: bg
 	};
 
-};
+	/*
+	 Wheel.prototype.getYPosition = function () {
 
-Wheel.prototype.selfFill = function () {
+	 return this.getRoundPosition() * this.itemHeight | 0;
 
-	// todo: split this function to several procedures
-	// 1 - create items
-	// 2 (1.1) - create extra items
-	// 3 - set default position of sprites
+	 };
+	 */
 
-	var wheel = this;
 
-	var realSizeInItems = Math.round(Math.random() * 10) + 5;
+	/*
+	 Wheel.prototype.setBg = function (type) {
 
-	var items = [];
+	 var wheel = this;
 
-	var i;
+	 var sprite = new PIXI.Sprite.fromFrame('wheels-' + type + '-bg-x' + wheel.hi);
 
-	var len;
-	// magic block - begin
+	 wheel.stage.addChild(sprite);
 
-	// todo: note: try to use texture to fast change sprite state
-	// see example here -> http://pixijs.github.io/examples/index.html?s=demos&f=texture-swap.js&title=Texture%20Swap
+	 sprite.height = wheel.hi * wheelsData.item.h;
 
-	// add "real" items
-	for (i = 0; i < realSizeInItems; i += 1) {
-		items.push(i);
-	}
+	 };
+	 */
 
-	items = items.sort(function () {
-		return Math.random() - 0.5;
-	});
+	Wheel.prototype.detectVisibleItems = function (roundPosition) {
 
-	// add zero hidden item
-	// add object the same as last object to start of arr
-	items.unshift(items[items.length - 1]);
-
-	// add last items, the same as first items
-	for (i = 1, len = wheel.hi + 1; i <= len; i += 1) { // i = 1, i <= len !!, it is not a mistake
-		items.push(items[i]);
-	}
-
-	items = items.map(function (item) {
-		return wheel.getNewItem(item % itemsData.list.length);
-	});
-
-	for (i = 1; i <= realSizeInItems; i += 1) {
-		wheel.size += items[i].hi;
-	}
-
-	// TODO: just mark first and last items - remove it for production
-	//items[items.length - 1].sprite.alpha = 0.5;
-	//items[0].sprite.alpha = 0.5;
-
-	// magic block - end
-
-	// count needed stage height
-	var stageHeightInItems = -1; // reduce for last items
-	items.forEach(function (item, index) {
-
-		if (index) { // do not count zero extra item
-			stageHeightInItems += item.hi;
-		}
-
-	});
-
-	var stageHeightInPixels = stageHeightInItems * wheel.itemHeight;
-
-	var innerStage = wheel.innerStage;
-	var bgStage = wheel.bgStage;
-
-	// set sprite positions
-	items.forEach(function (item, index) {
-
-		var sprite = item.sprite;
-		var bg = item.bg;
-
-		innerStage.addChild(sprite);
-
-		if (index) { // do not count zero extra item
-			stageHeightInItems -= item.hi;
-		}
-
-		sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop - stageHeightInPixels + wheel.hi * wheel.itemHeight;
-
-		item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
-		item.bottom = item.top + item.hi * wheel.itemHeight;
-
-		if (bg) {
-			bgStage.addChild(bg);
-			bg.position.y = sprite.position.y + wheelsData.item.itemDeltaTop;
-			bg.visible = false;
-		}
-
-		sprite.visible = false;
-
-	});
-
-	wheel.items = items;
-
-	// reverse draw order
-	innerStage.children = innerStage.children.reverse();
-
-};
-
-Wheel.prototype.getRoundPosition = function () {
-
-	var position = this.position;
-	var size = this.size;
-
-	if (position <= size) {
-		return position;
-	}
-
-	return position % size;
-
-};
-
-Wheel.prototype.roundPosition = function (position) {
-
-	var size = this.size;
-
-	if (position <= size) {
-		return position;
-	}
-
-	return position % size;
-
-};
-
-Wheel.prototype.beginSpin = function (data) {
-
-	var wheel = this;
-
-	wheel.position = wheel.getRoundPosition();
-	wheel.state = 'spin-begin';
-	wheel.t = 0;
-	wheel.v = 0;
-	wheel.a = wheel.BEGIN_A;
-	wheel.beginSpinStartPosition = wheel.position;
-	wheel.tInc = wheel.T_INC / data.scaleFPS;
-
-	wheel.updatePosition();
-
-    wheel.currentFilter.blur = 6;    //blurring while it spins
-};
-
-Wheel.prototype.updateSpinBegin = function () {
-
-	var wheel = this;
-	var tInc = wheel.tInc;
-
-	var t = wheel.t + tInc;
-	var a = wheel.a;
-	var v = a * t;
-	var V_MAX = wheel.V_MAX;
-	var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * 1.2;
-
-	wheel.position = position;
-
-	wheel.t = Math.round(t * 100) / 100;
-
-	if (v < V_MAX) {
-		return;
-	}
-
-	wheel.v = v;
-	wheel.state = 'spin-main';
-
-	wheel.beginTime = wheel.t;
-
-	wheel.beginPath = position - wheel.beginSpinStartPosition;
-
-	wheel.sInc = v * tInc;
-	wheel.needStopping = false;
-	wheel.t = 0;
-
-	if (wheel.beginSpinCb) {
-		wheel.beginSpinCb();
-		wheel.beginSpinCb = null;
-	}
-
-};
-
-Wheel.prototype.updateSpinMain = function () {
-
-	this.position += this.sInc;
-
-};
-
-Wheel.prototype.endSpin = function (position) {
-
-	var wheel = this;
-
-	wheel.state = 'spin-end';
-	wheel.t = 0;
-	wheel.a = wheel.END_A;
-	wheel.endSpinStopPosition = position;
-
-    wheel.currentFilter.blur = 1;
-
-};
-
-
-Wheel.prototype.updateSpinEnd = function () {
-
-	var wheel = this,
-		v = wheel.v,
-		tInc = wheel.tInc,
-		t = wheel.t,
-		position = wheel.position,
-		sInc = wheel.sInc,
-		needStopping = wheel.needStopping;
-
-	if (!v) {
-		return;
-	}
-
-	if (!needStopping) { // wait for position to begin ending
-
-		position += sInc;
-
-		wheel.position = position;
-
-		// detect starting of ending
-		var deltaPath = wheel.roundPosition(position + wheel.beginPath - wheel.endSpinStopPosition);
-
-		if (Math.abs(deltaPath) >= sInc) {
+		if (this.lastDetectVisiblePosition === roundPosition) {
 			return;
 		}
 
-		wheel.lastPosition = position;
-		wheel.needStopping = true;
-		wheel.deltaPath = deltaPath;
+		this.lastDetectVisiblePosition = roundPosition;
 
-		return;
+		var wheel = this;
 
-	}
+		var hi = wheel.hi;
+		var items = wheel.items;
+		var item;
 
-	var a = wheel.a;
+		var itemHeight = wheel.itemHeight;
 
-	position = wheel.lastPosition + v * t + a * t * t / 2;
-	position += wheel.deltaPath * ( a * t / v );
-	position -= Math.sin((v - a * t) / v * Math.PI) * 1.2;
+		var bottom = -roundPosition * itemHeight;
+		var top = bottom + ( hi + 1) * itemHeight;
 
-	wheel.position = position;
+		var sprite;
+		var bg;
 
-	t += tInc;
+		for (var i = 0, len = items.length; i < len; i += 1) {
 
-	wheel.t = (Math.round(t * 100) / 100);
+			item = items[i];
 
-	if (t <= wheel.beginTime) {
-		return;
-	}
+			sprite = item.sprite;
+			bg = item.bg;
 
-	wheel.position = wheel.endSpinStopPosition;
-	wheel.v = 0;
-	wheel.t = 0;
+			if (item.top >= top || item.bottom <= bottom) {
+				if (sprite.visible) {
+					sprite.visible = false;
+					if (bg) {
+						bg.visible = false
+					}
+				}
+			} else {
+				if (!sprite.visible) {
+					sprite.visible = true;
+					if (bg) {
+						bg.visible = true;
+					}
+				}
+			}
 
-	if (wheel.endSpinCb) {
-		wheel.endSpinCb();
-		wheel.endSpinCb = null;
-	}
+		}
 
-};
+	};
+
+	Wheel.prototype.getNewItem = function (index) {
+
+		var key = itemsData.list[index],
+			itemData = itemsData[key],
+			sprite = new PIXI.Sprite.fromFrame(itemData.frame),
+			bg = itemData.bg ?
+				new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal',  wheelsData.item.w, wheelsData.item.h) :
+				null;
+
+		return {
+			sprite: sprite,
+			hi: itemData.hi,
+			top: 0,
+			bottom: 0,
+			bg: bg
+		};
+
+	};
+
+	Wheel.prototype.selfFill = function () {
+
+		// todo: split this function to several procedures
+		// 1 - create items
+		// 2 (1.1) - create extra items
+		// 3 - set default position of sprites
+
+		var wheel = this;
+
+		var realSizeInItems = Math.round(Math.random() * 10) + 5;
+
+		var items = [];
+
+		var i;
+
+		var len;
+		// magic block - begin
+
+		// todo: note: try to use texture to fast change sprite state
+		// see example here -> http://pixijs.github.io/examples/index.html?s=demos&f=texture-swap.js&title=Texture%20Swap
+
+		// add "real" items
+		for (i = 0; i < realSizeInItems; i += 1) {
+			items.push(i);
+		}
+
+		items = items.sort(function () {
+			return Math.random() - 0.5;
+		});
+
+		// add zero hidden item
+		// add object the same as last object to start of arr
+		items.unshift(items[items.length - 1]);
+
+		// add last items, the same as first items
+		for (i = 1, len = wheel.hi + 1; i <= len; i += 1) { // i = 1, i <= len !!, it is not a mistake
+			items.push(items[i]);
+		}
+
+		items = items.map(function (item) {
+			return wheel.getNewItem(item % itemsData.list.length);
+		});
+
+		for (i = 1; i <= realSizeInItems; i += 1) {
+			wheel.size += items[i].hi;
+		}
+
+		// TODO: just mark first and last items - remove it for production
+		//items[items.length - 1].sprite.alpha = 0.5;
+		//items[0].sprite.alpha = 0.5;
+
+		// magic block - end
+
+		// count needed stage height
+		var stageHeightInItems = -1; // reduce for last items
+		items.forEach(function (item, index) {
+
+			if (index) { // do not count zero extra item
+				stageHeightInItems += item.hi;
+			}
+
+		});
+
+		var stageHeightInPixels = stageHeightInItems * wheel.itemHeight;
+
+		var innerStage = wheel.innerStage;
+		var bgStage = wheel.bgStage;
+
+		// set sprite positions
+		items.forEach(function (item, index) {
+
+			var sprite = item.sprite;
+			var bg = item.bg;
+
+			innerStage.addChild(sprite);
+
+			if (index) { // do not count zero extra item
+				stageHeightInItems -= item.hi;
+			}
+
+			sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop - stageHeightInPixels + wheel.hi * wheel.itemHeight;
+
+			item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
+			item.bottom = item.top + item.hi * wheel.itemHeight;
+
+			if (bg) {
+				bgStage.addChild(bg);
+				bg.position.y = sprite.position.y + wheelsData.item.itemDeltaTop;
+				bg.visible = false;
+			}
+
+			sprite.visible = false;
+
+		});
+
+		wheel.items = items;
+
+		// reverse draw order
+		innerStage.children = innerStage.children.reverse();
+
+	};
+
+	Wheel.prototype.getRoundPosition = function () {
+
+		var position = this.position;
+		var size = this.size;
+
+		if (position <= size) {
+			return position;
+		}
+
+		return position % size;
+
+	};
+
+	Wheel.prototype.roundPosition = function (position) {
+
+		var size = this.size;
+
+		if (position <= size) {
+			return position;
+		}
+
+		return position % size;
+
+	};
+
+	Wheel.prototype.beginSpin = function (data) {
+
+		var wheel = this;
+
+		wheel.position = wheel.getRoundPosition();
+		wheel.state = 'spin-begin';
+		wheel.t = 0;
+		wheel.v = 0;
+		wheel.a = wheel.BEGIN_A;
+		wheel.beginSpinStartPosition = wheel.position;
+		wheel.tInc = wheel.T_INC / data.scaleFPS;
+
+		wheel.updatePosition();
+
+		wheel.currentFilter.blur = 6;    //blurring while it spins
+	};
+
+	Wheel.prototype.updateSpinBegin = function () {
+
+		var wheel = this;
+		var tInc = wheel.tInc;
+
+		var t = wheel.t + tInc;
+		var a = wheel.a;
+		var v = a * t;
+		var V_MAX = wheel.V_MAX;
+		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * 1.2;
+
+		wheel.position = position;
+
+		wheel.t = Math.round(t * 100) / 100;
+
+		if (v < V_MAX) {
+			return;
+		}
+
+		wheel.v = v;
+		wheel.state = 'spin-main';
+
+		wheel.beginTime = wheel.t;
+
+		wheel.beginPath = position - wheel.beginSpinStartPosition;
+
+		wheel.sInc = v * tInc;
+		wheel.needStopping = false;
+		wheel.t = 0;
+
+		if (wheel.beginSpinCb) {
+			wheel.beginSpinCb();
+			wheel.beginSpinCb = null;
+		}
+
+	};
+
+	Wheel.prototype.updateSpinMain = function () {
+
+		this.position += this.sInc;
+
+	};
+
+	Wheel.prototype.endSpin = function (position) {
+
+		var wheel = this;
+
+		wheel.state = 'spin-end';
+		wheel.t = 0;
+		wheel.a = wheel.END_A;
+		wheel.endSpinStopPosition = position;
+
+		wheel.currentFilter.blur = 1;
+
+	};
 
 
-export default Wheel;
+	Wheel.prototype.updateSpinEnd = function () {
+
+		var wheel = this,
+			v = wheel.v,
+			tInc = wheel.tInc,
+			t = wheel.t,
+			position = wheel.position,
+			sInc = wheel.sInc,
+			needStopping = wheel.needStopping;
+
+		if (!v) {
+			return;
+		}
+
+		if (!needStopping) { // wait for position to begin ending
+
+			position += sInc;
+
+			wheel.position = position;
+
+			// detect starting of ending
+			var deltaPath = wheel.roundPosition(position + wheel.beginPath - wheel.endSpinStopPosition);
+
+			if (Math.abs(deltaPath) >= sInc) {
+				return;
+			}
+
+			wheel.lastPosition = position;
+			wheel.needStopping = true;
+			wheel.deltaPath = deltaPath;
+
+			return;
+
+		}
+
+		var a = wheel.a;
+
+		position = wheel.lastPosition + v * t + a * t * t / 2;
+		position += wheel.deltaPath * ( a * t / v );
+		position -= Math.sin((v - a * t) / v * Math.PI) * 1.2;
+
+		wheel.position = position;
+
+		t += tInc;
+
+		wheel.t = (Math.round(t * 100) / 100);
+
+		if (t <= wheel.beginTime) {
+			return;
+		}
+
+		wheel.position = wheel.endSpinStopPosition;
+		wheel.v = 0;
+		wheel.t = 0;
+
+		if (wheel.endSpinCb) {
+			wheel.endSpinCb();
+			wheel.endSpinCb = null;
+		}
+
+	};
+
+
+	return Wheel;
+});

@@ -1,6 +1,51 @@
-@import url(_var.scss);
-@import url(_reset.scss);
+.spin-btn, body {
+    background-repeat: no-repeat
+}
 
-@import url(style.scss);
-@import url(fps.scss);
+html {
+    min-height: 100%
+}
 
+body {
+    margin: 0;
+    background-image: url(../i/bg-main.jpg);
+    background-position: center center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    padding-bottom: 50px
+}
+
+.no-highlight {
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent
+}
+
+.game-renderer {
+    display: block;
+    max-width: 100%;
+    margin: 50px auto;
+    z-index: -1;
+    position: relative
+}
+
+.spin-btn {
+    width: 107px;
+    height: 36px;
+    background-image: url(../i/button-spin.png);
+    -webkit-background-size: contain;
+    background-size: contain;
+    margin: 0 auto
+}
+
+.fps-meter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    font-size: 16px;
+    width: 42px;
+    font-family: 'Lucida Console', Monaco, monospace;
+    text-align: center;
+    color: #eee;
+    background-color: #000
+}

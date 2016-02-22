@@ -1,75 +1,77 @@
-import EndlessArray from './../lib/endless-array';
+define (['./../lib/endless-array'], function (EndlessArray) {
 
-var fpsMeter = {
+	var fpsMeter = {
 
-	node: null,
-	counter: 0,
-	log: new EndlessArray(10),
-	cssClassName: 'fps-meter',
-	defaultTextContent: '~\n~\n~',
-	ticker: null,
-	FPS: 0,
-	averageFPS: 0,
-	normalFPS: 60,
+		node: null,
+		counter: 0,
+		log: new EndlessArray(10),
+		cssClassName: 'fps-meter',
+		defaultTextContent: '~\n~\n~',
+		ticker: null,
+		FPS: 0,
+		averageFPS: 0,
+		normalFPS: 60,
 
-	init: function (ticker) {
+		init: function (ticker) {
 
-		var fpsMeter = this;
+			var fpsMeter = this;
 
-		fpsMeter.ticker = ticker;
+			fpsMeter.ticker = ticker;
 
-		ticker.add(fpsMeter.tick);
+			ticker.add(fpsMeter.tick);
 
-	},
+		},
 
-	addNode: function () {
+		addNode: function () {
 
-		var fpsMeter = this;
+			var fpsMeter = this;
 
-		var fpsNode = document.createElement('div');
+			var fpsNode = document.createElement('div');
 
-		fpsNode.textContent = fpsMeter.defaultTextContent;
-		fpsNode.className = fpsMeter.cssClassName;
+			fpsNode.textContent = fpsMeter.defaultTextContent;
+			fpsNode.className = fpsMeter.cssClassName;
 
-		document.body.appendChild(fpsNode);
+			document.body.appendChild(fpsNode);
 
-		fpsMeter.node = fpsNode;
+			fpsMeter.node = fpsNode;
 
-	},
+		},
 
-	tick: function () {
+		tick: function () {
 
-		var fpsMeter = this;
+			var fpsMeter = this;
 
-		fpsMeter.counter += 1;
+			fpsMeter.counter += 1;
 
-		if (fpsMeter.counter < 5) {
-			return;
+			if (fpsMeter.counter < 5) {
+				return;
+			}
+
+			fpsMeter.counter = 0;
+
+			var log = fpsMeter.log;
+
+			var tickerFPS = fpsMeter.ticker.FPS;
+			fpsMeter.FPS = tickerFPS;
+
+			log.push(tickerFPS);
+
+			var averageFPS = log.average() || 0;
+			fpsMeter.averageFPS = averageFPS;
+
+			var scaleFPS = Math.min(averageFPS / fpsMeter.normalFPS, 1);
+			fpsMeter.scaleFPS = scaleFPS;
+
+			if (fpsMeter.node) {
+				fpsMeter.node.textContent = tickerFPS.toFixed(1) + '\n' + averageFPS.toFixed(1) + '\n' + scaleFPS.toFixed(2);
+			}
+
 		}
 
-		fpsMeter.counter = 0;
+	};
 
-		var log = fpsMeter.log;
+	fpsMeter.tick = fpsMeter.tick.bind(fpsMeter);
 
-		var tickerFPS = fpsMeter.ticker.FPS;
-		fpsMeter.FPS = tickerFPS;
+	return fpsMeter;
 
-		log.push(tickerFPS);
-
-		var averageFPS = log.average() || 0;
-		fpsMeter.averageFPS = averageFPS;
-
-		var scaleFPS = Math.min(averageFPS / fpsMeter.normalFPS, 1);
-		fpsMeter.scaleFPS = scaleFPS;
-
-		if (fpsMeter.node) {
-			fpsMeter.node.textContent = tickerFPS.toFixed(1) + '\n' + averageFPS.toFixed(1) + '\n' + scaleFPS.toFixed(2);
-		}
-
-	}
-
-};
-
-fpsMeter.tick = fpsMeter.tick.bind(fpsMeter);
-
-export default fpsMeter;
+});

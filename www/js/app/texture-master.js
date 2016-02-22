@@ -1,75 +1,72 @@
-import Deferred from './../lib/deferred';
-//import gameTextures from './game-textures';
-import effectTextures from './effect-textures';
-import util from './../lib/util';
-import log from './../services/log';
+define(['./../lib/deferred', './effect-textures', './../lib/util', './../services/log'], function (Deferred, effectTextures, util, log) {
 
-var textureMaster = {
+	var textureMaster = {
 
-	initTextures: function () {
+		initTextures: function () {
 
-		var defer = new Deferred();
+			var defer = new Deferred();
 
-		var loader = PIXI.loader;
+			var loader = PIXI.loader;
 
-		//loader.baseUrl = 'hi/';
+			//loader.baseUrl = 'hi/';
 
-		//var gameTexturesData = gameTextures.textures;
-		var effectTexturesData = effectTextures.textures;
+			//var gameTexturesData = gameTextures.textures;
+			var effectTexturesData = effectTextures.textures;
 
-/*
-		util.eachHash(gameTexturesData, function (item, key) {
-			loader.add('gameTextures/' + key, item.path);
-		});
-*/
+			/*
+			 util.eachHash(gameTexturesData, function (item, key) {
+			 loader.add('gameTextures/' + key, item.path);
+			 });
+			 */
 
-		util.eachHash(effectTexturesData, function (item, key) {
-			loader.add('effectTextures/' + key, item.path);
-		});
+			util.eachHash(effectTexturesData, function (item, key) {
+				loader.add('effectTextures/' + key, item.path);
+			});
 
-		loader.add('i/game/effect/club-win-animation.json');
-		loader.add('i/game/effect/respin-pop-up.json');
-		loader.add('i/game/game/items.json');
-		loader.add('i/game/game/bg-wheels.json');
-		loader.add('i/game/frame/frame.json');
+			loader.add('i/game/effect/club-win-animation.json');
+			loader.add('i/game/effect/respin-pop-up.json');
+			loader.add('i/game/game/items.json');
+			loader.add('i/game/game/bg-wheels.json');
+			loader.add('i/game/frame/frame.json');
 
-		loader
-			.on('progress', function () {
-				log('on loading texture progress');
-			})
-			.load(function (loader, resources) {
+			loader
+				.on('progress', function () {
+					log('on loading texture progress');
+				})
+				.load(function (loader, resources) {
 
-				util.eachHash(resources, function (value, key) {
+					util.eachHash(resources, function (value, key) {
 
-					var path = key.split('/'),
-						root = path[0],
-						name = path[1];
+						var path = key.split('/'),
+							root = path[0],
+							name = path[1];
 
-					switch (root) {
+						switch (root) {
 
-/*
-						case 'gameTextures':
-							gameTexturesData[name].texture = value;
-							break;
-*/
+							/*
+							 case 'gameTextures':
+							 gameTexturesData[name].texture = value;
+							 break;
+							 */
 
-						case 'effectTextures':
-							effectTexturesData[name].texture = value;
-							break;
+							case 'effectTextures':
+								effectTexturesData[name].texture = value;
+								break;
 
-					}
+						}
+
+					});
+
+					defer.resolve();
 
 				});
 
-				defer.resolve();
+			return defer.promise();
 
-			});
+		}
 
-		return defer.promise();
-
-	}
-
-};
+	};
 
 
-export default textureMaster;
+	return textureMaster;
+});

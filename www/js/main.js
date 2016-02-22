@@ -1,25 +1,5 @@
-/*jslint white: true, nomen: true, onevar: true */
-(function (win) {
-
-	'use strict';
-
-	/*global window */
-	/*global */
-
-	import info from './services/info';
-
-	import PIXI from './lib/pixi';
-	import Deferred from './lib/deferred';
-	import util from './lib/util';
-
-	import log from './services/log';
-
-	import game from './app/game';
-
+require (['./app/game'], function (game) {
 	game.initialize(function () {
-
 		console.log('inited');
-
 	});
-
-}(window));
+});

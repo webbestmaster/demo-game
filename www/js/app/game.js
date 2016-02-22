@@ -1,323 +1,316 @@
-import PIXI from './../lib/pixi';
-import util from './../lib/util';
-import Deferred from './../lib/deferred';
-import log from './../services/log';
-import wheelsData from './wheels-data';
-import Wheel from './wheel';
-import textureMaster from './texture-master';
-import frameMaster from './frame-master';
-import effectMaster from './effect-master';
-import gameTextures from './game-textures';
-import fpsMeter from './../services/fps-meter';
+define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/log', './wheels-data', './wheel', './texture-master',
+		'./frame-master', './effect-master', './game-textures', './../services/fps-meter'],
+	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, gameTextures, fpsMeter) {
 
-var game = {
+	var game = {
 
-	wheels: [],
+		wheels: [],
 
-	original: {
-		full: {
-			w: 780,
-			h: 520
-		}
-	},
+		original: {
+			full: {
+				w: 780,
+				h: 520
+			}
+		},
 
-	i: true,
+		i: true,
 
-	state: 'ready',
+		state: 'ready',
 
-	initialize: function (cd) {
+		initialize: function (cd) {
 
-		var game = this;
+			var game = this;
 
-		game.initCanvas();
+			game.initCanvas();
 
-		game.redraw = game.redraw.bind(game);
+			game.redraw = game.redraw.bind(game);
 
-		textureMaster.initTextures().done(function () {
-			frameMaster.initSprites();
-			effectMaster.initSprites();
-			game.createWheels();
-			game.bindEventListeners();
-			game.initTicker(game.redraw); // START GAME!!!
-			cd();
-		});
+			textureMaster.initTextures().done(function () {
+				frameMaster.initSprites();
+				effectMaster.initSprites();
+				game.createWheels();
+				game.bindEventListeners();
+				game.initTicker(game.redraw); // START GAME!!!
+				cd();
+			});
 
-		game.spinButton = document.querySelector('.js-spin');
+			game.spinButton = document.querySelector('.js-spin');
 
-	},
+		},
 
-	initTicker: function (fn) {
+		initTicker: function (fn) {
 
-		var game = this;
+			var game = this;
 
-		//var ticker = new PIXI.ticker.Ticker();
-		var ticker = PIXI.ticker.shared;
+			//var ticker = new PIXI.ticker.Ticker();
+			var ticker = PIXI.ticker.shared;
 
-		ticker.add(fn);
+			ticker.add(fn);
 
-		fpsMeter.init(ticker);
+			fpsMeter.init(ticker);
 
-		//todo: detect dev mode to avoid it
-		fpsMeter.addNode();
+			//todo: detect dev mode to avoid it
+			fpsMeter.addNode();
 
-		ticker.start();
+			ticker.start();
 
-		game.ticker = ticker;
+			game.ticker = ticker;
 
-	},
+		},
 
-	bindEventListeners: function () {
+		bindEventListeners: function () {
 
-		var game = this;
+			var game = this;
 
-		game.spinButton.addEventListener('click', function () {
+			game.spinButton.addEventListener('click', function () {
 
-			game.spin();
+				game.spin();
 
-		}, false);
+			}, false);
 
-	},
+		},
 
-	spin: function () {
+		spin: function () {
 
-		// do not spin if no data about FPS
-		if (!fpsMeter.scaleFPS) {
-			return;
-		}
-
-		var game = this;
-
-		switch (game.state) {
-
-			case 'ready':
-
-				effectMaster.hideClips();
-
-				game.setGameState('spin-begin');
-
-				game.beginSpin();
-
-				break;
-
-			case 'spin':
-
-				game.setGameState('spin-end');
-
-				game.endSpin();
-
-				break;
-
-		}
-
-	},
-
-	setGameState: function (state) {
-
-		console.log('game state is - ', state);
-
-		this.state = state;
-
-		if (state === 'ready' || state === 'spin') {
-			this.spinButton.className = 'spin-btn';
-		} else {
-			this.spinButton.className = 'spin-btn spin-btn_disabled';
-		}
-
-	},
-
-	beginSpin: function () {
-
-		var game = this;
-
-		var wheels = game.wheels;
-
-		var extraWheelData = {
-			scaleFPS: fpsMeter.scaleFPS
-		};
-
-		wheels.forEach(function (wheel, index) {
-			setTimeout(function () {
-				wheel.beginSpin(extraWheelData);
-			}, 300 * index);
-		});
-
-		wheels[wheels.length - 1].beginSpinCb = function () {
-			game.setGameState('spin');
-		};
-
-	},
-
-	endSpin: function () {
-
-		var game = this;
-
-		var wheels = game.wheels;
-
-		var getEndPositions = game.getEndPositions();
-
-		wheels.forEach(function (wheel, index, arr) {
-
-			// start from index = 1
-			if (index) {
-				arr[index - 1].endSpinCb = wheel.endSpin.bind(wheel, getEndPositions[index]);
+			// do not spin if no data about FPS
+			if (!fpsMeter.scaleFPS) {
 				return;
 			}
 
-			// stop first wheel
-			wheel.endSpin(getEndPositions[index]);
+			var game = this;
 
-		});
+			switch (game.state) {
 
+				case 'ready':
 
-		wheels[wheels.length - 1].endSpinCb = function () {
+					effectMaster.hideClips();
 
-			game.setGameState('ready');
+					game.setGameState('spin-begin');
 
-			effectMaster.showWinClubs(getEndPositions);
+					game.beginSpin();
 
-			effectMaster.showFreeSpinPopUp();
+					break;
 
-		};
+				case 'spin':
 
-	},
+					game.setGameState('spin-end');
 
-	getEndPositions: function () {
+					game.endSpin();
 
-		var firstPosition = Math.floor(Math.random() * 3);
+					break;
 
-		var minPosition;
+			}
 
-		var positions = [
-			firstPosition,
-			firstPosition += Math.floor(Math.random() * 3) - 1,
-			firstPosition += Math.floor(Math.random() * 3) - 1,
-			firstPosition += Math.floor(Math.random() * 3) - 1,
-			firstPosition += Math.floor(Math.random() * 3) - 1,
-			firstPosition
-		];
+		},
 
-		minPosition = Math.min.apply(Math, positions);
+		setGameState: function (state) {
 
-		if (minPosition < 0) {
-			positions = positions.map(function (position) {
-				return position - minPosition;
-			});
-		}
+			console.log('game state is - ', state);
 
-		return positions;
+			this.state = state;
 
-	},
+			if (state === 'ready' || state === 'spin') {
+				this.spinButton.className = 'spin-btn';
+			} else {
+				this.spinButton.className = 'spin-btn spin-btn_disabled';
+			}
 
-	initCanvas: function () {
+		},
 
-		var game = this,
-			q = 1,
-			width = game.original.full.w * q,
-			height = game.original.full.h * q,
-			renderer,
-			stageMain, stageWheels, stageFrame, stageEffect;
+		beginSpin: function () {
 
-		// init renderer
-		renderer = new PIXI.autoDetectRenderer(width, height, {
-			transparent: true,
-			view: document.querySelector('.game-renderer'),
-			resolution: 1 // set 2 or 3 to use higher resolution
-			//,clearBeforeRender: false // right now canvas is cleared every tick,
-			//,preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
-		});
-		game.renderer = renderer;
+			var game = this;
 
-		// init main stage
-		stageMain = new PIXI.Container();
-		stageMain.scale.x = q;
-		stageMain.scale.y = q;
+			var wheels = game.wheels;
 
-		// init child stages
-		stageWheels = new PIXI.Container();
+			var extraWheelData = {
+				scaleFPS: fpsMeter.scaleFPS
+			};
 
-		stageFrame = new PIXI.ParticleContainer(18, {
-			scale: false,
-			position: false,
-			rotation: false,
-			uvs: false,
-			alpha: false
-		});
-
-		stageEffect = new PIXI.Container();
-
-		stageMain.addChild(stageWheels);
-		stageMain.addChild(stageFrame);
-		stageMain.addChild(stageEffect);
-
-		// link stage with frameMaster and effectMaster
-		frameMaster.stage = stageFrame;
-		effectMaster.stage = stageEffect;
-
-		game.stageMain = stageMain;
-		game.stageWheels = stageWheels;
-		game.stageFrame = stageFrame;
-		game.stageEffect = stageEffect;
-
-	},
-
-	createWheels: function () {
-
-		var game = this;
-
-		var wheels = game.wheels;
-
-		wheelsData.wheels.forEach(function (wheelData) {
-
-			var wheelStage = new PIXI.Container();
-
-			game.stageWheels.addChild(wheelStage);
-
-			// add mask
-			var graphics = new PIXI.Graphics();
-			graphics.beginFill(0, 0);
-			wheelStage.mask = graphics.drawRect(wheelData.x, wheelData.y, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
-
-			wheelStage.position.x = wheelData.x;
-			wheelStage.position.y = wheelData.y;
-
-			var newWheel = new Wheel({
-				hi: wheelData.hi,
-				itemHeight: wheelsData.item.h,
-				position: 0,
-				stage: wheelStage
+			wheels.forEach(function (wheel, index) {
+				setTimeout(function () {
+					wheel.beginSpin(extraWheelData);
+				}, 300 * index);
 			});
 
-			wheels.push(newWheel);
+			wheels[wheels.length - 1].beginSpinCb = function () {
+				game.setGameState('spin');
+			};
 
-			newWheel.updatePosition();
+		},
 
-		});
+		endSpin: function () {
 
-	},
+			var game = this;
 
-	redraw: function () {
+			var wheels = game.wheels;
 
-		effectMaster.update();
-		//frameMaster.update();
+			var getEndPositions = game.getEndPositions();
 
-		var wheels = this.wheels,
-			i, len;
+			wheels.forEach(function (wheel, index, arr) {
 
-		for (i = 0, len = wheels.length; i < len; i += 1) {
-			wheels[i].updatePosition();
+				// start from index = 1
+				if (index) {
+					arr[index - 1].endSpinCb = wheel.endSpin.bind(wheel, getEndPositions[index]);
+					return;
+				}
+
+				// stop first wheel
+				wheel.endSpin(getEndPositions[index]);
+
+			});
+
+
+			wheels[wheels.length - 1].endSpinCb = function () {
+
+				game.setGameState('ready');
+
+				effectMaster.showWinClubs(getEndPositions);
+
+				effectMaster.showFreeSpinPopUp();
+
+			};
+
+		},
+
+		getEndPositions: function () {
+
+			var firstPosition = Math.floor(Math.random() * 3);
+
+			var minPosition;
+
+			var positions = [
+				firstPosition,
+				firstPosition += Math.floor(Math.random() * 3) - 1,
+				firstPosition += Math.floor(Math.random() * 3) - 1,
+				firstPosition += Math.floor(Math.random() * 3) - 1,
+				firstPosition += Math.floor(Math.random() * 3) - 1,
+				firstPosition
+			];
+
+			minPosition = Math.min.apply(Math, positions);
+
+			if (minPosition < 0) {
+				positions = positions.map(function (position) {
+					return position - minPosition;
+				});
+			}
+
+			return positions;
+
+		},
+
+		initCanvas: function () {
+
+			var game = this,
+				q = 1,
+				width = game.original.full.w * q,
+				height = game.original.full.h * q,
+				renderer,
+				stageMain, stageWheels, stageFrame, stageEffect;
+
+			// init renderer
+			renderer = new PIXI.autoDetectRenderer(width, height, {
+				transparent: true,
+				view: document.querySelector('.game-renderer'),
+				resolution: 1 // set 2 or 3 to use higher resolution
+				//,clearBeforeRender: false // right now canvas is cleared every tick,
+				//,preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
+			});
+			game.renderer = renderer;
+
+			// init main stage
+			stageMain = new PIXI.Container();
+			stageMain.scale.x = q;
+			stageMain.scale.y = q;
+
+			// init child stages
+			stageWheels = new PIXI.Container();
+
+			stageFrame = new PIXI.ParticleContainer(18, {
+				scale: false,
+				position: false,
+				rotation: false,
+				uvs: false,
+				alpha: false
+			});
+
+			stageEffect = new PIXI.Container();
+
+			stageMain.addChild(stageWheels);
+			stageMain.addChild(stageFrame);
+			stageMain.addChild(stageEffect);
+
+			// link stage with frameMaster and effectMaster
+			frameMaster.stage = stageFrame;
+			effectMaster.stage = stageEffect;
+
+			game.stageMain = stageMain;
+			game.stageWheels = stageWheels;
+			game.stageFrame = stageFrame;
+			game.stageEffect = stageEffect;
+
+		},
+
+		createWheels: function () {
+
+			var game = this;
+
+			var wheels = game.wheels;
+
+			wheelsData.wheels.forEach(function (wheelData) {
+
+				var wheelStage = new PIXI.Container();
+
+				game.stageWheels.addChild(wheelStage);
+
+				// add mask
+				var graphics = new PIXI.Graphics();
+				graphics.beginFill(0, 0);
+				wheelStage.mask = graphics.drawRect(wheelData.x, wheelData.y, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
+
+				wheelStage.position.x = wheelData.x;
+				wheelStage.position.y = wheelData.y;
+
+				var newWheel = new Wheel({
+					hi: wheelData.hi,
+					itemHeight: wheelsData.item.h,
+					position: 0,
+					stage: wheelStage
+				});
+
+				wheels.push(newWheel);
+
+				newWheel.updatePosition();
+
+			});
+
+		},
+
+		redraw: function () {
+
+			effectMaster.update();
+			//frameMaster.update();
+
+			var wheels = this.wheels,
+				i, len;
+
+			for (i = 0, len = wheels.length; i < len; i += 1) {
+				wheels[i].updatePosition();
+			}
+
+			/*
+			 // do not each frame, draw odd frame only
+			 if (this.i = !this.i) { // here use single "=" for small optimization
+			 return;
+			 }
+			 */
+
+			this.renderer.render(this.stageMain);
+
 		}
 
-		/*
-		 // do not each frame, draw odd frame only
-		 if (this.i = !this.i) { // here use single "=" for small optimization
-		 return;
-		 }
-		 */
+	};
 
-		this.renderer.render(this.stageMain);
-
-	}
-
-};
-
-export default game;
+	return game;
+});

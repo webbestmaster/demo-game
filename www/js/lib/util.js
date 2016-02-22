@@ -1,20 +1,22 @@
-var util = {
+define (function () {
+	var util = {
 
-	eachHash: function (hash, fn) {
+		eachHash: function (hash, fn) {
 
-		var key;
+			var key;
 
-		for (key in hash) {
-			if (hash.hasOwnProperty(key)) {
-				fn(hash[key], key);
+			for (key in hash) {
+				if (hash.hasOwnProperty(key)) {
+					fn(hash[key], key);
+				}
 			}
+
 		}
 
-	}
+	};
 
-};
-
-export default util;
+	return util;
+});
 
 /*
 window.util = util;
