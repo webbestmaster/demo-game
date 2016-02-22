@@ -1,7 +1,6 @@
 import PIXI from './../lib/pixi';
 import util from './../lib/util';
 import Deferred from './../lib/deferred';
-import EndlessArray from './../lib/endless-array';
 import log from './../services/log';
 import wheelsData from './wheels-data';
 import Wheel from './wheel';
@@ -9,6 +8,7 @@ import textureMaster from './texture-master';
 import frameMaster from './frame-master';
 import effectMaster from './effect-master';
 import gameTextures from './game-textures';
+import fpsMeter from './../services/fps-meter';
 
 var game = {
 
@@ -21,7 +21,6 @@ var game = {
 		}
 	},
 
-	
 	i: true,
 
 	state: 'ready',
@@ -53,53 +52,14 @@ var game = {
 
 		ticker.add(fn);
 
+		fpsMeter.init(ticker);
 
 		//todo: detect dev mode to avoid it - begin
-		game.addFPSNode();
-		ticker.add(function () {
-			// update fps node
-			var fps = game.fps;
-			fps.counter += 1;
-			if (fps.counter < 10) {
-				return;
-			}
-			fps.counter = 0;
-
-			var log = fps.log;
-
-			var tickerFPS = ticker.FPS;
-			var displayedFps = tickerFPS .toFixed(1);
-			var averageDisplayedFps = (log.average() || 0).toFixed(1);
-			log.push(tickerFPS);
-
-			fps.node.textContent = displayedFps + '\n' + averageDisplayedFps;
-
-		});
-		//todo: detect dev mode to avoid it - end
-
+		fpsMeter.addNode();
 
 		ticker.start();
 
 		game.ticker = ticker;
-
-	},
-
-	addFPSNode: function () {
-
-		var game = this;
-
-		var fpsNode = document.createElement('div');
-
-		fpsNode.textContent = '0.0';
-		fpsNode.className = 'fps-meter';
-
-		document.body.appendChild(fpsNode);
-
-		game.fps = {
-			node: fpsNode,
-			counter: 0,
-			log: new EndlessArray(10)
-		};
 
 	},
 
@@ -116,6 +76,11 @@ var game = {
 	},
 
 	spin: function () {
+
+		// do not spin if no data about FPS
+		if (!fpsMeter.scaleFPS) {
+			return;
+		}
 
 		var game = this,
 			spinState = game.state;
@@ -150,9 +115,13 @@ var game = {
 
 		var wheels = game.wheels;
 
+		var extraWheelData = {
+			scaleFPS: fpsMeter.scaleFPS
+		};
+
 		wheels.forEach(function (wheel, index) {
 			setTimeout(function () {
-				wheel.beginSpin();
+				wheel.beginSpin(extraWheelData);
 			}, 300 * index);
 		});
 

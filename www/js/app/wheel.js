@@ -19,7 +19,8 @@ function Wheel(data) {
 
 	wheel.beginTime = 0;
 	wheel.beginPath = 0;
-	wheel.sIncrease = 0;
+	wheel.sInc = 0;
+	wheel.tInc = 0; // will set by beginSpin
 	wheel.needStopping = false;
 	wheel.beginSpinCb = null;
 	wheel.endSpinCb = null;
@@ -296,8 +297,7 @@ Wheel.prototype.roundPosition = function (position) {
 
 };
 
-
-Wheel.prototype.beginSpin = function () {
+Wheel.prototype.beginSpin = function (data) {
 
 	var wheel = this;
 
@@ -307,6 +307,7 @@ Wheel.prototype.beginSpin = function () {
 	wheel.v = 0;
 	wheel.a = wheel.BEGIN_A;
 	wheel.beginSpinStartPosition = wheel.position;
+	wheel.tInc = wheel.T_INC / data.scaleFPS;
 
 	wheel.updatePosition();
 
@@ -316,9 +317,9 @@ Wheel.prototype.beginSpin = function () {
 Wheel.prototype.updateSpinBegin = function () {
 
 	var wheel = this;
-	var T_INC = wheel.T_INC;
+	var tInc = wheel.tInc;
 
-	var t = wheel.t + T_INC;
+	var t = wheel.t + tInc;
 	var a = wheel.a;
 	var v = a * t;
 	var V_MAX = wheel.V_MAX;
@@ -339,7 +340,7 @@ Wheel.prototype.updateSpinBegin = function () {
 
 	wheel.beginPath = position - wheel.beginSpinStartPosition;
 
-	wheel.sIncrease = v * T_INC;
+	wheel.sInc = v * tInc;
 	wheel.needStopping = false;
 	wheel.t = 0;
 
@@ -352,7 +353,7 @@ Wheel.prototype.updateSpinBegin = function () {
 
 Wheel.prototype.updateSpinMain = function () {
 
-	this.position += this.sIncrease;
+	this.position += this.sInc;
 
 };
 
@@ -374,10 +375,10 @@ Wheel.prototype.updateSpinEnd = function () {
 
 	var wheel = this,
 		v = wheel.v,
-		T_INC = wheel.T_INC,
+		tInc = wheel.tInc,
 		t = wheel.t,
 		position = wheel.position,
-		sIncrease = wheel.sIncrease,
+		sInc = wheel.sInc,
 		needStopping = wheel.needStopping;
 
 	if (!v) {
@@ -386,14 +387,14 @@ Wheel.prototype.updateSpinEnd = function () {
 
 	if (!needStopping) { // wait for position to begin ending
 
-		position += sIncrease;
+		position += sInc;
 
 		wheel.position = position;
 
 		// detect starting of ending
 		var deltaPath = wheel.roundPosition(position + wheel.beginPath - wheel.endSpinStopPosition);
 
-		if (Math.abs(deltaPath) >= sIncrease) {
+		if (Math.abs(deltaPath) >= sInc) {
 			return;
 		}
 
@@ -413,7 +414,7 @@ Wheel.prototype.updateSpinEnd = function () {
 
 	wheel.position = position;
 
-	t += T_INC;
+	t += tInc;
 
 	wheel.t = (Math.round(t * 100) / 100);
 
