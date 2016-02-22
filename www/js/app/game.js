@@ -140,11 +140,19 @@ var game = {
 
 		var getEndPositions = game.getEndPositions();
 
-		wheels.forEach(function (wheel, index) {
-			setTimeout(function () {
-				wheel.endSpin(getEndPositions[index]);
-			}, 500 * index);
+		wheels.forEach(function (wheel, index, arr) {
+
+			// start from index = 1
+			if (index) {
+				arr[index - 1].endSpinCb = wheel.endSpin.bind(wheel, getEndPositions[index]);
+				return;
+			}
+
+			// stop first wheel
+			wheel.endSpin(getEndPositions[index]);
+
 		});
+
 
 		wheels[wheels.length - 1].endSpinCb = function () {
 			game.state = 'ready';
