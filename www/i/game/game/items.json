@@ -2,108 +2,108 @@
   "frames": {
 
     "item-wild-x3": {
-      "frame": { "x": 0, "y": 0, "w": 125, "h": 224 },
+      "frame": { "x": 3, "y": 0, "w": 125, "h": 221 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 224 },
-      "sourceSize": { "w": 125, "h": 224 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 221 },
+      "sourceSize": { "w": 125, "h": 221 }
     },
 
     "item-bonus-x3": {
-      "frame": { "x": 136, "y": 0, "w": 125, "h": 224 },
+      "frame": { "x": 125, "y": 0, "w": 125, "h": 224 },
       "rotated": false, "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 224 },
       "sourceSize": { "w": 125, "h": 224 }
     },
 
     "item-wild-violet": {
-      "frame": { "x": 276, "y": 18, "w": 125, "h": 94 },
+      "frame": { "x": 250, "y": 3, "w": 125, "h": 87 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 87 },
+      "sourceSize": { "w": 125, "h": 87 }
     },
 
     "item-wild-green": {
-      "frame": { "x": 276, "y": 130, "w": 125, "h": 94 },
+      "frame": { "x": 250, "y": 99, "w": 125, "h": 86 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 86 },
+      "sourceSize": { "w": 125, "h": 86 }
     },
 
     "item-girl": {
-      "frame": { "x": 415, "y": 24, "w": 125, "h": 94 },
+      "frame": { "x": 375, "y": 0, "w": 125, "h": 88 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 88 },
+      "sourceSize": { "w": 125, "h": 88 }
     },
 
     "item-lion": {
-      "frame": { "x": 415, "y": 135, "w": 125, "h": 84 },
+      "frame": { "x": 375, "y": 94, "w": 125, "h": 87 },
       "rotated": false, "trimmed": true,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 87 },
+      "sourceSize": { "w": 125, "h": 87 }
     },
 
     "item-woodcutter": {
-      "frame": { "x": 558, "y": 25, "w": 125, "h": 94 },
+      "frame": { "x": 500, "y": 0, "w": 125, "h": 88 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 88 },
+      "sourceSize": { "w": 125, "h": 88 }
     },
 
     "item-scarecrow": {
-      "frame": { "x": 558, "y": 135, "w": 125, "h": 84 },
+      "frame": { "x": 500, "y": 93, "w": 125, "h": 88 },
       "rotated": false, "trimmed": true,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 88 },
+      "sourceSize": { "w": 125, "h": 88 }
     },
 
     "item-dog": {
-      "frame": { "x": 696, "y": 25, "w": 125, "h": 94 },
+      "frame": { "x": 625, "y": 0 , "w": 125, "h": 80 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 80 },
+      "sourceSize": { "w": 125, "h": 80 }
     },
 
     "item-poppy": {
-      "frame": { "x": 845, "y": 25, "w": 125, "h": 94 },
+      "frame": { "x": 625, "y": 102, "w": 125, "h": 73 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 73 },
+      "sourceSize": { "w": 125, "h": 73 }
     },
 
     "item-crow": {
-      "frame": { "x": 987, "y": 20, "w": 125, "h": 94 },
+      "frame": { "x": 750, "y": 0, "w": 125, "h": 78 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 78 },
+      "sourceSize": { "w": 125, "h": 78 }
     },
 
     "item-diamond": {
-      "frame": { "x": 693, "y": 130, "w": 125, "h": 94 },
+      "frame": { "x": 750, "y": 78, "w": 60, "h": 62 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 62 },
+      "sourceSize": { "w": 60, "h": 62 }
     },
 
     "item-club": {
-      "frame": { "x": 797, "y": 130, "w": 125, "h": 94 },
+      "frame": { "x": 750, "y": 140, "w": 64, "h": 61 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 61 },
+      "sourceSize": { "w": 64, "h": 61 }
     },
 
     "item-spades": {
-      "frame": { "x": 902, "y": 130, "w": 125, "h": 94 },
+      "frame": { "x": 810, "y": 78, "w": 65, "h": 61 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 94 },
-      "sourceSize": { "w": 125, "h": 94 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 65, "h": 61 },
+      "sourceSize": { "w": 65, "h": 61 }
     },
 
     "item-heart": {
-      "frame": { "x": 1025, "y": 130, "w": 125, "h": 94 },
-      "rotated": false, "trimmed": true,
-      "spriteSourceSize": { "x": 28, "y": 0, "w": 68, "h": 94 },
-      "sourceSize": { "w": 68, "h": 94 }
+      "frame": { "x": 814, "y": 140, "w": 63, "h": 51 },
+      "rotated": 0.5, "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 63, "h": 51 },
+      "sourceSize": { "w": 63, "h": 51 }
     }
 
   },
@@ -113,7 +113,7 @@
     "image": "items.png",
     "format": "RGBA8888",
     "size": {
-      "w": 1112,
+      "w": 875,
       "h": 224
     },
     "scale": "1",
