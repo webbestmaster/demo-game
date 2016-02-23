@@ -179,6 +179,7 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 				null;
 
 		return {
+			offset: itemData.offset,
 			sprite: sprite,
 			hi: itemData.hi,
 			top: 0,
@@ -268,14 +269,15 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 				stageHeightInItems -= item.hi;
 			}
 
-			sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop - stageHeightInPixels + wheel.hi * wheel.itemHeight;
+			sprite.position.x = item.offset.x;
+			sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop - stageHeightInPixels + wheel.hi * wheel.itemHeight + item.offset.y;
 
 			item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
 			item.bottom = item.top + item.hi * wheel.itemHeight;
 
 			if (bg) {
 				bgStage.addChild(bg);
-				bg.position.y = sprite.position.y + wheelsData.item.itemDeltaTop;
+				bg.position.y = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
 				bg.visible = false;
 			}
 
