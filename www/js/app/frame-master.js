@@ -19,7 +19,7 @@ define (function () {
 			var frameData;
 			var delta = data.meta.delta;
 
-			for (var i = 0; i <= 16; i += 1) {
+			for (var i = 0; i <= 17; i += 1) {
 
 				frameId = 'frame-part-' + i;
 
