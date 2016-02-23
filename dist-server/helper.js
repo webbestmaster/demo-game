@@ -10,7 +10,7 @@ var fs = require('fs'),
 
 function parseReqUrl(req) {
 
-	return './../dist/www/' + parseReqUrlOriginal(req).replace('./', '');
+	return './../www/' + parseReqUrlOriginal(req).replace('./', '');
 
 }
 

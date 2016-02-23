@@ -1,6 +1,6 @@
 define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/log', './wheels-data', './wheel', './texture-master',
-		'./frame-master', './effect-master', './game-textures', './../services/fps-meter'],
-	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, gameTextures, fpsMeter) {
+		'./frame-master', './effect-master', './../services/fps-meter'],
+	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, fpsMeter) {
 
 	var game = {
 

@@ -2,10 +2,10 @@
   "frames": {
 
     "frame-part-0": {
-      "frame": { "x": 14, "y": 0, "w": 213, "h": 155 },
+      "frame": { "x": 14, "y": 0, "w": 123, "h": 155 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 213, "h": 155 },
-      "sourceSize": { "w": 213, "h": 155 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 123, "h": 155 },
+      "sourceSize": { "w": 123, "h": 155 }
     },
 
     "frame-part-1": {
@@ -118,7 +118,15 @@
       "rotated": false, "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 14, "h": 228 },
       "sourceSize": { "w": 14, "h": 228 }
+    },
+
+    "frame-part-17": {
+      "frame": { "x": 137, "y": 0, "w": 90, "h": 118 },
+      "rotated": false, "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 118 },
+      "sourceSize": { "w": 90, "h": 118 }
     }
+
   },
   "meta": {
     "app": "",

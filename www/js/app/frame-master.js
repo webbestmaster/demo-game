@@ -1,4 +1,4 @@
-define (['./../lib/util'], function (util) {
+define (function () {
 	var frameMaster = {
 
 		original: {
@@ -7,18 +7,6 @@ define (['./../lib/util'], function (util) {
 				h: 520
 			}
 		},
-
-		/*
-		 update: function () {
-
-		 var frame = this;
-
-		 if (frame.logoFrame) {
-		 frame.updateAnimateLogo();
-		 }
-
-		 },
-		 */
 
 		initSprites: function () {
 
@@ -31,7 +19,7 @@ define (['./../lib/util'], function (util) {
 			var frameData;
 			var delta = data.meta.delta;
 
-			for (var i = 0; i <= 16; i += 1) {
+			for (var i = 0; i <= 17; i += 1) {
 
 				frameId = 'frame-part-' + i;
 
@@ -47,31 +35,6 @@ define (['./../lib/util'], function (util) {
 			}
 
 		}
-
-		// todo: remove this code -> create normal animator object and logic
-//	logoFrame: 100,
-
-		/*
-		 updateAnimateLogo: function () {
-
-		 var frame = this;
-
-		 /!*
-		 var filter = new PIXI.filters.PixelateFilter();
-
-		 filter.size = new PIXI.Point(frame.logoFrame / 5, frame.logoFrame / 5);
-
-		 logoSprite.filters = [filter];
-		 *!/
-
-		 frame.logoFrame -= 1;
-
-		 if (frame.logoFrame <= 0) {
-		 logoSprite.filters = null;
-		 }
-
-		 }
-		 */
 
 	};
 
