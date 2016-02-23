@@ -1,7 +1,7 @@
 var webpack = require("webpack");
 
 module.exports = {
-    entry: "./www/js/main",
+    entry: __dirname + "/www/js/main",
     resolve: {
         modulesDirectories: [
             "."
