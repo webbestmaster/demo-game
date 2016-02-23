@@ -1,10 +1,5 @@
 define (['./../lib/util', './effect-textures', './../lib/movie-clip-wrapper', './wheels-data'],
 	function (util, effectTextures, MovieClipWrapper, wheelsData) {
-	//var util = require('./../lib/util');
-	//var effectTextures = require('./effect-textures');
-    //
-	//var MovieClipWrapper = require('./../lib/movie-clip-wrapper');
-	//var wheelsData = require('./wheels-data');
 
 	var effectMaster = {
 
@@ -107,6 +102,8 @@ define (['./../lib/util', './effect-textures', './../lib/movie-clip-wrapper', '.
 		},
 
 		initRespinPopUpMovies: function () {
+
+			return;
 
 			var effect = this;
 
@@ -213,8 +210,8 @@ define (['./../lib/util', './effect-textures', './../lib/movie-clip-wrapper', '.
 				clip.hide();
 			});
 
-			effect.freeSpinPupUp.clip.stop();
-			effect.freeSpinPupUp.clip.hide();
+			//effect.freeSpinPupUp.clip.stop();
+			//effect.freeSpinPupUp.clip.hide();
 
 		},
 
