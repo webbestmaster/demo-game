@@ -217,6 +217,8 @@ define (['./../lib/util', './effect-textures', './../lib/movie-clip-wrapper', '.
 
 		showFreeSpinPopUp: function () {
 
+			return;
+
 			var freeSpinPupUp = this.freeSpinPupUp.clip;
 
 			freeSpinPupUp.show();
