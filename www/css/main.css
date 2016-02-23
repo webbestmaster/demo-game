@@ -37,6 +37,10 @@ body {
     margin: 0 auto
 }
 
+.spin-btn_disabled {
+    opacity: 0.5;
+}
+
 .fps-meter {
     position: absolute;
     top: 10px;

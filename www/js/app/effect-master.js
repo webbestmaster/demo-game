@@ -170,8 +170,6 @@ define (['./../lib/util', './effect-textures', './../lib/movie-clip-wrapper', '.
 
 		showWinClubs: function (positions) {
 
-			var clubs = [];
-
 			var effect = this;
 			var clips = effect.clips;
 
@@ -187,15 +185,11 @@ define (['./../lib/util', './effect-textures', './../lib/movie-clip-wrapper', '.
 						return;
 					}
 
-					clubs.push(clip);
+					clip.show();
+					clip.play();
 
 				});
 
-			});
-
-			clubs.forEach(function (club) {
-				club.show();
-				club.play();
 			});
 
 		},
