@@ -9,7 +9,13 @@ define (function () {
 				x: 0,
 				y: 3
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 204
+				},
+				h: 15
+			}
 		},
 		bonusX3: {
 			frame: 'item-bonus-x3',
@@ -19,7 +25,13 @@ define (function () {
 				x: 0,
 				y: 0
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 204
+				},
+				h: 15
+			}
 		},
 		wildViolet: {
 			frame: 'item-wild-violet',
@@ -29,7 +41,13 @@ define (function () {
 				x: 0,
 				y: 4
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 68
+				},
+				h: 10
+			}
 		},
 		wildGreen: {
 			frame: 'item-wild-green',
@@ -39,7 +57,13 @@ define (function () {
 				x: 0,
 				y: 4
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 68
+				},
+				h: 10
+			}
 		},
 		girl: {
 			frame: 'item-girl',
@@ -49,7 +73,13 @@ define (function () {
 				x: 0,
 				y: -1
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 66
+				},
+				h: 10
+			}
 		},
 		lion: {
 			frame: 'item-lion',
@@ -59,7 +89,13 @@ define (function () {
 				x: 0,
 				y: -1
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 66
+				},
+				h: 10
+			}
 		},
 		woodcutter: {
 			frame: 'item-woodcutter',
@@ -69,7 +105,13 @@ define (function () {
 				x: 0,
 				y: -3
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 60
+				},
+				h: 10
+			}
 		},
 		scarecrow: {
 			frame: 'item-scarecrow',
@@ -79,7 +121,13 @@ define (function () {
 				x: 0,
 				y: -2
 			},
-			bg: false
+			bg: {
+				offset: {
+					x: 0,
+					y: 60
+				},
+				h: 10
+			}
 		},
 		dog: {
 			frame: 'item-dog',
@@ -89,7 +137,13 @@ define (function () {
 				x: 0,
 				y: 3
 			},
-			bg: true
+			bg: {
+				offset: {
+					x: 0,
+					y: 0
+				},
+				h: 76
+			}
 		},
 		poppy: {
 			frame: 'item-poppy',
@@ -99,7 +153,13 @@ define (function () {
 				x: 0,
 				y: 7
 			},
-			bg: true
+			bg: {
+				offset: {
+					x: 0,
+					y: 0
+				},
+				h: 76
+			}
 		},
 		crow: {
 			frame: 'item-crow',
@@ -109,7 +169,13 @@ define (function () {
 				x: 0,
 				y: 4
 			},
-			bg: true
+			bg: {
+				offset: {
+					x: 0,
+					y: 0
+				},
+				h: 76
+			}
 		},
 		diamond: {
 			frame: 'item-diamond',
@@ -119,7 +185,13 @@ define (function () {
 				x: 31,
 				y: 15
 			},
-			bg: true
+			bg: {
+				offset: {
+					x: 0,
+					y: 0
+				},
+				h: 76
+			}
 		},
 		club: {
 			frame: 'item-club',
@@ -129,7 +201,13 @@ define (function () {
 				x: 30,
 				y: 15
 			},
-			bg: true
+			bg: {
+				offset: {
+					x: 0,
+					y: 0
+				},
+				h: 76
+			}
 		},
 		spades: {
 			frame: 'item-spades',
@@ -139,7 +217,13 @@ define (function () {
 				x: 30,
 				y: 15
 			},
-			bg: true
+			bg: {
+				offset: {
+					x: 0,
+					y: 0
+				},
+				h: 76
+			}
 		},
 		heart: {
 			frame: 'item-heart',
@@ -149,7 +233,13 @@ define (function () {
 				x: 30,
 				y: 23
 			},
-			bg: true
+			bg: {
+				offset: {
+					x: 0,
+					y: 0
+				},
+				h: 76
+			}
 		}
 
 	};

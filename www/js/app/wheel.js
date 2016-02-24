@@ -64,6 +64,8 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		wheel.currentFilter.blur = 1;
 		wheel.innerStage.filters = [wheel.currentFilter];
 
+		// TODO: add here push all methods to instance
+
 	}
 
 	Wheel.prototype.updatePosition = function () {
@@ -97,29 +99,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 	};
 
-	/*
-	 Wheel.prototype.getYPosition = function () {
-
-	 return this.getRoundPosition() * this.itemHeight | 0;
-
-	 };
-	 */
-
-
-	/*
-	 Wheel.prototype.setBg = function (type) {
-
-	 var wheel = this;
-
-	 var sprite = new PIXI.Sprite.fromFrame('wheels-' + type + '-bg-x' + wheel.hi);
-
-	 wheel.stage.addChild(sprite);
-
-	 sprite.height = wheel.hi * wheelsData.item.h;
-
-	 };
-	 */
-
 	Wheel.prototype.detectVisibleItems = function (roundPosition) {
 
 		if (this.lastDetectVisiblePosition === roundPosition) {
@@ -147,21 +126,15 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 			item = items[i];
 
 			sprite = item.sprite;
-			bg = item.bg;
+			bg = item.bg.sprite;
 
 			if (item.top >= top || item.bottom <= bottom) {
 				if (sprite.visible) {
-					sprite.visible = false;
-					if (bg) {
-						bg.visible = false
-					}
+					bg.visible = sprite.visible = false;
 				}
 			} else {
 				if (!sprite.visible) {
-					sprite.visible = true;
-					if (bg) {
-						bg.visible = true;
-					}
+					bg.visible = sprite.visible = true;
 				}
 			}
 
@@ -175,7 +148,7 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 			itemData = itemsData[key],
 			sprite = new PIXI.Sprite.fromFrame(itemData.frame),
 			bg = itemData.bg ?
-				new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal',  wheelsData.item.w, wheelsData.item.h) :
+				new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal',  wheelsData.item.w, itemData.bg.h) :
 				null;
 
 		return {
@@ -184,7 +157,10 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 			hi: itemData.hi,
 			top: 0,
 			bottom: 0,
-			bg: bg
+			bg: {
+				sprite: bg,
+				offset: itemData.bg.offset
+			}
 		};
 
 	};
@@ -198,7 +174,7 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		var wheel = this;
 
-		var realSizeInItems = Math.round(Math.random() * 10) + 5;
+		var realSizeInItems = Math.round(Math.random() * 20) + 5;
 
 		var items = [];
 
@@ -261,7 +237,7 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		items.forEach(function (item, index) {
 
 			var sprite = item.sprite;
-			var bg = item.bg;
+			var bg = item.bg.sprite;
 
 			innerStage.addChild(sprite);
 
@@ -275,12 +251,10 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 			item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
 			item.bottom = item.top + item.hi * wheel.itemHeight;
 
-			if (bg) {
-				bgStage.addChild(bg);
-				bg.position.y = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
-				bg.visible = false;
-			}
+			bgStage.addChild(bg);
+			bg.position.y = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight + item.bg.offset.y;
 
+			bg.visible = false;
 			sprite.visible = false;
 
 		});

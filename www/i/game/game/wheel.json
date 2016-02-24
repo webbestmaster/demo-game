@@ -16,7 +16,7 @@
     },
 
     "item-wild-x3": {
-      "frame": { "x": 3, "y": 0, "w": 125, "h": 221 },
+      "frame": { "x": 0, "y": 0, "w": 125, "h": 221 },
       "rotated": false, "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 221 },
       "sourceSize": { "w": 125, "h": 221 }
