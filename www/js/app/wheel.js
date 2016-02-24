@@ -48,8 +48,8 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		wheel.bgStage = new PIXI.Container();
 		wheel.innerStage = new PIXI.Container();
 
-		//wheel.bg = null;
-		//wheel.setBg('normal');
+		wheel.texture = null;
+		wheel.prepareTextures();
 
 		wheel.stage.addChild(wheel.bgStage);
 		wheel.stage.addChild(wheel.innerStage);
@@ -66,6 +66,8 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		wheel.pushPrototypeMethods();
 
+		wheel.setBg('normal');
+
 	}
 
 	Wheel.prototype.pushPrototypeMethods = function () {
@@ -73,13 +75,44 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		var wheel = this;
 		var proto = wheel.constructor.prototype;
 
+		var excludedMethods = [
+			'selfFill',
+			'pushPrototypeMethods',
+			'prepareTextures',
+			'getNewItem'
+		];
+
 		var key;
 
 		for (key in proto) {
-			if (proto.hasOwnProperty(key)) {
+			if (proto.hasOwnProperty(key) && excludedMethods.indexOf(key) === -1) {
 				wheel[key] = proto[key];
 			}
 		}
+
+	};
+
+	// all textures created for each wheel
+	Wheel.prototype.prepareTextures = function () {
+
+		this.texture = {
+			bg: {
+				normal: new PIXI.Texture.fromFrame('wheels-bg-normal'),
+				bonus: new PIXI.Texture.fromFrame('wheels-bg-bonus')
+			}
+		}
+
+	};
+
+	Wheel.prototype.setBg = function (type) {
+
+		var wheel = this;
+
+		var texture = wheel.texture.bg[type];
+
+		wheel.bgStage.children.forEach(function (bg) {
+			bg.texture = texture;
+		});
 
 	};
 

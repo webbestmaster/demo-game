@@ -169,6 +169,8 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 
 				effectMaster.showFreeSpinPopUp();
 
+				game.setWheelBg('bonus');
+
 			};
 
 		},
@@ -284,6 +286,17 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 				newWheel.updatePosition();
 
 			});
+
+		},
+
+		setWheelBg: function (type) {
+
+			var wheels = this.wheels,
+				i, len;
+
+			for (i = 0, len = wheels.length; i < len; i += 1) {
+				wheels[i].setBg(type);
+			}
 
 		},
 
