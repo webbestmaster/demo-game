@@ -1,18 +1,29 @@
 var webpack = require("webpack");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: __dirname + "/www/js/main",
     resolve: {
         modulesDirectories: [
             ""
-        ],
-        alias: {
-            //'Deferred': "./js/deferred"
-        }
+        ]
     },
     output: {
         path: __dirname + "/dist/www/js/",
         filename: "main.js",
         publicPath: "./js/"
-    }
+    },
+    context: "www",
+    plugins: [
+        new CopyWebpackPlugin([{
+            from: 'i/',
+            to: './../i'
+        }, {
+            from: 'hi/',
+            to: './../hi'
+        }, {
+            from: 'css/',
+            to: './../css'
+        }])
+    ]
 };
