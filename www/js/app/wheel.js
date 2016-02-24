@@ -64,9 +64,24 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		wheel.currentFilter.blur = 1;
 		wheel.innerStage.filters = [wheel.currentFilter];
 
-		// TODO: add here push all methods to instance
+		wheel.pushPrototypeMethods();
 
 	}
+
+	Wheel.prototype.pushPrototypeMethods = function () {
+
+		var wheel = this;
+		var proto = wheel.constructor.prototype;
+
+		var key;
+
+		for (key in proto) {
+			if (proto.hasOwnProperty(key)) {
+				wheel[key] = proto[key];
+			}
+		}
+
+	};
 
 	Wheel.prototype.updatePosition = function () {
 
@@ -167,11 +182,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 	Wheel.prototype.selfFill = function () {
 
-		// todo: split this function to several procedures
-		// 1 - create items
-		// 2 (1.1) - create extra items
-		// 3 - set default position of sprites
-
 		var wheel = this;
 
 		var realSizeInItems = Math.round(Math.random() * 20) + 5;
@@ -182,9 +192,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		var len;
 		// magic block - begin
-
-		// todo: note: try to use texture to fast change sprite state
-		// see example here -> http://pixijs.github.io/examples/index.html?s=demos&f=texture-swap.js&title=Texture%20Swap
 
 		// add "real" items
 		for (i = 0; i < realSizeInItems; i += 1) {
@@ -211,10 +218,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		for (i = 1; i <= realSizeInItems; i += 1) {
 			wheel.size += items[i].hi;
 		}
-
-		// TODO: just mark first and last items - remove it for production
-		//items[items.length - 1].sprite.alpha = 0.5;
-		//items[0].sprite.alpha = 0.5;
 
 		// magic block - end
 
