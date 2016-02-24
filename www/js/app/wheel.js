@@ -59,10 +59,13 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		wheel.selfFill();
 
+		wheel.setBlurState('normal');
 		//playing with gl filters
+/*
 		wheel.currentFilter = new PIXI.filters.BlurYFilter();
 		wheel.currentFilter.blur = 1;
 		wheel.innerStage.filters = [wheel.currentFilter];
+*/
 
 		wheel.pushPrototypeMethods();
 
@@ -95,11 +98,45 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 	// all textures created for each wheel
 	Wheel.prototype.prepareTextures = function () {
 
-		this.texture = {
+		var wheel = this;
+
+		wheel.texture = {
 			bg: {
 				normal: new PIXI.Texture.fromFrame('wheels-bg-normal'),
 				bonus: new PIXI.Texture.fromFrame('wheels-bg-bonus')
 			}
+		};
+
+		var item = wheel.texture.item = {
+			normal: {},
+			blur: {}
+		};
+
+		itemsData.list.forEach(function (key) {
+
+			var itemData = itemsData[key];
+
+			item.normal[key] = new PIXI.Texture.fromFrame(itemData.frame);
+			item.blur[key] = new PIXI.Texture.fromFrame(itemData.frame + '_blur');
+
+		});
+
+	};
+
+	Wheel.prototype.setBlurState = function (state) {
+
+		var wheel = this;
+
+		var item;
+		var items = wheel.items;
+
+		var itemTextures = wheel.texture.item[state];
+
+		var i, len;
+
+		for (i = 0, len = items.length; i < len; i += 1) {
+			item = items[i];
+			item.sprite.texture = itemTextures[item.key]
 		}
 
 	};
@@ -110,9 +147,13 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		var texture = wheel.texture.bg[type];
 
-		wheel.bgStage.children.forEach(function (bg) {
-			bg.texture = texture;
-		});
+		var children = wheel.bgStage.children;
+
+		var i, len;
+
+		for (i = 0, len = children.length; i < len; i += 1) {
+			children[i].texture = texture;
+		}
 
 	};
 
@@ -200,6 +241,8 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 				null;
 
 		return {
+			key: key,
+			//frameName: itemData.frame,
 			offset: itemData.offset,
 			sprite: sprite,
 			hi: itemData.hi,
@@ -341,7 +384,9 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		wheel.updatePosition();
 
-		wheel.currentFilter.blur = 6;    //blurring while it spins
+		wheel.setBlurState('blur');
+		//wheel.currentFilter.blur = 6;    //blurring while it spins
+
 	};
 
 	Wheel.prototype.updateSpinBegin = function () {
@@ -396,10 +441,10 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		wheel.a = wheel.END_A;
 		wheel.endSpinStopPosition = position;
 
-		wheel.currentFilter.blur = 1;
+		wheel.setBlurState('normal');
+		//wheel.currentFilter.blur = 1;
 
 	};
-
 
 	Wheel.prototype.updateSpinEnd = function () {
 
@@ -462,7 +507,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		}
 
 	};
-
 
 	return Wheel;
 });
