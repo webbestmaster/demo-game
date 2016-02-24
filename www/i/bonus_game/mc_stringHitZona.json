@@ -1,0 +1,19 @@
+﻿{"frames": {
+
+"mc_stringHitZona0000":
+{
+	"frame": {"x":0,"y":0,"w":60,"h":69},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":69},
+	"sourceSize": {"w":60,"h":69}
+}},
+"meta": {
+	"app": "Adobe Animate",
+	"version": "15.1.0.210",
+	"image": "mc_stringHitZona.png",
+	"format": "RGBA8888",
+	"size": {"w":64,"h":70},
+	"scale": "1"
+}
+}
