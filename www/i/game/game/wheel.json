@@ -18,10 +18,10 @@
 
 
     "item-wild-x3": {
-      "frame": { "x": 0, "y": 0, "w": 125, "h": 221 },
+      "frame": { "x": 0, "y": 4, "w": 125, "h": 220 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 221 },
-      "sourceSize": { "w": 125, "h": 221 }
+      "spriteSourceSize": { "x": 0, "y": 4, "w": 125, "h": 220 },
+      "sourceSize": { "w": 125, "h": 220 }
     },
 
     "item-bonus-x3": {
@@ -125,10 +125,10 @@
 
 
     "item-wild-x3_blur": {
-      "frame": { "x": 0, "y": 224, "w": 125, "h": 221 },
+      "frame": { "x": 0, "y": 228, "w": 125, "h": 220 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 221 },
-      "sourceSize": { "w": 125, "h": 221 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 220 },
+      "sourceSize": { "w": 125, "h": 220 }
     },
 
     "item-bonus-x3_blur": {

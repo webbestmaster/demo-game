@@ -7,14 +7,7 @@ define (function () {
 			index: 0,
 			offset: {
 				x: 0,
-				y: 3
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 204
-				},
-				h: 15
+				y: -5
 			}
 		},
 		bonusX3: {
@@ -23,14 +16,7 @@ define (function () {
 			index: 1,
 			offset: {
 				x: 0,
-				y: 0
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 204
-				},
-				h: 15
+				y: -7
 			}
 		},
 		wildViolet: {
@@ -39,14 +25,7 @@ define (function () {
 			index: 2,
 			offset: {
 				x: 0,
-				y: 4
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 68
-				},
-				h: 10
+				y: -8
 			}
 		},
 		wildGreen: {
@@ -55,14 +34,7 @@ define (function () {
 			index: 3,
 			offset: {
 				x: 0,
-				y: 4
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 68
-				},
-				h: 10
+				y: -8
 			}
 		},
 		girl: {
@@ -71,14 +43,7 @@ define (function () {
 			index: 4,
 			offset: {
 				x: 0,
-				y: -1
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 66
-				},
-				h: 10
+				y: -11
 			}
 		},
 		lion: {
@@ -87,14 +52,7 @@ define (function () {
 			index: 5,
 			offset: {
 				x: 0,
-				y: -1
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 66
-				},
-				h: 10
+				y: -13
 			}
 		},
 		woodcutter: {
@@ -103,14 +61,7 @@ define (function () {
 			index: 6,
 			offset: {
 				x: 0,
-				y: -3
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 60
-				},
-				h: 10
+				y: -15
 			}
 		},
 		scarecrow: {
@@ -119,14 +70,7 @@ define (function () {
 			index: 7,
 			offset: {
 				x: 0,
-				y: -2
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 60
-				},
-				h: 10
+				y: -15
 			}
 		},
 		dog: {
@@ -135,14 +79,7 @@ define (function () {
 			index: 8,
 			offset: {
 				x: 0,
-				y: 3
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 0
-				},
-				h: 76
+				y: -8
 			}
 		},
 		poppy: {
@@ -151,14 +88,7 @@ define (function () {
 			index: 9,
 			offset: {
 				x: 0,
-				y: 7
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 0
-				},
-				h: 76
+				y: -2
 			}
 		},
 		crow: {
@@ -167,14 +97,7 @@ define (function () {
 			index: 10,
 			offset: {
 				x: 0,
-				y: 4
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 0
-				},
-				h: 76
+				y: -6
 			}
 		},
 		diamond: {
@@ -182,15 +105,8 @@ define (function () {
 			hi: 1,
 			index: 11,
 			offset: {
-				x: 31,
-				y: 15
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 0
-				},
-				h: 76
+				x: 32,
+				y: 4
 			}
 		},
 		club: {
@@ -199,14 +115,7 @@ define (function () {
 			index: 12,
 			offset: {
 				x: 30,
-				y: 15
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 0
-				},
-				h: 76
+				y: 3
 			}
 		},
 		spades: {
@@ -215,14 +124,7 @@ define (function () {
 			index: 13,
 			offset: {
 				x: 30,
-				y: 15
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 0
-				},
-				h: 76
+				y: 4
 			}
 		},
 		heart: {
@@ -230,15 +132,8 @@ define (function () {
 			hi: 1,
 			index: 14,
 			offset: {
-				x: 30,
-				y: 23
-			},
-			bg: {
-				offset: {
-					x: 0,
-					y: 0
-				},
-				h: 76
+				x: 31,
+				y: 8
 			}
 		}
 

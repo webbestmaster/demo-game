@@ -1,5 +1,6 @@
 define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/log', './wheels-data', './wheel', './texture-master',
 		'./frame-master', './effect-master', './../services/fps-meter'],
+
 	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, fpsMeter) {
 
 	var game = {
@@ -169,7 +170,7 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 
 				effectMaster.showFreeSpinPopUp();
 
-				game.setWheelBg('bonus');
+				//game.setWheelBg('bonus');
 
 			};
 
@@ -262,23 +263,15 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 
 			wheelsData.wheels.forEach(function (wheelData) {
 
-				var wheelStage = new PIXI.Container();
-
-				game.stageWheels.addChild(wheelStage);
-
-				// add mask
-				var graphics = new PIXI.Graphics();
-				graphics.beginFill(0, 0);
-				wheelStage.mask = graphics.drawRect(wheelData.x, wheelData.y, wheelsData.item.w, wheelData.hi * wheelsData.item.h);
-
-				wheelStage.position.x = wheelData.x;
-				wheelStage.position.y = wheelData.y;
-
 				var newWheel = new Wheel({
+					renderer: game.renderer,
+					spritePosition: {
+						x: wheelData.x,
+						y: wheelData.y
+					},
 					hi: wheelData.hi,
-					itemHeight: wheelsData.item.h,
 					position: 0,
-					stage: wheelStage
+					stageWheels: game.stageWheels
 				});
 
 				wheels.push(newWheel);
@@ -289,6 +282,7 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 
 		},
 
+/*
 		setWheelBg: function (type) {
 
 			var wheels = this.wheels,
@@ -299,6 +293,7 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 			}
 
 		},
+*/
 
 		redraw: function () {
 

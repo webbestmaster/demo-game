@@ -1,7 +1,7 @@
 define (function () {
 	var itemWidth = 125;
 	var itemHeight = 70;
-	var itemSpriteHeight = 94;
+	//var itemSpriteHeight = 94;
 	var itemHalfHeight = 35;
 	var startX = 18;
 	var startY = 160;
@@ -42,8 +42,8 @@ define (function () {
 		],
 		item: {
 			w: itemWidth,
-			h: itemHeight,
-			itemDeltaTop: (itemSpriteHeight - itemHeight) / 2 // 94 - real sprite height, 70 visible sprite height
+			h: itemHeight
+			//itemDeltaTop: (itemSpriteHeight - itemHeight) / 2 // 94 - real sprite height, 70 visible sprite height
 		}
 	};
 

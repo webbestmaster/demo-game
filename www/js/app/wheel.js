@@ -1,15 +1,17 @@
-define (['./../lib/util', './items-data', './wheels-data'], function (util, itemsData, wheelsData) {
+define(['./../lib/util', './items-data', './wheels-data'], function (util, itemsData, wheelsData) {
 
-
-	
 	function Wheel(data) {
 
 		var wheel = this;
 
-		wheel.itemHeight = 0; // get from dataArguments
+		wheel.itemHeight = wheelsData.item.h;
+		wheel.itemHalfHeight = Math.floor(wheelsData.item.h / 2);
+
 		wheel.position = 0; // get from dataArguments
-		wheel.stage = null; // get from dataArguments
+		wheel.stageWheels = null; // get from dataArguments
+		wheel.renderer = null; // get from dataArguments
 		wheel.hi = 0; // get from dataArguments
+		wheel.spritePosition = 0; // get from dataArguments
 
 		wheel.state = '';
 		wheel.t = 0;
@@ -47,31 +49,13 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 			wheel[key] = value;
 		});
 
-		wheel.bgStage = new PIXI.Container();
-		wheel.innerStage = new PIXI.Container();
-
-		wheel.texture = null;
-		wheel.prepareTextures();
-
-		wheel.stage.addChild(wheel.bgStage);
-		wheel.stage.addChild(wheel.innerStage);
-
 		wheel.items = [];
 		wheel.size = 0;
 
+		wheel.tilingSprite = null;
+		wheel.originalTexture = null;
+
 		wheel.selfFill();
-
-		wheel.setBlurState('normal');
-		//playing with gl filters
-/*
-		wheel.currentFilter = new PIXI.filters.BlurYFilter();
-		wheel.currentFilter.blur = 1;
-		wheel.innerStage.filters = [wheel.currentFilter];
-*/
-
-		wheel.pushPrototypeMethods();
-
-		wheel.setBg('normal');
 
 	}
 
@@ -83,7 +67,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		var excludedMethods = [
 			'selfFill',
 			'pushPrototypeMethods',
-			'prepareTextures',
 			'getNewItem'
 		];
 
@@ -97,67 +80,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 	};
 
-	// all textures created for each wheel
-	Wheel.prototype.prepareTextures = function () {
-
-		var wheel = this;
-
-		wheel.texture = {
-			bg: {
-				normal: new PIXI.Texture.fromFrame('wheels-bg-normal'),
-				bonus: new PIXI.Texture.fromFrame('wheels-bg-bonus')
-			}
-		};
-
-		var item = wheel.texture.item = {
-			normal: {},
-			blur: {}
-		};
-
-		itemsData.list.forEach(function (key) {
-
-			var itemData = itemsData[key];
-
-			item.normal[key] = new PIXI.Texture.fromFrame(itemData.frame);
-			item.blur[key] = new PIXI.Texture.fromFrame(itemData.frame + '_blur');
-
-		});
-
-	};
-
-	Wheel.prototype.setBlurState = function (state) {
-
-		var wheel = this;
-
-		var item;
-		var items = wheel.items;
-
-		var itemTextures = wheel.texture.item[state];
-
-		var i, len;
-
-		for (i = 0, len = items.length; i < len; i += 1) {
-			item = items[i];
-			item.sprite.texture = itemTextures[item.key]
-		}
-
-	};
-
-	Wheel.prototype.setBg = function (type) {
-
-		var wheel = this;
-
-		var texture = wheel.texture.bg[type];
-
-		var children = wheel.bgStage.children;
-
-		var i, len;
-
-		for (i = 0, len = children.length; i < len; i += 1) {
-			children[i].texture = texture;
-		}
-
-	};
 
 	Wheel.prototype.updatePosition = function () {
 
@@ -182,54 +104,7 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		}
 
-		var roundPosition = this.getRoundPosition();
-
-		this.bgStage.position.y = this.innerStage.position.y = roundPosition * this.itemHeight | 0;
-
-		this.detectVisibleItems(Math.ceil(roundPosition));
-
-	};
-
-	Wheel.prototype.detectVisibleItems = function (roundPosition) {
-
-		if (this.lastDetectVisiblePosition === roundPosition) {
-			return;
-		}
-
-		this.lastDetectVisiblePosition = roundPosition;
-
-		var wheel = this;
-
-		var hi = wheel.hi;
-		var items = wheel.items;
-		var item;
-
-		var itemHeight = wheel.itemHeight;
-
-		var bottom = -roundPosition * itemHeight;
-		var top = bottom + ( hi + 1) * itemHeight;
-
-		var sprite;
-		var bg;
-
-		for (var i = 0, len = items.length; i < len; i += 1) {
-
-			item = items[i];
-
-			sprite = item.sprite;
-			bg = item.bg.sprite;
-
-			if (item.top >= top || item.bottom <= bottom) {
-				if (sprite.visible) {
-					bg.visible = sprite.visible = false;
-				}
-			} else {
-				if (!sprite.visible) {
-					bg.visible = sprite.visible = true;
-				}
-			}
-
-		}
+		this.tilingSprite.tilePosition.y = Math.floor(this.tilingSpriteYOffset + this.getRoundPosition() * this.itemHeight);
 
 	};
 
@@ -237,23 +112,12 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		var key = itemsData.list[index],
 			itemData = itemsData[key],
-			sprite = new PIXI.Sprite.fromFrame(itemData.frame),
-			bg = itemData.bg ?
-				new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal',  wheelsData.item.w, itemData.bg.h) :
-				null;
+			sprite = new PIXI.Sprite.fromFrame(itemData.frame);
 
 		return {
-			key: key,
-			//frameName: itemData.frame,
 			offset: itemData.offset,
 			sprite: sprite,
-			hi: itemData.hi,
-			top: 0,
-			bottom: 0,
-			bg: {
-				sprite: bg,
-				offset: itemData.bg.offset
-			}
+			hi: itemData.hi
 		};
 
 	};
@@ -262,14 +126,11 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		var wheel = this;
 
-		var realSizeInItems = Math.round(Math.random() * 20) + 5;
+		var realSizeInItems = Math.floor(Math.random() * 20) + 30;
 
 		var items = [];
 
 		var i;
-
-		var len;
-		// magic block - begin
 
 		// add "real" items
 		for (i = 0; i < realSizeInItems; i += 1) {
@@ -285,10 +146,6 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		items.unshift(items[items.length - 1]);
 
 		// add last items, the same as first items
-		for (i = 1, len = wheel.hi + 1; i <= len; i += 1) { // i = 1, i <= len !!, it is not a mistake
-			items.push(items[i]);
-		}
-
 		items = items.map(function (item) {
 			return wheel.getNewItem(item % itemsData.list.length);
 		});
@@ -297,28 +154,21 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 			wheel.size += items[i].hi;
 		}
 
-		// magic block - end
-
 		// count needed stage height
-		var stageHeightInItems = -1; // reduce for last items
+		var stageHeightInItems = 0;
 		items.forEach(function (item, index) {
-
-			if (index) { // do not count zero extra item
-				stageHeightInItems += item.hi;
-			}
-
+			// do not count zero extra item
+			return index && (stageHeightInItems += item.hi);
 		});
 
 		var stageHeightInPixels = stageHeightInItems * wheel.itemHeight;
 
-		var innerStage = wheel.innerStage;
-		var bgStage = wheel.bgStage;
+		var innerStage = new PIXI.Container();
 
 		// set sprite positions
 		items.forEach(function (item, index) {
 
 			var sprite = item.sprite;
-			var bg = item.bg.sprite;
 
 			innerStage.addChild(sprite);
 
@@ -327,23 +177,38 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 			}
 
 			sprite.position.x = item.offset.x;
-			sprite.position.y = stageHeightInItems * wheel.itemHeight - wheelsData.item.itemDeltaTop - stageHeightInPixels + wheel.hi * wheel.itemHeight + item.offset.y;
-
-			item.top = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight;
-			item.bottom = item.top + item.hi * wheel.itemHeight;
-
-			bgStage.addChild(bg);
-			bg.position.y = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + wheel.hi * wheel.itemHeight + item.bg.offset.y;
-
-			bg.visible = false;
-			sprite.visible = false;
+								// get full height in pixel 		// reduce by rest of	// add item sprite offset
+			sprite.position.y = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + item.offset.y;
 
 		});
+
+		// set last of items
+		wheel.tilingSpriteYOffset = items[0].offset.y - wheel.itemHalfHeight;
 
 		wheel.items = items;
 
 		// reverse draw order
 		innerStage.children = innerStage.children.reverse();
+
+		var baseTexture = innerStage.generateTexture(wheel.renderer, 1, PIXI.SCALE_MODES.DEFAULT);
+
+		var texture = new PIXI.Texture(baseTexture, new PIXI.Rectangle(0, wheel.itemHalfHeight, wheelsData.item.w, stageHeightInPixels));
+
+		wheel.originalTexture = texture;
+
+		var tilingSprite = new PIXI.extras.TilingSprite(texture);
+
+		tilingSprite.position.x = wheel.spritePosition.x;
+		tilingSprite.position.y = wheel.spritePosition.y;
+
+		tilingSprite.width = wheelsData.item.w;
+		tilingSprite.height = wheel.hi * wheel.itemHeight;
+
+		wheel.tilingSprite = tilingSprite;
+
+		wheel.stageWheels.addChild(tilingSprite);
+
+		// TODO: add several different textures with different state
 
 	};
 
@@ -386,7 +251,7 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 
 		wheel.updatePosition();
 
-		wheel.setBlurState('blur');
+		//wheel.setBlurState('blur');
 		//wheel.currentFilter.blur = 6;    //blurring while it spins
 
 	};
@@ -443,7 +308,7 @@ define (['./../lib/util', './items-data', './wheels-data'], function (util, item
 		wheel.a = wheel.END_A;
 		wheel.endSpinStopPosition = position;
 
-		wheel.setBlurState('normal');
+		//wheel.setBlurState('normal');
 		//wheel.currentFilter.blur = 1;
 
 	};
