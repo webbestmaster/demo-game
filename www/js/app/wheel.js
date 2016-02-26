@@ -37,7 +37,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 		//wheel.V_MAX = 1; // const
 		wheel.BEGIN_A = 0.5; // const
 		wheel.END_A = -0.5; // const
-		wheel.T_INC = 0.1; // const
+		wheel.T_INC = 0.2; // const
 		wheel.V_MAX = 3; // const
 
 		//wheel.BEGIN_A = 0.2; // const

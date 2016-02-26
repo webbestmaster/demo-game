@@ -297,6 +297,10 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 
 		redraw: function () {
 
+			if (this.i = !this.i) { // here use single "=" for small optimization
+				return;
+			}
+
 			effectMaster.update();
 			//frameMaster.update();
 
