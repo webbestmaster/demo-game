@@ -60,14 +60,14 @@
     },
 
     "item-woodcutter": {
-      "frame": { "x": 500, "y": 0, "w": 125, "h": 88 },
+      "frame": { "x": 500, "y": 2, "w": 125, "h": 97 },
       "rotated": false, "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 88 },
-      "sourceSize": { "w": 125, "h": 88 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 97 },
+      "sourceSize": { "w": 125, "h": 97 }
     },
 
     "item-scarecrow": {
-      "frame": { "x": 500, "y": 93, "w": 125, "h": 88 },
+      "frame": { "x": 500, "y": 102, "w": 125, "h": 88 },
       "rotated": false, "trimmed": true,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 88 },
       "sourceSize": { "w": 125, "h": 88 }
@@ -174,10 +174,10 @@
     },
 
     "item-scarecrow_blur": {
-      "frame": { "x": 500, "y": 317, "w": 125, "h": 88 },
+      "frame": { "x": 500, "y": 328, "w": 125, "h": 97 },
       "rotated": false, "trimmed": true,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 88 },
-      "sourceSize": { "w": 125, "h": 88 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 97 },
+      "sourceSize": { "w": 125, "h": 97 }
     },
 
     "item-dog_blur": {

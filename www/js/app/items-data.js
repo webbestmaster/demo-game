@@ -61,7 +61,7 @@ define (function () {
 			index: 6,
 			offset: {
 				x: 0,
-				y: -15
+				y: -24
 			}
 		},
 		scarecrow: {
