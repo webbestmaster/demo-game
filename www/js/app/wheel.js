@@ -37,7 +37,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 		//wheel.V_MAX = 1; // const
 		wheel.BEGIN_A = 0.5; // const
 		wheel.END_A = -0.5; // const
-		wheel.T_INC = 0.1; // const
+		wheel.T_INC = 0.01; // const
 		wheel.V_MAX = 3; // const
 
 		//wheel.BEGIN_A = 0.2; // const
@@ -152,7 +152,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 	Wheel.prototype.getRawItems = function () {
 
-		var realSizeInItems = Math.floor(Math.random() * 20) + 30;
+		var realSizeInItems = Math.floor(Math.random() * 0) + 5;
 
 		var items = [];
 
@@ -160,7 +160,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 		// add "real" items
 		for (i = 0; i < realSizeInItems; i += 1) {
-			items.push(i);
+			items.push(i+10);
 		}
 
 		items = items.sort(function () {
@@ -292,11 +292,16 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 		wheel['items' + postfix] = items;
 
-		// reverse draw order
+		var bgTilingSprite = new PIXI.TilingSprite.fromFrame('wheels-bg-normal', wheelsData.item.w, stageHeightInPixels + wheel.itemHeight);
+		bgTilingSprite.position.y = -stageHeightInPixels;
+
+		var bgTilingSprite_bonus = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-bonus', wheelsData.item.w, stageHeightInPixels + wheel.itemHeight);
+		bgTilingSprite_bonus.position.y = -stageHeightInPixels;
+
+		innerStage.addChild(bgTilingSprite_bonus);
+
 		innerStage.children = innerStage.children.reverse();
 
-		var bgTilingSprite = new PIXI.extras.TilingSprite.fromFrame('item-wild-x3', wheelsData.item.w, stageHeightInPixels);
-		//var bgTilingSprite_bonus = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-bonus');
 
 		//bgTilingSprite.position.x = wheel.spritePosition.x;
 		//bgTilingSprite.position.y = wheel.spritePosition.y;
@@ -309,7 +314,6 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 
 
-		innerStage.addChild(bgTilingSprite);
 
 
 
