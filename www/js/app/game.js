@@ -1,7 +1,19 @@
-define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/log', './wheels-data', './wheel', './texture-master',
-		'./frame-master', './effect-master', './../services/fps-meter'],
+define (
+	[
+		'./../lib/pixi',
+		'./../lib/util',
+		'./../lib/deferred',
+		'./../services/log',
+		'./wheels-data',
+		'./wheel',
+		'./texture-master',
+		'./frame-master',
+		'./effect-master',
+		'./ticker',
+		'./../lib/fpsmeter' // fps meter has no AMD version, just load it for crate FPSMeter globally
+	],
 
-	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, fpsMeter) {
+	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, ticker) {
 
 	var game = {
 
@@ -41,21 +53,27 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 
 		initTicker: function (fn) {
 
-			var game = this;
-
-			//var ticker = new PIXI.ticker.Ticker();
-			var ticker = PIXI.ticker.shared;
+			ticker.setFPS(35);
 
 			ticker.add(fn);
 
-			fpsMeter.init(ticker);
-
-			//todo: detect dev mode to avoid it
-			fpsMeter.addNode();
-
 			ticker.start();
 
-			game.ticker = ticker;
+			//var fpsMeter = new FPSMeter();
+
+			var fpsMeter = new FPSMeter({
+				theme: 'dark', // / Meter theme. Build in: 'dark', 'light', 'transparent', 'colorful'
+				show: 'fps',
+				graph: 1, // Whether to show history graph.
+				history: 20
+			});
+
+			fpsMeter.showFps();
+
+			ticker.add(fpsMeter.tick);
+
+			//fpsMeter.init(ticker);
+			//fpsMeter.addNode();
 
 		},
 
@@ -72,11 +90,6 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 		},
 
 		spin: function () {
-
-			// do not spin if no data about FPS
-			if (!fpsMeter.scaleFPS) {
-				return;
-			}
 
 			var game = this;
 
@@ -124,13 +137,9 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 
 			var wheels = game.wheels;
 
-			var extraWheelData = {
-				scaleFPS: fpsMeter.scaleFPS
-			};
-
 			wheels.forEach(function (wheel, index) {
 				setTimeout(function () {
-					wheel.beginSpin(extraWheelData);
+					wheel.beginSpin();
 				}, 300 * index);
 			});
 
@@ -296,12 +305,6 @@ define (['./../lib/pixi', './../lib/util', './../lib/deferred', './../services/l
 */
 
 		redraw: function () {
-
-/*
-			if (this.i = !this.i) { // here use single "=" for small optimization
-				return;
-			}
-*/
 
 			effectMaster.update();
 			//frameMaster.update();

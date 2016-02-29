@@ -352,7 +352,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 	};
 
-	Wheel.prototype.beginSpin = function (data) {
+	Wheel.prototype.beginSpin = function () {
 
 		var wheel = this;
 
@@ -362,7 +362,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 		wheel.v = 0;
 		wheel.a = wheel.BEGIN_A;
 		wheel.beginSpinStartPosition = wheel.position;
-		wheel.tInc = wheel.T_INC / data.scaleFPS;
+		wheel.tInc = wheel.T_INC;
 
 		wheel.updatePosition();
 

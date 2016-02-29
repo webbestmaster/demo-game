@@ -20,6 +20,10 @@ define (['./../lib/endless-array'], function (EndlessArray) {
 
 			ticker.add(fpsMeter.tick);
 
+			for (var i = 0; i < 10; i += 1) {
+				fpsMeter[i] = 0;
+			}
+
 		},
 
 		addNode: function () {
@@ -41,6 +45,10 @@ define (['./../lib/endless-array'], function (EndlessArray) {
 
 			var fpsMeter = this;
 
+			var log = fpsMeter.log;
+
+			log.push(Date.now());
+
 			fpsMeter.counter += 1;
 
 			if (fpsMeter.counter < 5) {
@@ -49,12 +57,10 @@ define (['./../lib/endless-array'], function (EndlessArray) {
 
 			fpsMeter.counter = 0;
 
-			var log = fpsMeter.log;
 
-			var tickerFPS = fpsMeter.ticker.FPS;
-			fpsMeter.FPS = tickerFPS;
 
-			log.push(tickerFPS);
+
+
 
 			var averageFPS = log.average() || 0;
 			fpsMeter.averageFPS = averageFPS;
