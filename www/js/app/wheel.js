@@ -50,10 +50,25 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 		});
 
 		wheel.items = [];
+		wheel.items_blur = [];
 		wheel.size = 0;
 
+		wheel.tilingSpriteLink = null;
+
+		wheel.ortiginalTilingSprite = null;
+		wheel.ortiginalTilingSprite_blur = null;
+
 		wheel.tilingSprite = null;
+		wheel.tilingSprite_bonus = null;
+
+		wheel.tilingSprite_blur = null;
+		wheel.tilingSprite_blur_bonus = null;
+
 		wheel.originalTexture = null;
+		wheel.originalTexture_blur = null;
+
+		wheel.tilingSpriteYOffset = 0;
+		wheel.tilingSpriteYOffset_blur = 0;
 
 		wheel.selfFill();
 
@@ -107,7 +122,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 		}
 
-		this.tilingSprite.tilePosition.y = Math.floor(this.tilingSpriteYOffset + this.getRoundPosition() * this.itemHeight);
+		this.tilingSpriteLink.tilePosition.y = Math.floor(this.tilingSpriteYOffset + this.getRoundPosition() * this.itemHeight);
 
 	};
 
@@ -192,12 +207,49 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 			type: 'blur'
 		});
 
-		wheel.stageWheels.addChild(wheel.tilingSprite);
+		//var bgTilingSprite = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal');
+		//var bgTilingSprite_bonus = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-bonus');
+		//
+		//wheel.tilingSprite = wheel.addBgSprite(wheel.originalTilingSprite, bgTilingSprite);
+		//wheel.tilingSprite_bonus = wheel.addBgSprite(wheel.originalTilingSprite, bgTilingSprite_bonus);
+		//
+		//wheel.tilingSprite_blur = wheel.addBgSprite(wheel.originalTilingSprite_blur, bgTilingSprite);
+		//wheel.tilingSprite_blur_bonus = wheel.addBgSprite(wheel.originalTilingSprite_blur, bgTilingSprite_bonus);
 
-		// TODO: add several different textures with different state
+		wheel.tilingSpriteLink = wheel.tilingSprite;
+
+		wheel.stageWheels.addChild(wheel.tilingSpriteLink);
 
 	};
 
+
+/*
+	// not addBgSprite
+	Wheel.prototype.addBgSprite = function (sprite, bg) {
+
+		var wheel = this;
+
+		var width = wheelsData.item.w;
+		var height = wheel.stageHeightInPixels;
+
+
+
+		var container = new PIXI.Container();
+
+		container.width = width;
+		container.height = height;
+
+		container.addChild(bg);
+		container.addChild(sprite);
+
+		var baseTexture = container.generateTexture(wheel.renderer, 1, PIXI.SCALE_MODES.DEFAULT);
+
+		var texture = new PIXI.Texture(baseTexture);
+
+		return new PIXI.extras.TilingSprite(texture);
+
+	};
+*/
 
 	Wheel.prototype.createItemContainer = function (data) {
 
@@ -243,6 +295,33 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 		// reverse draw order
 		innerStage.children = innerStage.children.reverse();
 
+		var bgTilingSprite = new PIXI.extras.TilingSprite.fromFrame('item-wild-x3', wheelsData.item.w, stageHeightInPixels);
+		//var bgTilingSprite_bonus = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-bonus');
+
+		//bgTilingSprite.position.x = wheel.spritePosition.x;
+		//bgTilingSprite.position.y = wheel.spritePosition.y;
+
+
+
+
+
+
+
+
+
+		innerStage.addChild(bgTilingSprite);
+
+
+
+
+
+
+
+
+
+
+
+
 		var baseTexture = innerStage.generateTexture(wheel.renderer, 1, PIXI.SCALE_MODES.DEFAULT);
 
 		var texture = new PIXI.Texture(baseTexture, new PIXI.Rectangle(0, wheel.itemHalfHeight, wheelsData.item.w, stageHeightInPixels));
@@ -257,6 +336,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 		tilingSprite.width = wheelsData.item.w;
 		tilingSprite.height = wheel.hi * wheel.itemHeight;
 
+		wheel['originalTilingSprite' + postfix] = tilingSprite;
 		wheel['tilingSprite' + postfix] = tilingSprite;
 
 	};
