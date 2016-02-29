@@ -390,6 +390,12 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 			return;
 		}
 
+		// add blur
+		// todo: create function to set wheel state once
+		wheel.stageWheels.removeChild(wheel.tilingSpriteLink);
+		wheel.tilingSpriteLink = wheel.tilingSprite_blur;
+		wheel.stageWheels.addChild(wheel.tilingSpriteLink);
+
 		wheel.v = v;
 		wheel.state = 'spin-main';
 
@@ -462,6 +468,12 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 			return;
 
 		}
+
+		// remove blur
+		// todo: create function to set wheel state once
+		wheel.stageWheels.removeChild(wheel.tilingSpriteLink);
+		wheel.tilingSpriteLink = wheel.tilingSprite;
+		wheel.stageWheels.addChild(wheel.tilingSpriteLink);
 
 		var a = wheel.a;
 
