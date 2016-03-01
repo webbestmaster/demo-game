@@ -26,6 +26,7 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 			loader.add('i/game/effect/club-win-animation.json');
 			loader.add('i/game/effect/respin-pop-up.json');
 			loader.add('i/game/game/wheel.json');
+			loader.add('i/game/game/symbols-normal.json');
 			loader.add('i/game/frame/frame.json');
 
 			loader

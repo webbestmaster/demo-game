@@ -128,25 +128,36 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 	Wheel.prototype.getNewItem = function (data) {
 
-		var index = data.index,
+		var wheel = this,
+			index = data.index,
 			state = data.state,
 			key = itemsData.list[index],
 			itemData = itemsData[key],
 			sprite;
 
-		if (state === 'normal') {
-			sprite = new PIXI.Sprite.fromFrame(itemData.frame);
+		if (state === 'normal' || true) {
+			sprite = new PIXI.Sprite.fromFrame(itemData.frame + '.png');
 		}
 
 		if (state === 'blur') {
-			sprite = new PIXI.Sprite.fromFrame(itemData.frame + '_blur');
+			//sprite = new PIXI.Sprite.fromFrame(itemData.frame + '_blur');
 		}
+
+		wheel.adjustSizes(sprite);
 
 		return {
 			offset: itemData.offset,
 			sprite: sprite,
 			hi: itemData.hi
 		};
+
+	};
+
+
+	Wheel.prototype.adjustSizes = function (sprite) {
+
+		sprite.height = Math.round(sprite.height * wheelsData.item.w / sprite.width );
+		sprite.width = wheelsData.item.w;
 
 	};
 
@@ -276,9 +287,11 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 		// add bg
 		var bgTilingSprite = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal', wheelsData.item.w, stageHeightInPixels + wheel.itemHeight);
+		bgTilingSprite.tileScale.x = wheelsData.item.w / wheelsData.sprite.w;
 		bgTilingSprite.position.y = -stageHeightInPixels;
 
 		var bgTilingSprite_bonus = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-bonus', wheelsData.item.w, stageHeightInPixels + wheel.itemHeight);
+		bgTilingSprite.tileScale.x = wheelsData.item.w / wheelsData.sprite.w;
 		bgTilingSprite_bonus.position.y = -stageHeightInPixels;
 
 		[bgTilingSprite, bgTilingSprite_bonus].forEach(function (bgSprite, index) {

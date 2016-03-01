@@ -106,7 +106,7 @@ define (function () {
 			index: 11,
 			offset: {
 				x: 32,
-				y: 4
+				y: 2
 			}
 		},
 		club: {
@@ -115,7 +115,7 @@ define (function () {
 			index: 12,
 			offset: {
 				x: 30,
-				y: 3
+				y: 1
 			}
 		},
 		spades: {
@@ -124,7 +124,7 @@ define (function () {
 			index: 13,
 			offset: {
 				x: 30,
-				y: 4
+				y: 2
 			}
 		},
 		heart: {
@@ -133,7 +133,25 @@ define (function () {
 			index: 14,
 			offset: {
 				x: 31,
-				y: 8
+				y: 5
+			}
+		},
+		q: {
+			frame: 'item-q',
+			hi: 1,
+			index: 15,
+			offset: {
+				x: 0,
+				y: -21
+			}
+		},
+		ring: {
+			frame: 'item-ring',
+			hi: 1,
+			index: 16,
+			offset: {
+				x: 0,
+				y: -25
 			}
 		}
 
