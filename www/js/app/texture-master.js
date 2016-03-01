@@ -4,22 +4,19 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 
 		resolution: 1,
 
+		baseUrl: '',
+
 		initTextures: function () {
+
+			var master = this;
 
 			var defer = new Deferred();
 
 			var loader = PIXI.loader;
 
-			//loader.baseUrl = 'hi/';
+			loader.baseUrl = master.baseUrl;
 
-			//var gameTexturesData = gameTextures.textures;
 			var effectTexturesData = effectTextures.textures;
-
-			/*
-			 util.eachHash(gameTexturesData, function (item, key) {
-			 loader.add('gameTextures/' + key, item.path);
-			 });
-			 */
 
 			util.eachHash(effectTexturesData, function (item, key) {
 				loader.add('effectTextures/' + key, item.path);
@@ -46,12 +43,6 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 
 						switch (root) {
 
-							/*
-							 case 'gameTextures':
-							 gameTexturesData[name].texture = value;
-							 break;
-							 */
-
 							case 'effectTextures':
 								effectTexturesData[name].texture = value;
 								break;
@@ -70,12 +61,27 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 
 		init: function () {
 
-			this.resolution = this.getDevicePixelRatio();
+			var master = this;
+			var resolution = master.getDevicePixelRatio();
+
+			master.resolution = resolution;
+
+			if (resolution !== 1) {
+				master.baseUrl = 'i-2'
+			}
 
 		},
 
 		getDevicePixelRatio: function () {
-			return window.devicePixelRatio || 1;
+
+			var resolution = Math.floor(window.devicePixelRatio || 1);
+
+			if (resolution > 2) {
+				resolution = 2;
+			}
+
+			return resolution;
+
 		}
 
 	};

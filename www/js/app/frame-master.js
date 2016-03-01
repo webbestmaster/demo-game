@@ -1,4 +1,4 @@
-define(function () {
+define(['./texture-master'], function (textureMaster) {
 	var frameMaster = {
 
 		original: {
@@ -8,7 +8,7 @@ define(function () {
 			}
 		},
 
-		initSprites: function (gameData) {
+		initSprites: function () {
 
 			var frame = this;
 			var frameStage = frame.stage;
@@ -18,6 +18,7 @@ define(function () {
 			var frameId;
 			var frameData;
 			var delta = data.meta.delta;
+			var resolution = textureMaster.resolution;
 
 			for (var i = 0; i <= 17; i += 1) {
 
@@ -27,11 +28,11 @@ define(function () {
 
 				sprite = new PIXI.Sprite.fromFrame(frameId);
 
-				sprite.scale.x = 0.5;
-				sprite.scale.y = 0.5;
+				sprite.scale.x = 1 / resolution;
+				sprite.scale.y = 1 / resolution;
 
-				sprite.position.x = Math.round( (frameData.x + delta.x) / 2);
-				sprite.position.y = Math.round( (frameData.y + delta.y) / 2);
+				sprite.position.x = Math.round( (frameData.x + delta.x) / resolution);
+				sprite.position.y = Math.round( (frameData.y + delta.y) / resolution);
 
 				frameStage.addChild(sprite);
 
