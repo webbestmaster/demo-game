@@ -53,20 +53,22 @@ define (
 
 		initTicker: function (fn) {
 
-			ticker.setFPS(35);
+			//ticker.setFPS(35);
 
 			ticker.add(fn);
 
 			ticker.start();
 
-			//var fpsMeter = new FPSMeter();
+			var fpsMeter = new FPSMeter();
 
+/*
 			var fpsMeter = new FPSMeter({
 				theme: 'dark', // / Meter theme. Build in: 'dark', 'light', 'transparent', 'colorful'
 				show: 'fps',
 				graph: 1, // Whether to show history graph.
 				history: 20
 			});
+*/
 
 			fpsMeter.showFps();
 
@@ -215,9 +217,8 @@ define (
 		initCanvas: function () {
 
 			var game = this,
-				q = 1,
-				width = game.original.full.w * q,
-				height = game.original.full.h * q,
+				width = game.original.full.w,
+				height = game.original.full.h,
 				renderer,
 				stageMain, stageWheels, stageFrame, stageEffect;
 
@@ -225,7 +226,7 @@ define (
 			renderer = new PIXI.autoDetectRenderer(width, height, {
 				transparent: true,
 				view: document.querySelector('.game-renderer'),
-				resolution: 1 // set 2 or 3 to use higher resolution
+				resolution: textureMaster.resolution // set 2 or 3 to use higher resolution
 				//,clearBeforeRender: false // right now canvas is cleared every tick,
 				//,preserveDrawingBuffer: true // uncomment this (clearBeforeRender, preserveDrawingBuffer) if clearing is needless
 			});
@@ -233,8 +234,6 @@ define (
 
 			// init main stage
 			stageMain = new PIXI.Container();
-			stageMain.scale.x = q;
-			stageMain.scale.y = q;
 
 			// init child stages
 			stageWheels = new PIXI.Container();

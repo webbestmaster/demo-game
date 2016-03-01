@@ -1,4 +1,4 @@
-define(['./../lib/util', './items-data', './wheels-data'], function (util, itemsData, wheelsData) {
+define(['./../lib/util', './items-data', './wheels-data', './texture-master'], function (util, itemsData, wheelsData, textureMaster) {
 
 	function Wheel(data) {
 
@@ -163,7 +163,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 	Wheel.prototype.getRawItems = function () {
 
-		var realSizeInItems = Math.floor(Math.random() * 50) + 20;
+		var realSizeInItems = Math.floor(Math.random() * 5) + 15;
 
 		var items = [];
 
@@ -305,7 +305,7 @@ define(['./../lib/util', './items-data', './wheels-data'], function (util, items
 
 			innerStage.addChildAt(bgSprite, 0);
 
-			var baseTexture = innerStage.generateTexture(wheel.renderer, 1, PIXI.SCALE_MODES.DEFAULT);
+			var baseTexture = innerStage.generateTexture(wheel.renderer, textureMaster.resolution, PIXI.SCALE_MODES.DEFAULT);
 
 			var texture = new PIXI.Texture(baseTexture, new PIXI.Rectangle(0, wheel.itemHalfHeight, wheelsData.item.w, stageHeightInPixels));
 

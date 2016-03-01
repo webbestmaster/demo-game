@@ -1,4 +1,4 @@
-define(['./../lib/rAF'], function (rAF) {
+define(['./../lib/raf'], function (raf) {
 
 	var ticker = {
 
@@ -39,7 +39,7 @@ define(['./../lib/rAF'], function (rAF) {
 
 			if (this.updateIsActive) {
 
-				rAF(this.update);
+				raf(this.update);
 
 				for (var i = 0, len = this.fn.length; i < len; i += 1) {
 					this.fn[i]();

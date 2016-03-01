@@ -2,6 +2,8 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 
 	var textureMaster = {
 
+		resolution: 2,
+
 		initTextures: function () {
 
 			var defer = new Deferred();
