@@ -70,7 +70,11 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 		wheel.tilingSpriteYOffset = 0;
 		wheel.tilingSpriteYOffset_blur = 0;
 
+		wheel.displayState = 'normal-normal';
+
 		wheel.selfFill();
+
+		wheel.setWheelDisplayState('normal-normal');
 
 	}
 
@@ -220,7 +224,10 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 
 		wheel.tilingSpriteLink = wheel.tilingSprite;
 
-		wheel.stageWheels.addChild(wheel.tilingSpriteLink);
+		wheel.stageWheels.addChild(wheel.tilingSprite);
+		wheel.stageWheels.addChild(wheel.tilingSprite_bonus);
+		wheel.stageWheels.addChild(wheel.tilingSprite_blur);
+		wheel.stageWheels.addChild(wheel.tilingSprite_blur_bonus);
 
 	};
 
@@ -404,10 +411,9 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 		}
 
 		// add blur
-		// todo: create function to set wheel state once
-		wheel.stageWheels.removeChild(wheel.tilingSpriteLink);
-		wheel.tilingSpriteLink = wheel.tilingSprite_blur;
-		wheel.stageWheels.addChild(wheel.tilingSpriteLink);
+		if (wheel.displayState !== 'blur-normal'){
+			wheel.setWheelDisplayState('blur-normal');
+		}
 
 		wheel.v = v;
 		wheel.state = 'spin-main';
@@ -424,6 +430,60 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 			wheel.beginSpinCb();
 			wheel.beginSpinCb = null;
 		}
+
+	};
+
+	Wheel.prototype.setWheelDisplayState = function (state) {
+
+		switch (state) {
+
+			case 'normal-normal':
+
+				this.tilingSpriteLink = this.tilingSprite;
+
+				this.tilingSprite.visible = true;
+				this.tilingSprite_bonus.visible = false;
+				this.tilingSprite_blur.visible = false;
+				this.tilingSprite_blur_bonus.visible = false;
+
+				break;
+
+			case 'normal-bonus':
+
+				this.tilingSpriteLink = this.tilingSprite_bonus;
+
+				this.tilingSprite.visible = false;
+				this.tilingSprite_bonus.visible = true;
+				this.tilingSprite_blur.visible = false;
+				this.tilingSprite_blur_bonus.visible = false;
+
+				break;
+
+			case 'blur-normal':
+
+				this.tilingSpriteLink = this.tilingSprite_blur;
+
+				this.tilingSprite.visible = false;
+				this.tilingSprite_bonus.visible = false;
+				this.tilingSprite_blur.visible = true;
+				this.tilingSprite_blur_bonus.visible = false;
+
+				break;
+
+			case 'blur-bonus':
+
+				this.tilingSpriteLink = this.tilingSprite_blur_bonus;
+
+				this.tilingSprite.visible = false;
+				this.tilingSprite_bonus.visible = false;
+				this.tilingSprite_blur.visible = false;
+				this.tilingSprite_blur_bonus.visible = true;
+
+				break;
+
+		}
+
+		this.displayState = state;
 
 	};
 
@@ -483,10 +543,9 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 		}
 
 		// remove blur
-		// todo: create function to set wheel state once
-		wheel.stageWheels.removeChild(wheel.tilingSpriteLink);
-		wheel.tilingSpriteLink = wheel.tilingSprite;
-		wheel.stageWheels.addChild(wheel.tilingSpriteLink);
+		if (wheel.displayState !== 'normal-normal'){
+			wheel.setWheelDisplayState('normal-normal');
+		}
 
 		var a = wheel.a;
 
