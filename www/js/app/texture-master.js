@@ -66,10 +66,22 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 
 			return defer.promise();
 
+		},
+
+		init: function () {
+
+			this.resolution = this.getDevicePixelRatio();
+
+		},
+
+		getDevicePixelRatio: function () {
+			return window.devicePixelRatio || 1;
 		}
 
 	};
 
+	textureMaster.init();
 
 	return textureMaster;
+
 });
