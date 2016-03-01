@@ -1,4 +1,4 @@
-define (function () {
+define(['./texture-master'], function (textureMaster) {
 	var frameMaster = {
 
 		original: {
@@ -8,7 +8,7 @@ define (function () {
 			}
 		},
 
-		initSprites: function () {
+		initSprites: function (gameData) {
 
 			var frame = this;
 			var frameStage = frame.stage;
@@ -19,6 +19,9 @@ define (function () {
 			var frameData;
 			var delta = data.meta.delta;
 
+			frameStage.width *= 2;
+			frameStage.height *= 2;
+
 			for (var i = 0; i <= 17; i += 1) {
 
 				frameId = 'frame-part-' + i;
@@ -27,12 +30,35 @@ define (function () {
 
 				frameData = frames[frameId].frame;
 
-				sprite.position.x = frameData.x + delta.x;
-				sprite.position.y = frameData.y + delta.y;
+				sprite.position.x = frameData.x;
+				sprite.position.y = frameData.y;
+
+				sprite.scale.x = 0.5;
+				sprite.scale.y = 0.5;
+
+				sprite.position.x *= 0.5;
+				sprite.position.y *= 0.5;
 
 				frameStage.addChild(sprite);
 
 			}
+
+			// todo: use this case for each sprite
+
+			var baseTexture = frameStage.generateTexture(gameData.renderer, textureMaster.resolution, PIXI.SCALE_MODES.DEFAULT);
+
+			var texture = new PIXI.Texture(baseTexture);
+
+			for (i = frameStage.children.length - 1; i >= 0; i--) {
+				frameStage.removeChild(frameStage.children[i]);
+			}
+
+			sprite = new PIXI.Sprite(texture);
+
+			sprite.position.x += delta.x;
+			sprite.position.y += delta.y;
+
+			frameStage.addChild(sprite);
 
 		}
 

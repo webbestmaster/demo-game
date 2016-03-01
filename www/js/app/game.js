@@ -39,7 +39,9 @@ define (
 			game.redraw = game.redraw.bind(game);
 
 			textureMaster.initTextures().done(function () {
-				frameMaster.initSprites();
+				frameMaster.initSprites({
+					renderer: game.renderer
+				});
 				effectMaster.initSprites();
 				game.createWheels();
 				game.bindEventListeners();
