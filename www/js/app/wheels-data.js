@@ -43,11 +43,8 @@ define (function () {
 		item: {
 			w: itemWidth,
 			h: itemHeight
-			//itemDeltaTop: (itemSpriteHeight - itemHeight) / 2 // 94 - real sprite height, 70 visible sprite height
-		},
-		sprite: {
-			w: 597
 		}
+
 	};
 
 	return wheelsData;

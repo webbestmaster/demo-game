@@ -287,12 +287,12 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 
 		// add bg
 		var bgTilingSprite = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-normal', wheelsData.item.w, stageHeightInPixels + wheel.itemHeight);
-		bgTilingSprite.tileScale.x = wheelsData.item.w / wheelsData.sprite.w;
-		bgTilingSprite.position.y = -stageHeightInPixels;
 
 		var bgTilingSprite_bonus = new PIXI.extras.TilingSprite.fromFrame('wheels-bg-bonus', wheelsData.item.w, stageHeightInPixels + wheel.itemHeight);
-		bgTilingSprite.tileScale.x = wheelsData.item.w / wheelsData.sprite.w;
-		bgTilingSprite_bonus.position.y = -stageHeightInPixels;
+
+		bgTilingSprite.position.y = bgTilingSprite_bonus.position.y = -stageHeightInPixels;
+
+		bgTilingSprite.tileScale.x = bgTilingSprite_bonus.tileScale.x = 1 / textureMaster.resolution;
 
 		[bgTilingSprite, bgTilingSprite_bonus].forEach(function (bgSprite, index) {
 

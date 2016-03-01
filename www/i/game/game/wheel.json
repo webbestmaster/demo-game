@@ -2,19 +2,19 @@
   "frames": {
 
     "wheels-bg-normal": {
-      "frame": { "x": 0, "y": 2, "w": 597, "h": 4 },
+      "frame": { "x": 0, "y": 2, "w": 125, "h": 4 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 597, "h": 4 },
-      "sourceSize": { "w": 597, "h": 4 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 4 },
+      "sourceSize": { "w": 125, "h": 4 }
     },
 
     "wheels-bg-bonus": {
-      "frame": { "x": 0, "y": 10, "w": 597, "h": 4 },
+      "frame": { "x": 0, "y": 10, "w": 125, "h": 4 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 597, "h": 4 },
-      "sourceSize": { "w": 597, "h": 4 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 125, "h": 4 },
+      "sourceSize": { "w": 125, "h": 4 }
     }
 
   },
@@ -24,8 +24,8 @@
     "image": "wheel.png",
     "format": "RGBA8888",
     "size": {
-      "w": 875,
-      "h": 448
+      "w": 125,
+      "h": 16
     },
     "scale": "1",
     "smartupdate": ""
