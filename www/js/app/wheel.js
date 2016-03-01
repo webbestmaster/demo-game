@@ -37,7 +37,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 		//wheel.V_MAX = 1; // const
 		wheel.BEGIN_A = 0.5; // const
 		wheel.END_A = -0.5; // const
-		wheel.T_INC = 0.1; // const
+		wheel.T_INC = 0.15; // const
 		wheel.V_MAX = 3; // const
 
 		//wheel.BEGIN_A = 0.2; // const
@@ -135,12 +135,12 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 			itemData = itemsData[key],
 			sprite;
 
-		if (state === 'normal' || true) {
+		if (state === 'normal') {
 			sprite = new PIXI.Sprite.fromFrame(itemData.frame + '.png');
 		}
 
 		if (state === 'blur') {
-			//sprite = new PIXI.Sprite.fromFrame(itemData.frame + '_blur');
+			sprite = new PIXI.Sprite.fromFrame(itemData.frame + '_blur.png');
 		}
 
 		wheel.adjustSizes(sprite);
@@ -393,7 +393,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 		var a = wheel.a;
 		var v = a * t;
 		var V_MAX = wheel.V_MAX;
-		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * 1.2;
+		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * 3;
 
 		wheel.position = position;
 
@@ -492,7 +492,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 
 		position = wheel.lastPosition + v * t + a * t * t / 2;
 		position += wheel.deltaPath * ( a * t / v );
-		position -= Math.sin((v - a * t) / v * Math.PI) * 1.2;
+		position -= Math.sin((v - a * t) / v * Math.PI) * 3;
 
 		wheel.position = position;
 

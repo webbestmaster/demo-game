@@ -92,7 +92,7 @@
     "frame": {"x":3552,"y":585,"w":284,"h":292},
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": {"x":0,"y":0,"w":597,"h":292},
+    "spriteSourceSize": {"x":0,"y":0,"w":284,"h":292},
     "sourceSize": {"w":597,"h":292}
   },
   "item-club.png":
