@@ -1,4 +1,4 @@
-define(['./../lib/util', './items-data', './wheels-data', './texture-master'], function (util, itemsData, wheelsData, textureMaster) {
+define(['./../lib/util', './items-data', './wheels-data', './texture-master', './../services/mediator'], function (util, itemsData, wheelsData, textureMaster, mediator) {
 
 	function Wheel(data) {
 
@@ -31,19 +31,11 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 		wheel.lastPosition = 0;
 		wheel.deltaPath = 0;
 
-		//wheel.BEGIN_A = 0.1; // const
-		//wheel.END_A = -0.1; // const
-		//wheel.T_INC = 0.05; // const
-		//wheel.V_MAX = 1; // const
-		wheel.BEGIN_A = 0.5; // const
-		wheel.END_A = -0.5; // const
-		wheel.T_INC = 0.15; // const
-		wheel.V_MAX = 3; // const
-
-		//wheel.BEGIN_A = 0.2; // const
-		//wheel.END_A = -0.2; // const
-		//wheel.T_INC = 0.1; // const
-		//wheel.V_MAX = 3.1; // const
+		wheel.BEGIN_A = 0.5; // const, but can be set from setting view
+		wheel.END_A = -0.5; // const, but can be set from setting view
+		wheel.T_INC = 0.15; // const, but can be set from setting view
+		wheel.V_MAX = 3; // const, but can be set from setting view
+		wheel.easingPath = 3;
 
 		util.eachHash(data, function (value, key) {
 			wheel[key] = value;
@@ -76,7 +68,21 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 
 		wheel.setWheelDisplayState('normal-normal');
 
+		mediator.installTo(wheel);
+
+		wheel.bindEventListeners();
+
 	}
+
+	Wheel.prototype.bindEventListeners = function () {
+
+		var wheel = this;
+
+		wheel.subscribe('setting:wheel', function (data) {
+			this[data.key] = data.value;
+		});
+
+	};
 
 	Wheel.prototype.pushPrototypeMethods = function () {
 
@@ -89,7 +95,8 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 			'getNewItem',
 			'createItemContainer',
 			'getWheelSizeInItems',
-			'getRawItems'
+			'getRawItems',
+			'bindEventListeners'
 		];
 
 		var key;
@@ -126,7 +133,14 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 
 		}
 
-		this.tilingSpriteLink.tilePosition.y = Math.floor(this.tilingSpriteYOffset + this.getRoundPosition() * this.itemHeight);
+		console.log(this.BEGIN_A);
+
+		// see getRoundPosition
+		if (this.position <= this.size) {
+			return this.tilingSpriteLink.tilePosition.y = Math.floor(this.tilingSpriteYOffset + this.position * this.itemHeight);
+		}
+
+		return this.tilingSpriteLink.tilePosition.y = Math.floor(this.tilingSpriteYOffset + (this.position % this.size) * this.itemHeight);
 
 	};
 
@@ -267,6 +281,10 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 			// get full height in pixel 		// reduce by rest of	// add item sprite offset
 			sprite.position.y = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + item.offset.y;
 
+			if (postfix === '_blur') {
+				sprite.alpha = 0.75;
+			}
+
 		});
 
 		// set last of items
@@ -400,7 +418,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 		var a = wheel.a;
 		var v = a * t;
 		var V_MAX = wheel.V_MAX;
-		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * 3;
+		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * wheel.easingPath;
 
 		wheel.position = position;
 
@@ -551,7 +569,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master'], f
 
 		position = wheel.lastPosition + v * t + a * t * t / 2;
 		position += wheel.deltaPath * ( a * t / v );
-		position -= Math.sin((v - a * t) / v * Math.PI) * 3;
+		position -= Math.sin((v - a * t) / v * Math.PI) * wheel.easingPath;
 
 		wheel.position = position;
 

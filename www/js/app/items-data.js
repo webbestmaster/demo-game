@@ -141,7 +141,7 @@ define (function () {
 			hi: 1,
 			index: 15,
 			offset: {
-				x: 0,
+				x: 7,
 				y: -21
 			}
 		},

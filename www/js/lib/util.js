@@ -18,14 +18,15 @@ define (function () {
 	return util;
 });
 
+/*
 
 
-/*jslint white: true, nomen: true */
+/!*jslint white: true, nomen: true *!/
 (function (win) {
 
 	'use strict';
-	/*global window */
-	/*global */
+	/!*global window *!/
+	/!*global *!/
 
 
 	var tt = {
@@ -199,6 +200,7 @@ define (function () {
 
 }(window));
 
+*/
 
 /*
 window.util = util;

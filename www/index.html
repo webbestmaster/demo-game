@@ -24,8 +24,20 @@
 <!--<img src="i/game/frame/frame.png" alt="" style="z-index: 10; position: fixed; left: 10px; top:10px; width: 100px; height: 100px;">-->
 
 <!--<div class="js-spin" style="padding: 1rem; z-index: 10;position: absolute">spin</div>-->
-<canvas class="game-renderer"></canvas>
+<canvas class="game-renderer" style="-webkit-transform: translate3d(0,0,0);transform: translate3d(0,0,0);"></canvas>
 <div class="js-spin spin-btn"></div>
+
+<div class="js-setting">
+
+	<input type="number" data-key="easingPath" placeholder="easing path size"/>
+
+	<input type="number" data-key="BEGIN_A" placeholder="begin reel velocity"/>
+	<input type="number" data-key="END_A" placeholder="end reel velocity"/>
+
+	<input type="number" data-key="T_INC" placeholder="time increase"/>
+	<input type="number" data-key="V_MAX" placeholder="reel main speed"/>
+
+</div>
 
 </body>
 </html>
