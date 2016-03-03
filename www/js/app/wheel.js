@@ -110,7 +110,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
-
 	Wheel.prototype.updatePosition = function () {
 
 		switch (this.state) {
@@ -170,10 +169,9 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
-
 	Wheel.prototype.adjustSizes = function (sprite) {
 
-		sprite.height = Math.round(sprite.height * wheelsData.item.w / sprite.width );
+		sprite.height = Math.round(sprite.height * wheelsData.item.w / sprite.width);
 		sprite.width = wheelsData.item.w;
 
 	};
@@ -363,7 +361,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
-
 	Wheel.prototype.getRoundPosition = function () {
 
 		var position = this.position;
@@ -403,9 +400,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		wheel.updatePosition();
 
-		//wheel.setBlurState('blur');
-		//wheel.currentFilter.blur = 6;    //blurring while it spins
-
 	};
 
 	Wheel.prototype.updateSpinBegin = function () {
@@ -428,7 +422,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		}
 
 		// add blur
-		if (wheel.displayState !== 'blur-normal'){
+		if (wheel.displayState !== 'blur-normal') {
 			wheel.setWheelDisplayState('blur-normal');
 		}
 
@@ -516,15 +510,10 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	Wheel.prototype.endSpin = function (position) {
 
-		var wheel = this;
-
-		wheel.state = 'spin-end';
-		wheel.t = 0;
-		wheel.a = wheel.END_A;
-		wheel.endSpinStopPosition = position;
-
-		//wheel.setBlurState('normal');
-		//wheel.currentFilter.blur = 1;
+		this.state = 'spin-end';
+		this.t = 0;
+		this.a = this.END_A;
+		this.endSpinStopPosition = position;
 
 	};
 
@@ -564,7 +553,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		}
 
 		// remove blur
-		if (wheel.displayState !== 'normal-normal'){
+		if (wheel.displayState !== 'normal-normal') {
 			wheel.setWheelDisplayState('normal-normal');
 		}
 
