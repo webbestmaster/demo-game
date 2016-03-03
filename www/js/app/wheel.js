@@ -61,6 +61,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		wheel.tilingSpriteYOffset = 0;
 		wheel.tilingSpriteYOffset_blur = 0;
+		wheel.BLUR_Y_OFFSET = -5;
 
 		wheel.displayState = 'normal-normal';
 
@@ -135,10 +136,10 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		// see getRoundPosition
 		if (this.position <= this.size) {
-			return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingSpriteYOffset + this.position * this.itemHeight);
+			return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingOffsetYLink + this.position * this.itemHeight);
 		}
 
-		return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingSpriteYOffset + (this.position % this.size) * this.itemHeight);
+		return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingOffsetYLink + (this.position % this.size) * this.itemHeight);
 
 	};
 
@@ -249,11 +250,15 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		var items = data.items;
 
-		var postfix = data.type === 'blur' ? '_blur' : '';
+		var type = data.type;
+
+		var postfix = type === 'blur' ? '_blur' : '';
 
 		var wheel = this;
 
 		var stageHeightInItems = 0;
+
+		var blurYOffset = type === 'blur' ? wheel.BLUR_Y_OFFSET : 0;
 
 		items.forEach(function (item, index) {
 			// do not count zero extra item
@@ -282,7 +287,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		});
 
 		// set last of items
-		wheel['tilingSpriteYOffset' + postfix] = items[0].offset.y - wheel.itemHalfHeight;
+		wheel['tilingSpriteYOffset' + postfix] = items[0].offset.y - wheel.itemHalfHeight + blurYOffset;
 
 		wheel['items' + postfix] = items;
 
@@ -438,8 +443,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		wheel.needStopping = false;
 		wheel.t = 0;
 
-		wheel.position -= 2.5 * wheel.sInc;
-
 		if (wheel.beginSpinCb) {
 			wheel.beginSpinCb();
 			wheel.beginSpinCb = null;
@@ -454,6 +457,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 			case 'normal-normal':
 
 				this.tilingSpriteLink = this.tilingSprite;
+				this.tilingOffsetYLink = this.tilingSpriteYOffset;
 
 				this.tilingSprite.visible = true;
 				this.tilingSprite_bonus.visible = false;
@@ -465,6 +469,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 			case 'normal-bonus':
 
 				this.tilingSpriteLink = this.tilingSprite_bonus;
+				this.tilingOffsetYLink = this.tilingSpriteYOffset;
 
 				this.tilingSprite.visible = false;
 				this.tilingSprite_bonus.visible = true;
@@ -476,6 +481,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 			case 'blur-normal':
 
 				this.tilingSpriteLink = this.tilingSprite_blur;
+				this.tilingOffsetYLink = this.tilingSpriteYOffset_blur;
 
 				this.tilingSprite.visible = false;
 				this.tilingSprite_bonus.visible = false;
@@ -487,6 +493,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 			case 'blur-bonus':
 
 				this.tilingSpriteLink = this.tilingSprite_blur_bonus;
+				this.tilingOffsetYLink = this.tilingSpriteYOffset_blur;
 
 				this.tilingSprite.visible = false;
 				this.tilingSprite_bonus.visible = false;
