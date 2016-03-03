@@ -11,6 +11,7 @@ define (
 		'./effect-master',
 		//'./ticker',
 		'./../services/mediator',
+		'./../lib/tweenjs-0.6.2.min', // fps tweenjs has no AMD version, just load it for crate FPSMeter globally
 		'./../services/fpsmeter' // fps meter has no AMD version, just load it for crate FPSMeter globally
 	],
 
