@@ -1,5 +1,5 @@
-define (['./../lib/util', './effect-textures', './../lib/movie-clip-wrapper', './wheels-data'],
-	function (util, effectTextures, MovieClipWrapper, wheelsData) {
+define (['./../lib/util', './../lib/movie-clip-wrapper', './wheels-data'],
+	function (util, MovieClipWrapper, wheelsData) {
 
 	var effectMaster = {
 

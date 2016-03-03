@@ -1,4 +1,4 @@
-define(['./../lib/deferred', './effect-textures', './../lib/util', './../services/log'], function (Deferred, effectTextures, util, log) {
+define(['./../lib/deferred', './../lib/util', './../services/log'], function (Deferred, util, log) {
 
 	var textureMaster = {
 
@@ -16,12 +16,6 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 
 			loader.baseUrl = master.baseUrl;
 
-			var effectTexturesData = effectTextures.textures;
-
-			util.eachHash(effectTexturesData, function (item, key) {
-				loader.add('effectTextures/' + key, item.path);
-			});
-
 			loader.add('i/game/effect/club-win-animation.json');
 			loader.add('i/game/effect/respin-pop-up.json');
 			loader.add('i/game/game/wheel.json');
@@ -34,25 +28,7 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 					log('on loading texture progress');
 				})
 				.load(function (loader, resources) {
-
-					util.eachHash(resources, function (value, key) {
-
-						var path = key.split('/'),
-							root = path[0],
-							name = path[1];
-
-						switch (root) {
-
-							case 'effectTextures':
-								effectTexturesData[name].texture = value;
-								break;
-
-						}
-
-					});
-
 					defer.resolve();
-
 				});
 
 			return defer.promise();
@@ -76,7 +52,7 @@ define(['./../lib/deferred', './effect-textures', './../lib/util', './../service
 
 			var resolution = Math.floor(window.devicePixelRatio || 1);
 
-			if (resolution > 2) {
+			if (resolution >= 2) {
 				resolution = 2;
 			}
 

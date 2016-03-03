@@ -33,7 +33,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		wheel.BEGIN_A = 0.5; // const, but can be set from setting view
 		wheel.END_A = -0.5; // const, but can be set from setting view
-		wheel.T_INC = 0.15; // const, but can be set from setting view
+		wheel.T_INC = 0.25; // const, but can be set from setting view
 		wheel.V_MAX = 3; // const, but can be set from setting view
 		wheel.easingPath = 3;
 
