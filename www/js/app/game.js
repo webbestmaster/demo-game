@@ -9,12 +9,12 @@ define (
 		'./texture-master',
 		'./frame-master',
 		'./effect-master',
-		'./ticker',
+		//'./ticker',
 		'./../services/mediator',
 		'./../services/fpsmeter' // fps meter has no AMD version, just load it for crate FPSMeter globally
 	],
 
-	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, ticker, mediator) {
+	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, mediator) {
 
 	var game = {
 
@@ -26,6 +26,8 @@ define (
 				h: 520
 			}
 		},
+
+		mode: 'dev', // dev || prod
 
 		state: 'ready',
 
@@ -55,29 +57,15 @@ define (
 
 		initTicker: function (fn) {
 
-			//ticker.setFPS(35);
+			createjs.Ticker.setFPS(35);
 
-			ticker.add(fn);
+			createjs.Ticker.addEventListener("tick", fn);
 
-			ticker.start();
-
-			var fpsMeter = new FPSMeter();
-
-/*
-			var fpsMeter = new FPSMeter({
-				theme: 'dark', // / Meter theme. Build in: 'dark', 'light', 'transparent', 'colorful'
-				show: 'fps',
-				graph: 1, // Whether to show history graph.
-				history: 20
-			});
-*/
-
-			fpsMeter.showFps();
-
-			ticker.add(fpsMeter.tick);
-
-			//fpsMeter.init(ticker);
-			//fpsMeter.addNode();
+			if (this.mode === 'dev') {
+				var fpsMeter = new FPSMeter();
+				fpsMeter.showFps();
+				createjs.Ticker.addEventListener("tick", fpsMeter.tick);
+			}
 
 		},
 
@@ -125,15 +113,17 @@ define (
 
 		setGameState: function (state) {
 
-			console.log('game state is - ', state);
+			//console.log('game state is - ', state);
 
 			this.state = state;
 
+/*
 			if (state === 'ready' || state === 'spin') {
 				this.spinButton.className = 'spin-btn';
 			} else {
 				this.spinButton.className = 'spin-btn spin-btn_disabled';
 			}
+*/
 
 		},
 
