@@ -133,8 +133,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		}
 
-		console.log(this.BEGIN_A);
-
 		// see getRoundPosition
 		if (this.position <= this.size) {
 			return this.tilingSpriteLink.tilePosition.y = Math.floor(this.tilingSpriteYOffset + this.position * this.itemHeight);

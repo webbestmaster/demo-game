@@ -10,10 +10,11 @@ define (
 		'./frame-master',
 		'./effect-master',
 		'./ticker',
-		'./../lib/fpsmeter' // fps meter has no AMD version, just load it for crate FPSMeter globally
+		'./../services/mediator',
+		'./../services/fpsmeter' // fps meter has no AMD version, just load it for crate FPSMeter globally
 	],
 
-	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, ticker) {
+	function (PIXI, util, Deferred, log, wheelsData, Wheel, textureMaster, frameMaster, effectMaster, ticker, mediator) {
 
 	var game = {
 
@@ -26,9 +27,10 @@ define (
 			}
 		},
 
-		i: true,
-
 		state: 'ready',
+
+		beginDeltaTime: 300,
+		endDeltaTime: 300,
 
 		initialize: function (cd) {
 
@@ -83,11 +85,13 @@ define (
 
 			var game = this;
 
-			game.spinButton.addEventListener('click', function () {
+			mediator.installTo(game);
 
-				game.spin();
+			game.subscribe('setting:game', function (data) {
+				this[data.key] = data.value;
+			});
 
-			}, false);
+			game.spinButton.addEventListener('click', game.spin.bind(game), false);
 
 		},
 
@@ -137,12 +141,14 @@ define (
 
 			var game = this;
 
+			var beginDeltaTime = game.beginDeltaTime;
+
 			var wheels = game.wheels;
 
 			wheels.forEach(function (wheel, index) {
 				setTimeout(function () {
 					wheel.beginSpin();
-				}, 300 * index);
+				}, beginDeltaTime * index);
 			});
 
 			wheels[wheels.length - 1].beginSpinCb = function () {
@@ -290,19 +296,6 @@ define (
 
 		},
 
-/*
-		setWheelBg: function (type) {
-
-			var wheels = this.wheels,
-				i, len;
-
-			for (i = 0, len = wheels.length; i < len; i += 1) {
-				wheels[i].setBg(type);
-			}
-
-		},
-*/
-
 		redraw: function () {
 
 			effectMaster.update();
@@ -314,13 +307,6 @@ define (
 			for (i = 0, len = wheels.length; i < len; i += 1) {
 				wheels[i].updatePosition();
 			}
-
-			/*
-			 // do not each frame, draw odd frame only
-			 if (this.i = !this.i) { // here use single "=" for small optimization
-			 return;
-			 }
-			 */
 
 			this.renderer.render(this.stageMain);
 
