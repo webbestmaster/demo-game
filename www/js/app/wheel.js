@@ -386,64 +386,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
-	Wheel.prototype.beginSpin = function () {
-
-		var wheel = this;
-
-		wheel.position = wheel.getRoundPosition();
-		wheel.state = 'spin-begin';
-		wheel.t = 0;
-		wheel.v = 0;
-		wheel.a = wheel.BEGIN_A;
-		wheel.beginSpinStartPosition = wheel.position;
-		wheel.tInc = wheel.T_INC;
-
-		wheel.updatePosition();
-
-	};
-
-	Wheel.prototype.updateSpinBegin = function () {
-
-		var wheel = this;
-		var tInc = wheel.tInc;
-
-		var t = wheel.t + tInc;
-		var a = wheel.a;
-		var v = a * t;
-		var V_MAX = wheel.V_MAX;
-		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * wheel.easingPath;
-
-		wheel.position = position;
-
-		wheel.t = Math.round(t * 1e6) / 1e6;
-
-		if (v < V_MAX) {
-			return;
-		}
-
-		// add blur
-		if (wheel.displayState !== 'blur-normal') {
-			wheel.setWheelDisplayState('blur-normal');
-		}
-
-		wheel.v = v;
-		wheel.state = 'spin-main';
-
-		wheel.beginTime = wheel.t;
-
-		wheel.beginPath = position - wheel.beginSpinStartPosition;
-
-		wheel.sInc = v * tInc;
-		wheel.needStopping = false;
-		wheel.t = 0;
-
-		if (wheel.beginSpinCb) {
-			wheel.beginSpinCb();
-			wheel.beginSpinCb = null;
-		}
-
-	};
-
 	Wheel.prototype.setWheelDisplayState = function (state) {
 
 		switch (state) {
@@ -499,6 +441,82 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		}
 
 		this.displayState = state;
+
+	};
+
+	Wheel.prototype.beginSpin = function () {
+
+		var wheel = this;
+
+		createjs.Tween
+			.get(wheel, {loop: false, useTicks: true })
+			.to({position: wheel.position + 20}, 200, createjs.Ease.getBackIn(1))
+			.call(function () {
+				createjs.Tween
+					.get(wheel, {loop: true, useTicks: true })
+					.to({position: wheel.size + 300}, 500, createjs.Ease.linear())
+			});
+
+
+
+
+
+
+/*
+		var wheel = this;
+
+		wheel.position = wheel.getRoundPosition();
+		wheel.state = 'spin-begin';
+		wheel.t = 0;
+		wheel.v = 0;
+		wheel.a = wheel.BEGIN_A;
+		wheel.beginSpinStartPosition = wheel.position;
+		wheel.tInc = wheel.T_INC;
+
+		wheel.updatePosition();
+*/
+
+	};
+
+	Wheel.prototype.updateSpinBegin = function () {
+
+		var wheel = this;
+		var tInc = wheel.tInc;
+
+		var t = wheel.t + tInc;
+		var a = wheel.a;
+		var v = a * t;
+		var V_MAX = wheel.V_MAX;
+		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * wheel.easingPath;
+
+		wheel.position = position;
+
+		wheel.t = Math.round(t * 1e6) / 1e6;
+
+		if (v < V_MAX) {
+			return;
+		}
+
+		// add blur
+		if (wheel.displayState !== 'blur-normal') {
+			wheel.setWheelDisplayState('blur-normal');
+		}
+
+		wheel.v = v;
+		wheel.state = 'spin-main';
+
+		wheel.beginTime = wheel.t;
+
+		wheel.beginPath = position - wheel.beginSpinStartPosition;
+
+		wheel.sInc = v * tInc;
+		wheel.needStopping = false;
+		wheel.t = 0;
+
+		if (wheel.beginSpinCb) {
+			wheel.beginSpinCb();
+			wheel.beginSpinCb = null;
+		}
 
 	};
 
