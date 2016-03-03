@@ -30,7 +30,7 @@ define (
 		state: 'ready',
 
 		beginDeltaTime: 300,
-		endDeltaTime: 300,
+		endDeltaTime: -1,
 
 		initialize: function (cd) {
 
@@ -163,6 +163,33 @@ define (
 
 			var wheels = game.wheels;
 
+			var endDeltaTime = game.endDeltaTime;
+
+			if (endDeltaTime === -1) {
+				game.endSpinByStep();
+			} else {
+				game.endSpinByTime();
+			}
+
+			// show win animation
+			wheels[wheels.length - 1].endSpinCb = function () {
+
+				game.setGameState('ready');
+
+				effectMaster.showWinClubs(game.getEndPositions());
+
+				effectMaster.showFreeSpinPopUp();
+
+			};
+
+		},
+
+		endSpinByStep: function () {
+
+			var game = this;
+
+			var wheels = game.wheels;
+
 			var getEndPositions = game.getEndPositions();
 
 			wheels.forEach(function (wheel, index, arr) {
@@ -178,18 +205,23 @@ define (
 
 			});
 
+		},
 
-			wheels[wheels.length - 1].endSpinCb = function () {
+		endSpinByTime: function () {
 
-				game.setGameState('ready');
+			var game = this;
 
-				effectMaster.showWinClubs(getEndPositions);
+			var wheels = game.wheels;
 
-				effectMaster.showFreeSpinPopUp();
+			var getEndPositions = game.getEndPositions();
 
-				//game.setWheelBg('bonus');
+			var endDeltaTime = game.endDeltaTime;
 
-			};
+			wheels.forEach(function (wheel, index) {
+				setTimeout(function () {
+					wheel.endSpin(getEndPositions[index]);
+				}, endDeltaTime * index);
+			});
 
 		},
 

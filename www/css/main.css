@@ -53,3 +53,36 @@ body {
     color: #eee;
     background-color: #000
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* setting */
+.setting-wrapper input {
+    display: block;
+    margin: 10px;
+    width: 33%;
+    float: left;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

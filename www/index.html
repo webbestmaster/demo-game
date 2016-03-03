@@ -27,7 +27,7 @@
 <canvas class="game-renderer" style="-webkit-transform: translate3d(0,0,0);transform: translate3d(0,0,0);"></canvas>
 <div class="js-spin spin-btn"></div>
 
-<div class="js-setting">
+<div class="js-setting setting-wrapper">
 
 	<input type="number" data-wheel-key="easingPath" placeholder="easing path size"/>
 
@@ -37,8 +37,11 @@
 	<input type="number" data-wheel-key="T_INC" placeholder="time increase"/>
 	<input type="number" data-wheel-key="V_MAX" placeholder="reel main speed"/>
 
-	<input type="number" data-game-key="beginDeltaTime" placeholder="time between wheel begin"/>
-	<input type="number" data-game-key="endDeltaTime" placeholder="time between wheel end"/>
+	<input type="number" data-game-key="beginDeltaTime" placeholder="time between wheel begin...ms"/>
+	<input type="number" data-game-key="endDeltaTime" placeholder="time between wheel end...ms"/>
+
+	<!-- not implemented -->
+	<!--<input type="number" data-game-key="autoStop" placeholder="auto stop after...ms"/>-->
 
 </div>
 
