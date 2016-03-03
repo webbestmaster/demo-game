@@ -135,10 +135,10 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		// see getRoundPosition
 		if (this.position <= this.size) {
-			return this.tilingSpriteLink.tilePosition.y = Math.floor(this.tilingSpriteYOffset + this.position * this.itemHeight);
+			return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingSpriteYOffset + this.position * this.itemHeight);
 		}
 
-		return this.tilingSpriteLink.tilePosition.y = Math.floor(this.tilingSpriteYOffset + (this.position % this.size) * this.itemHeight);
+		return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingSpriteYOffset + (this.position % this.size) * this.itemHeight);
 
 	};
 
@@ -279,10 +279,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 			// get full height in pixel 		// reduce by rest of	// add item sprite offset
 			sprite.position.y = stageHeightInItems * wheel.itemHeight - stageHeightInPixels + item.offset.y;
 
-			if (postfix === '_blur') {
-				sprite.alpha = 0.75;
-			}
-
 		});
 
 		// set last of items
@@ -420,7 +416,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		wheel.position = position;
 
-		wheel.t = Math.round(t * 100) / 100;
+		wheel.t = Math.round(t * 1e6) / 1e6;
 
 		if (v < V_MAX) {
 			return;
@@ -441,6 +437,8 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		wheel.sInc = v * tInc;
 		wheel.needStopping = false;
 		wheel.t = 0;
+
+		wheel.position -= 2.5 * wheel.sInc;
 
 		if (wheel.beginSpinCb) {
 			wheel.beginSpinCb();
@@ -573,7 +571,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		t += tInc;
 
-		wheel.t = (Math.round(t * 100) / 100);
+		wheel.t = Math.round(t * 1e6) / 1e6;
 
 		if (t <= wheel.beginTime) {
 			return;
