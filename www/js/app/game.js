@@ -56,7 +56,7 @@ define (
 
 		initTicker: function (fn) {
 
-			createjs.Ticker.setFPS(35);
+			createjs.Ticker.setFPS(30);
 
 			createjs.Ticker.addEventListener("tick", fn);
 

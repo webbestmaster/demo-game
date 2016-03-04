@@ -112,26 +112,28 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	Wheel.prototype.updatePosition = function () {
 
-		switch (this.state) {
-			case 'spin-begin':
+		/*
+		 switch (this.state) {
+		 case 'spin-begin':
 
-				this.updateSpinBegin();
+		 this.updateSpinBegin();
 
-				break;
+		 break;
 
-			case 'spin-main':
+		 case 'spin-main':
 
-				this.updateSpinMain();
+		 this.updateSpinMain();
 
-				break;
+		 break;
 
-			case 'spin-end':
+		 case 'spin-end':
 
-				this.updateSpinEnd();
+		 this.updateSpinEnd();
 
-				break;
+		 break;
 
-		}
+		 }
+		 */
 
 		// see getRoundPosition
 		if (this.position <= this.size) {
@@ -446,35 +448,136 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	Wheel.prototype.beginSpin = function () {
 
-		var wheel = this;
+		/*
+		 *
+		 * http://www.createjs.com/demos/tweenjs/tween_sparktable
+		 *
+		 * getElasticIn get 2 parameters - amplitude, period
+		 * d - down, u - up
+		 * 1, 1.0 dud
+		 * 1, 0.7 udud
+		 * 1, 0.5 dudud
+		 * 1, 0.4 ududud
+		 * 1, 0.3 dududud
+		 *
+		 * getBackIn get 1 parameter - amount
+		 * number - ud
+		 * negative number - d
+		 *
+		 * */
 
+		this.config = {
+
+			begin: {
+				timingFunction: {
+					name: 'getElasticIn', 	// game of timing function
+					args: [] 				// arguments for timing function
+					// args: [] -> createjs.Ease[timingFunction]()
+					// args: [1, 2] -> createjs.Ease[timingFunction].apply(createjs.Ease, [1, 2])
+					// args: !!your_value === false -> createjs.Ease[timingFunction]
+				},
+				timeAspect: 1, 				// main time aspect
+				linearPathSize: 1,			// linear path from begin to end of animation ..item
+				time: 1						// time of animation ..ms
+			},
+
+			main: {
+				speed: 1,					// items per one unit of the time
+				timeAspect: 1
+			},
+
+			end: {
+				timingFunction: {
+					name: 'getElasticIn', 	// game of timing function
+					args: [] 				// arguments for timing function
+				},
+				timeAspect: 1, 				// main time aspect
+				linearPathSize: 1,			// linear path from begin to end of animation ..item
+				time: 1						// time of animation ..ms
+			}
+
+		};
+
+
+		this.position = this.getRoundPosition();
+
+		var beginCfg = this.config.begin;
+
+		var beginTimingFn = this.getTimingFunction(beginCfg.timingFunction.name, beginCfg.timingFunction.args);
+
+
+		// begin tween
 		createjs.Tween
-			.get(wheel, {loop: false, useTicks: true })
-			.to({position: wheel.position + 20}, 200, createjs.Ease.getBackIn(1))
+			.get(this, {loop: false, override: true, useTicks: !true}) // override: true - remove another tweens from target
+			.to(
+				{position: this.position + beginCfg.linearPathSize},
+				beginCfg.time * beginCfg.timeAspect,
+				createjs.Ease[beginCfg.timingFunction.name]
+			)
 			.call(function () {
-				createjs.Tween
-					.get(wheel, {loop: true, useTicks: true })
-					.to({position: wheel.size + 300}, 500, createjs.Ease.linear())
+
+				var tween = createjs.Tween
+					.get(this, {loop: true, override: true, useTicks: !true})
+					.to({position: this.position + this.size}, this.size * 330 * timeQ, createjs.Ease.linear);
+
+				tween.on('stop', function (e) {
+
+					var tween = e.target;
+					tween.setPaused(true);
+
+					var wheel = e.target.target;
+
+					// and spin
+					createjs.Tween
+						.get(wheel, {loop: false, override: true, useTicks: !true})
+						.to({position: wheel.position + 1}, 1000 * timeQ, createjs.Ease.bounceOut);
+					//.setPosition(1000 * timeQ * 0.99);
+
+				});
+
+				tween.on('change', function (e) {
+					console.log(arguments);
+				});
+
+				/*
+				 setTimeout(function () {
+				 // TODO: USE IT TO STOP WHEEL
+				 tween.dispatchEvent('stop');
+				 }, 10000);
+				 */
+
 			});
 
+		/*
+		 var wheel = this;
 
+		 wheel.position = wheel.getRoundPosition();
+		 wheel.state = 'spin-begin';
+		 wheel.t = 0;
+		 wheel.v = 0;
+		 wheel.a = wheel.BEGIN_A;
+		 wheel.beginSpinStartPosition = wheel.position;
+		 wheel.tInc = wheel.T_INC;
 
+		 wheel.updatePosition();
+		 */
 
+	};
 
+	Wheel.prototype.getTimingFunction = function (name, args) {
 
-/*
-		var wheel = this;
+		// no any args - return predefined function
+		if (!args) {
+			return createjs.Ease[name];
+		}
 
-		wheel.position = wheel.getRoundPosition();
-		wheel.state = 'spin-begin';
-		wheel.t = 0;
-		wheel.v = 0;
-		wheel.a = wheel.BEGIN_A;
-		wheel.beginSpinStartPosition = wheel.position;
-		wheel.tInc = wheel.T_INC;
+		// args look like [1, 2, 3]
+		if (args.length) {
+			return createjs.Ease[name].apply(createjs.Ease, args);
+		}
 
-		wheel.updatePosition();
-*/
+		// args is []
+		return createjs.Ease[name]();
 
 	};
 
