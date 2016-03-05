@@ -33,6 +33,8 @@
 
 <div class="setting-wrapper">
 
+	{{ var config = it.wheelData.config; }}
+
 	{{~ ['begin', 'end'] :type }}
 		<section>
 
@@ -46,17 +48,34 @@
 						{{ }; }}
 					</select>
 				</label>
+				<div style="clear:both;"></div>
 
-				<input type="number" data-period="{{= type }}" class="js-timing-function-first-arg" 	placeholder="first argument of timing function" style="display: none;"/>
-				<input type="number" data-period="{{= type }}" class="js-timing-function-second-arg"	placeholder="second argument of timing function" style="display: none;"/>
-
+				<label>
+					<p>first argument of timing function</p>
+					<input type="number" data-period="{{= type }}" class="js-timing-function-first-arg disabled" />
+				</label>
+				<label>
+					<p>second argument of timing function</p>
+					<input type="number" data-period="{{= type }}" class="js-timing-function-second-arg disabled" />
+				</label>
 				<div style="clear:both;"></div>
 
 			</div>
 
-			<input data-wheel-key="timeAspect" 		placeholder="time aspect of whole period" 	data-period="{{= type }}" type="number" />
-			<input data-wheel-key="linearPathSize" 	placeholder="linear path size" 				data-period="{{= type }}" type="number" />
-			<input data-wheel-key="time" 			placeholder="time" 							data-period="{{= type }}" type="number" />
+			<label>
+				<p>time aspect of whole period</p>
+				<input value="{{= config[type].timeAspect }}" data-wheel-key="timeAspect" data-period="{{= type }}" type="number" />
+			</label>
+
+			<label>
+				<p>linear path size</p>
+				<input value="{{= config[type].linearPathSize }}" data-wheel-key="linearPathSize" data-period="{{= type }}" type="number" />
+			</label>
+
+			<label>
+				<p>time</p>
+				<input value="{{= config[type].time }}" data-wheel-key="time" data-period="{{= type }}" type="number" />
+			</label>
 
 		</section>
 
@@ -64,22 +83,25 @@
 
 	{{~}}
 
+	<section>
 
+		{{ var type = 'main'; }}
 
-		<section>
+		<header>{{= type }}</header>
 
-			{{ var type = 'main'; }}
+		<label>
+			<p>time aspect of whole period</p>
+			<input value="{{= config[type].timeAspect }}" data-wheel-key="timeAspect" data-period="{{= type }}" type="number" />
+		</label>
 
-			<header>{{= type }}</header>
+		<label>
+			<p>speed</p>
+			<input value="{{= config[type].speed }}" data-wheel-key="speed" data-period="{{= type }}" type="number" />
+		</label>
 
-			<input data-wheel-key="timeAspect" 		placeholder="time aspect of whole period" 	data-period="{{= type }}" type="number" />
-			<input data-wheel-key="time" 			placeholder="time" 							data-period="{{= type }}" type="number" />
+	</section>
 
-		</section>
-
-		<div style="clear:both;"></div>
-
-
+	<div style="clear:both;"></div>
 
 </div>
 

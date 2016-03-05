@@ -516,7 +516,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 					var endTimingFn = wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args);
 
 					// end spin
-					createjs.Tween
+					var endTween = createjs.Tween
 						.get(wheel, {loop: false, override: true, useTicks: !true})
 						.to(
 							{position: wheel.position + endCfg.linearPathSize},
@@ -529,7 +529,13 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 								this.endSpinCb = null
 							}
 						});
-					//.setPosition(1000 * timeQ * 0.99);
+
+
+
+					if ( endCfg.timingFunction.name === 'bounceOut' ) {
+						console.log('sss');
+						endTween.setPosition(endCfg.time * endCfg.timeAspect * 0.30);
+					}
 
 				});
 

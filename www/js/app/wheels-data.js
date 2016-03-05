@@ -44,33 +44,34 @@ define (function () {
 			w: itemWidth,
 			h: itemHeight
 		},
+		// http://www.createjs.com/demos/tweenjs/tween_sparktable
 		config: {
 			begin: {
 				timingFunction: {
-					name: 'linear', 		// game of timing function
-					args: null 				// arguments for timing function
+					name: 'getBackIn', 		// game of timing function
+					args: [2] 				// arguments for timing function
 					// args: [] -> createjs.Ease[timingFunction]()
 					// args: [1, 2] -> createjs.Ease[timingFunction].apply(createjs.Ease, [1, 2])
 					// args: !!your_value === false -> createjs.Ease[timingFunction]
 				},
 				timeAspect: 1, 				// main time aspect
-				linearPathSize: 1,			// linear path from begin to end of animation ..item
-				time: 3e3					// time of animation ..ms
-			},
-
-			main: {
-				speed: 3,					// items per one unit of the time
-				timeAspect: 1
+				linearPathSize: 2,			// linear path from begin to end of animation ..item
+				time: 500					// time of animation ..ms
 			},
 
 			end: {
 				timingFunction: {
-					name: 'linear', 		// game of timing function
+					name: 'bounceOut', 		// game of timing function
 					args: null 				// arguments for timing function
 				},
 				timeAspect: 1, 				// main time aspect
-				linearPathSize: 1,			// linear path from begin to end of animation ..item
-				time: 3e3						// time of animation ..ms
+				linearPathSize: 2,			// linear path from begin to end of animation ..item
+				time: 1500					// time of animation ..ms
+			},
+
+			main: {
+				speed: 20,					// items per one unit of the time
+				timeAspect: 1
 			}
 
 		}

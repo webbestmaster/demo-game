@@ -66,11 +66,28 @@ body {
 
 
 /* setting */
+
+.setting-wrapper {
+    background-color: #fff;
+}
+
+.setting-wrapper p,
+.setting-wrapper header {
+    /*text-align: center;*/
+    margin-bottom: 0;
+    text-indent: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.setting-wrapper header {
+    margin-top: 50px;
+}
+
 .setting-wrapper input,
 .setting-wrapper select {
     display: block;
     margin: 10px;
-    width: 33%;
+    width: 70%;
     float: left;
     padding: 0;
     border: none;
@@ -78,6 +95,7 @@ body {
     font-size: 16px;
     line-height: 26px;
     text-indent: 3px;
+    background-color: #ccc;
 }
 
 .setting-wrapper input {
@@ -88,7 +106,14 @@ body {
     border: 2px solid #fff;
 }
 
+.setting-wrapper label {
+    width: 50%;
+    float: left;
+}
 
+.setting-wrapper .disabled {
+    opacity: 0.3;
+}
 
 
 
