@@ -66,19 +66,27 @@ body {
 
 
 /* setting */
-.setting-wrapper input {
+.setting-wrapper input,
+.setting-wrapper select {
     display: block;
     margin: 10px;
     width: 33%;
     float: left;
-    padding: 10px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    line-height: 26px;
+    text-indent: 3px;
 }
 
+.setting-wrapper input {
+    text-indent: 11px;
+}
 
-
-
-
-
+.setting-wrapper select {
+    border: 2px solid #fff;
+}
 
 
 

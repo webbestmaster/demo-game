@@ -4,6 +4,9 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		var wheel = this;
 
+		wheel.config = JSON.parse(JSON.stringify(wheelsData.config));
+		wheel.tween = null;
+
 		wheel.itemHeight = wheelsData.item.h;
 		wheel.itemHalfHeight = Math.floor(wheelsData.item.h / 2);
 
@@ -80,7 +83,13 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		var wheel = this;
 
 		wheel.subscribe('setting:wheel', function (data) {
-			this[data.key] = data.value;
+			this.config[data.period][data.key] = data.value;
+		});
+
+		wheel.subscribe('setting:timingFunction', function (data) {
+			var timingFunction = this.config[data.period].timingFunction;
+			timingFunction.name = data.value;
+			timingFunction.args = data.args;
 		});
 
 	};
@@ -466,45 +475,11 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		 *
 		 * */
 
-		this.config = {
-
-			begin: {
-				timingFunction: {
-					name: 'getElasticIn', 	// game of timing function
-					args: [] 				// arguments for timing function
-					// args: [] -> createjs.Ease[timingFunction]()
-					// args: [1, 2] -> createjs.Ease[timingFunction].apply(createjs.Ease, [1, 2])
-					// args: !!your_value === false -> createjs.Ease[timingFunction]
-				},
-				timeAspect: 1, 				// main time aspect
-				linearPathSize: 1,			// linear path from begin to end of animation ..item
-				time: 1						// time of animation ..ms
-			},
-
-			main: {
-				speed: 1,					// items per one unit of the time
-				timeAspect: 1
-			},
-
-			end: {
-				timingFunction: {
-					name: 'getElasticIn', 	// game of timing function
-					args: [] 				// arguments for timing function
-				},
-				timeAspect: 1, 				// main time aspect
-				linearPathSize: 1,			// linear path from begin to end of animation ..item
-				time: 1						// time of animation ..ms
-			}
-
-		};
-
-
 		this.position = this.getRoundPosition();
 
 		var beginCfg = this.config.begin;
 
 		var beginTimingFn = this.getTimingFunction(beginCfg.timingFunction.name, beginCfg.timingFunction.args);
-
 
 		// begin tween
 		createjs.Tween
@@ -512,39 +487,55 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 			.to(
 				{position: this.position + beginCfg.linearPathSize},
 				beginCfg.time * beginCfg.timeAspect,
-				createjs.Ease[beginCfg.timingFunction.name]
+				beginTimingFn
 			)
 			.call(function () {
 
-				var tween = createjs.Tween
+				var mainCfg = this.config.main,
+					tween = createjs.Tween
 					.get(this, {loop: true, override: true, useTicks: !true})
-					.to({position: this.position + this.size}, this.size * 330 * timeQ, createjs.Ease.linear);
+					.to({position: this.position + this.size}, this.size / mainCfg.speed * mainCfg.timeAspect * 1000, createjs.Ease.linear);
+
+				this.tween = tween;
+
+				if (this.beginSpinCb) {
+					this.beginSpinCb();
+					this.beginSpinCb = null;
+				}
 
 				tween.on('stop', function (e) {
 
 					var tween = e.target;
+
 					tween.setPaused(true);
 
 					var wheel = e.target.target;
 
-					// and spin
+					var endCfg = wheel.config.end;
+
+					var endTimingFn = wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args);
+
+					// end spin
 					createjs.Tween
 						.get(wheel, {loop: false, override: true, useTicks: !true})
-						.to({position: wheel.position + 1}, 1000 * timeQ, createjs.Ease.bounceOut);
+						.to(
+							{position: wheel.position + endCfg.linearPathSize},
+							endCfg.time * endCfg.timeAspect,
+							endTimingFn
+						)
+						.call(function () {
+							if (this.endSpinCb) {
+								this.endSpinCb();
+								this.endSpinCb = null
+							}
+						});
 					//.setPosition(1000 * timeQ * 0.99);
 
 				});
 
-				tween.on('change', function (e) {
-					console.log(arguments);
-				});
-
-				/*
-				 setTimeout(function () {
-				 // TODO: USE IT TO STOP WHEEL
-				 tween.dispatchEvent('stop');
-				 }, 10000);
-				 */
+				//tween.on('change', function (e) {
+					//console.log(arguments);
+				//});
 
 			});
 
@@ -631,10 +622,12 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	Wheel.prototype.endSpin = function (position) {
 
-		this.state = 'spin-end';
+/*		this.state = 'spin-end';
 		this.t = 0;
 		this.a = this.END_A;
-		this.endSpinStopPosition = position;
+		this.endSpinStopPosition = position;*/
+
+		this.tween.dispatchEvent('stop');
 
 	};
 

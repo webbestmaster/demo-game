@@ -72,11 +72,13 @@ define (
 
 			var game = this;
 
+/*
 			mediator.installTo(game);
 
 			game.subscribe('setting:game', function (data) {
 				this[data.key] = data.value;
 			});
+*/
 
 			game.spinButton.addEventListener('click', game.spin.bind(game), false);
 
@@ -112,7 +114,7 @@ define (
 
 		setGameState: function (state) {
 
-			//console.log('game state is - ', state);
+			console.log('game state is - ', state);
 
 			this.state = state;
 

@@ -1,66 +1,127 @@
-define (['./../../lib/jbone', './../../services/mediator'], function ($, mediator) {
+define(
+	[
+		'./../../lib/jbone',
+		'./../../services/mediator',
+		'./easing',
+		'./../../lib/dot'
+	],
+	function ($, mediator, easing, dot) {
 
-	var settingView = {
+		var settingView = {
 
-		$el: null,
+			$el: null,
 
-		init: function () {
+			init: function () {
 
-			this.define$el();
+				this.define$el();
 
-			this.bindEventListeners();
+				this.bindEventListeners();
 
-			// create DOM element
-			// bind events on controls
+				this.show();
 
-		},
+				// create DOM element
+				// bind events on controls
 
-		bindEventListeners: function () {
+			},
 
-			var $nodes = this.$el.find('[data-wheel-key], [data-game-key]');
+			bindEventListeners: function () {
 
-			$nodes.on('change', function () {
+				var $nodes = this.$el.find('[data-wheel-key], [data-game-key]');
 
-				// here use .getAttribute('data-wheel-key') instead of dataSet
-				// cause old android (4.1.2) do not support dataSet
+				$nodes.on('change', function () {
 
-				// get key type: wheel or game
-				var keyType = this.attributes.hasOwnProperty('data-wheel-key') ? 'wheel' : 'game';
-				var key = this.getAttribute('data-' + keyType + '-key');
-				var type = this.getAttribute('type');
-				var value = this.value;
+					// here use .getAttribute('data-wheel-key') instead of dataSet
+					// cause old android (4.1.2) do not support dataSet
 
-				switch (type) {
+					// get key type: wheel or game
+					var keyType = this.attributes.hasOwnProperty('data-wheel-key') ? 'wheel' : 'game';
+					var key = this.getAttribute('data-' + keyType + '-key');
+					var type = this.getAttribute('type');
+					var value = this.value;
+					var args = null;
+					var period = this.getAttribute('data-period');
+					var $timingFunctionFirstArg = $('.js-timing-function-first-arg[data-period="' + period + '"]');
+					var $timingFunctionSecondArg = $('.js-timing-function-second-arg[data-period="' + period + '"]');
 
-					case 'number':
-						value = parseFloat(value);
-						break;
+					switch (type) {
 
-				}
+						case 'number':
+							value = parseFloat(value);
+							break;
 
-				mediator.publish('setting:' + keyType, {
-					key: key,
-					value: value
+					}
+
+					if (key === 'timingFunction') {
+						var fnData = easing[value];
+
+						$timingFunctionFirstArg.css('display', 'none');
+						$timingFunctionSecondArg.css('display', 'none');
+
+						if (fnData.args !== null) {
+
+							if (fnData.args === 1) {
+								$timingFunctionFirstArg.css('display', 'block');
+								args = [
+									parseFloat($timingFunctionFirstArg.val())
+								];
+							}
+
+							if (fnData.args === 2) {
+								$timingFunctionFirstArg.css('display', 'block');
+								$timingFunctionSecondArg.css('display', 'block');
+								args = [
+									parseFloat($timingFunctionFirstArg.val()),
+									parseFloat($timingFunctionSecondArg.val())
+								];
+							}
+
+						}
+
+						mediator.publish('setting:timingFunction', {
+							value: value,
+							period: period,
+							args: args
+						});
+
+						return;
+
+					}
+
+					mediator.publish('setting:' + keyType, {
+						value: value,
+						period: period,
+						key: key
+					});
+
 				});
 
-			});
+			},
 
-		},
+			define$el: function () {
 
-		define$el: function () {
-			this.$el = $('.js-setting');
-		},
+				var view = this;
 
-		hide: function () {
-			this.$el.remove();
-		},
+				var tmplText = $('.js-template[data-name="setting-view"]').html();
 
-		show: function () {
-			document.body.appendChild(this.$el[0]);
-		}
+				var innerHTML = dot.compile(tmplText)({
+					easing: easing
+				});
 
-	};
+				view.$el = $(innerHTML);
 
-	return settingView;
+			},
 
-});
+			hide: function () {
+				this.$el.remove();
+			},
+
+			show: function () {
+				document.body.appendChild(this.$el[0]);
+			}
+
+		};
+
+		return settingView;
+
+	}
+);

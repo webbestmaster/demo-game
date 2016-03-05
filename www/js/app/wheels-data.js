@@ -43,6 +43,36 @@ define (function () {
 		item: {
 			w: itemWidth,
 			h: itemHeight
+		},
+		config: {
+			begin: {
+				timingFunction: {
+					name: 'linear', 		// game of timing function
+					args: null 				// arguments for timing function
+					// args: [] -> createjs.Ease[timingFunction]()
+					// args: [1, 2] -> createjs.Ease[timingFunction].apply(createjs.Ease, [1, 2])
+					// args: !!your_value === false -> createjs.Ease[timingFunction]
+				},
+				timeAspect: 1, 				// main time aspect
+				linearPathSize: 1,			// linear path from begin to end of animation ..item
+				time: 3e3					// time of animation ..ms
+			},
+
+			main: {
+				speed: 3,					// items per one unit of the time
+				timeAspect: 1
+			},
+
+			end: {
+				timingFunction: {
+					name: 'linear', 		// game of timing function
+					args: null 				// arguments for timing function
+				},
+				timeAspect: 1, 				// main time aspect
+				linearPathSize: 1,			// linear path from begin to end of animation ..item
+				time: 3e3						// time of animation ..ms
+			}
+
 		}
 
 	};
