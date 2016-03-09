@@ -421,10 +421,11 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		 *
 		 * */
 
-		//this.position = this.getRoundPosition();
+		this.position %= this.size;
 
 		var beginCfg = this.config.begin;
 
+		// TODO: cache result of getTimingFunction
 		var beginTimingFn = this.getTimingFunction(beginCfg.timingFunction.name, beginCfg.timingFunction.args);
 
 		// begin tween
@@ -435,63 +436,63 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 				beginCfg.time * beginCfg.timeAspect,
 				beginTimingFn
 			)
+			.call(this.onBeginTweenEnd);
+
+	};
+
+	Wheel.prototype.onBeginTweenEnd = function () {
+
+		var mainCfg = this.config.main,
+			tween = createjs.Tween
+				.get(this, {loop: true, override: true})
+				.to({position: this.position + this.size}, this.size / mainCfg.speed * mainCfg.timeAspect * 1000, createjs.Ease.linear);
+
+		this.tween = tween;
+
+		tween.on('stop', this.onStop);
+
+		if (this.beginSpinCb) {
+			this.beginSpinCb();
+			this.beginSpinCb = null;
+		}
+
+		//tween.on('change', function (e) {
+		//console.log(arguments);
+		//});
+
+	};
+
+	Wheel.prototype.onStop = function (e) {
+
+		var wheel = e.target.target;
+
+		var endCfg = wheel.config.end;
+
+		var endTimingFn = wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args);
+
+		var endPosition = wheel.endPosition + wheel.size;
+
+		wheel.position = endPosition - endCfg.linearPathSize;
+
+		// end spin
+		var endTween = createjs.Tween
+			.get(wheel, {loop: false, override: true})
+			.to(
+				{position: endPosition},
+				endCfg.time * endCfg.timeAspect,
+				endTimingFn
+			)
 			.call(function () {
-
-				var mainCfg = this.config.main,
-					tween = createjs.Tween
-					.get(this, {loop: true, override: true})
-					.to({position: this.position + this.size}, this.size / mainCfg.speed * mainCfg.timeAspect * 1000, createjs.Ease.linear);
-
-				this.tween = tween;
-
-				if (this.beginSpinCb) {
-					this.beginSpinCb();
-					this.beginSpinCb = null;
+				if (this.endSpinCb) {
+					this.endSpinCb();
+					this.endSpinCb = null;
 				}
-
-				tween.on('stop', function (e) {
-
-					var tween = e.target;
-
-					tween.setPaused(true);
-
-					var wheel = e.target.target;
-
-					var endCfg = wheel.config.end;
-
-					var endTimingFn = wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args);
-
-					var endPosition = wheel.endPosition + wheel.size;
-
-					wheel.position = endPosition - endCfg.linearPathSize;
-
-					// end spin
-					var endTween = createjs.Tween
-						.get(wheel, {loop: false, override: true})
-						.to(
-							{position: endPosition},
-							endCfg.time * endCfg.timeAspect,
-							endTimingFn
-						)
-						.call(function () {
-							if (this.endSpinCb) {
-								this.endSpinCb();
-								this.endSpinCb = null
-							}
-						});
-
-					// todo: add time shift to setting view
-					if ( endCfg.timingFunction.name === 'bounceOut' ) {
-						endTween.setPosition(endCfg.time * endCfg.timeAspect * 0.30);
-					}
-
-				});
-
-				//tween.on('change', function (e) {
-					//console.log(arguments);
-				//});
-
 			});
+
+		// todo: add time shift to setting view
+		if ( endCfg.timingFunction.name === 'bounceOut' ) {
+			endTween.setPosition(endCfg.time * endCfg.timeAspect * 0.30);
+		}
 
 	};
 
