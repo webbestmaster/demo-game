@@ -425,16 +425,13 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		var beginCfg = this.config.begin;
 
-		// TODO: cache result of getTimingFunction
-		var beginTimingFn = this.getTimingFunction(beginCfg.timingFunction.name, beginCfg.timingFunction.args);
-
 		// begin tween
 		createjs.Tween
 			.get(this, {loop: false, override: true}) // override: true - remove another tweens from target
 			.to(
 				{position: this.position + beginCfg.linearPathSize},
 				beginCfg.time * beginCfg.timeAspect,
-				beginTimingFn
+				this.getTimingFunction(beginCfg.timingFunction.name, beginCfg.timingFunction.args)
 			)
 			.call(this.onBeginTweenEnd);
 
@@ -468,8 +465,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		var endCfg = wheel.config.end;
 
-		var endTimingFn = wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args);
-
 		var endPosition = wheel.endPosition + wheel.size;
 
 		wheel.position = endPosition - endCfg.linearPathSize;
@@ -480,7 +475,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 			.to(
 				{position: endPosition},
 				endCfg.time * endCfg.timeAspect,
-				endTimingFn
+				wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args)
 			)
 			.call(function () {
 				if (this.endSpinCb) {
@@ -503,20 +498,25 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
+	Wheel.prototype.timeingFunctionsCache = {};
+
 	Wheel.prototype.getTimingFunction = function (name, args) {
 
 		// no any args - return predefined function
 		if (!args) {
-			return createjs.Ease[name];
+			return this.timeingFunctionsCache[name] ||
+				(this.timeingFunctionsCache[name] = createjs.Ease[name]);
 		}
 
 		// args look like [1, 2, 3]
 		if (args.length) {
-			return createjs.Ease[name].apply(createjs.Ease, args);
+			return this.timeingFunctionsCache[name + args.join()] ||
+				(this.timeingFunctionsCache[name + args.join()] = createjs.Ease[name].apply(createjs.Ease, args));
 		}
 
 		// args is []
-		return createjs.Ease[name]();
+		return this.timeingFunctionsCache[name + '[]'] ||
+			(this.timeingFunctionsCache[name + '[]'] = createjs.Ease[name]());
 
 	};
 
