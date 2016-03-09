@@ -4,6 +4,9 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		var wheel = this;
 
+		// TODO: add this to getting view
+		wheel.endSpintTurnovers = 2;
+
 		wheel.config = JSON.parse(JSON.stringify(wheelsData.config));
 		wheel.tween = null;
 
@@ -442,11 +445,13 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		var mainCfg = this.config.main,
 			tween = createjs.Tween
 				.get(this, {loop: true, override: true})
-				.to({position: this.position + this.size}, this.size / mainCfg.speed * mainCfg.timeAspect * 1000, createjs.Ease.linear);
+				.to(
+					{position: this.position + this.size},
+					this.size / mainCfg.speed * mainCfg.timeAspect * 1000,
+					this.timeingFunctionsCache.linear
+				);
 
 		this.tween = tween;
-
-		tween.on('stop', this.onStop);
 
 		if (this.beginSpinCb) {
 			this.beginSpinCb();
@@ -459,30 +464,35 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
-	Wheel.prototype.onStop = function (e) {
+	Wheel.prototype.endSpin = function (position) {
 
-		var wheel = e.target.target;
+		this.endPosition = position + this.size;
 
-		var endCfg = wheel.config.end;
+		this.position = this.endPosition - this.config.end.linearPathSize - this.size * this.endSpintTurnovers;
 
-		var endPosition = wheel.endPosition + wheel.size;
+		this
+			.turnover(this.endSpintTurnovers)
+			.call(this.endSpinTween);
 
-		wheel.position = endPosition - endCfg.linearPathSize;
+	};
 
-		// end spin
+	Wheel.prototype.endSpinTween = function () {
+
+		var endCfg = this.config.end;
+
 		var endTween = createjs.Tween
-			.get(wheel, {loop: false, override: true})
-			.to(
-				{position: endPosition},
-				endCfg.time * endCfg.timeAspect,
-				wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args)
-			)
-			.call(function () {
-				if (this.endSpinCb) {
-					this.endSpinCb();
-					this.endSpinCb = null;
-				}
-			});
+				.get(this, {loop: false, override: true})
+				.to(
+					{position: this.endPosition},
+					endCfg.time * endCfg.timeAspect,
+					this.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args)
+				)
+				.call(function () {
+					if (this.endSpinCb) {
+						this.endSpinCb();
+						this.endSpinCb = null;
+					}
+				});
 
 		// todo: add time shift to setting view
 		if ( endCfg.timingFunction.name === 'bounceOut' ) {
@@ -491,14 +501,21 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
-	Wheel.prototype.endSpin = function (position) {
+	Wheel.prototype.turnover = function (count) {
 
-		this.endPosition = position;
-		this.tween.dispatchEvent('stop');
+		return createjs.Tween
+			.get(this, {loop: false, override: true})
+			.to(
+				{position: this.position + this.size * count},
+				this.size / this.config.main.speed * this.config.main.timeAspect * 1000 * count,
+				this.timeingFunctionsCache.linear
+			);
 
 	};
 
-	Wheel.prototype.timeingFunctionsCache = {};
+	Wheel.prototype.timeingFunctionsCache = {
+		linear: createjs.Ease.linear
+	};
 
 	Wheel.prototype.getTimingFunction = function (name, args) {
 
