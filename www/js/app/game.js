@@ -313,8 +313,6 @@ define (
 
 				wheels.push(newWheel);
 
-				newWheel.updatePosition();
-
 			});
 
 		},

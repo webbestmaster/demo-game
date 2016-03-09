@@ -66,7 +66,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		wheel.tilingSpriteYOffset_blur = 0;
 		wheel.BLUR_Y_OFFSET = -5;
 
-		wheel.displayState = 'normal-normal';
+		//wheel.displayState = 'normal-normal';
 
 		wheel.selfFill();
 
@@ -101,6 +101,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		var excludedMethods = [
 			'selfFill',
+			'adjustSizes',
 			'pushPrototypeMethods',
 			'getNewItem',
 			'createItemContainer',
@@ -120,37 +121,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 	};
 
 	Wheel.prototype.updatePosition = function () {
-
-		/*
-		 switch (this.state) {
-		 case 'spin-begin':
-
-		 this.updateSpinBegin();
-
-		 break;
-
-		 case 'spin-main':
-
-		 this.updateSpinMain();
-
-		 break;
-
-		 case 'spin-end':
-
-		 this.updateSpinEnd();
-
-		 break;
-
-		 }
-		 */
-
-		// see getRoundPosition
-		if (this.position <= this.size) {
-			return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingOffsetYLink + this.position * this.itemHeight);
-		}
-
-		return this.tilingSpriteLink.tilePosition.y = Math.round(this.tilingOffsetYLink + (this.position % this.size) * this.itemHeight);
-
+		return this.tilingSpriteLink.tilePosition.y = this.tilingOffsetYLink + this.position * this.itemHeight;
 	};
 
 	Wheel.prototype.getNewItem = function (data) {
@@ -372,31 +343,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 	};
 
-	Wheel.prototype.getRoundPosition = function () {
-
-		var position = this.position;
-		var size = this.size;
-
-		if (position <= size) {
-			return position;
-		}
-
-		return position % size;
-
-	};
-
-	Wheel.prototype.roundPosition = function (position) {
-
-		var size = this.size;
-
-		if (position <= size) {
-			return position;
-		}
-
-		return position % size;
-
-	};
-
 	Wheel.prototype.setWheelDisplayState = function (state) {
 
 		switch (state) {
@@ -451,7 +397,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		}
 
-		this.displayState = state;
+		//this.displayState = state;
 
 	};
 
@@ -475,7 +421,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 		 *
 		 * */
 
-		this.position = this.getRoundPosition();
+		//this.position = this.getRoundPosition();
 
 		var beginCfg = this.config.begin;
 
@@ -483,7 +429,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		// begin tween
 		createjs.Tween
-			.get(this, {loop: false, override: true, useTicks: !true}) // override: true - remove another tweens from target
+			.get(this, {loop: false, override: true}) // override: true - remove another tweens from target
 			.to(
 				{position: this.position + beginCfg.linearPathSize},
 				beginCfg.time * beginCfg.timeAspect,
@@ -493,7 +439,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 				var mainCfg = this.config.main,
 					tween = createjs.Tween
-					.get(this, {loop: true, override: true, useTicks: !true})
+					.get(this, {loop: true, override: true})
 					.to({position: this.position + this.size}, this.size / mainCfg.speed * mainCfg.timeAspect * 1000, createjs.Ease.linear);
 
 				this.tween = tween;
@@ -515,11 +461,15 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 					var endTimingFn = wheel.getTimingFunction(endCfg.timingFunction.name, endCfg.timingFunction.args);
 
+					var endPosition = wheel.endPosition + wheel.size;
+
+					wheel.position = endPosition - endCfg.linearPathSize;
+
 					// end spin
 					var endTween = createjs.Tween
-						.get(wheel, {loop: false, override: true, useTicks: !true})
+						.get(wheel, {loop: false, override: true})
 						.to(
-							{position: wheel.position + endCfg.linearPathSize},
+							{position: endPosition},
 							endCfg.time * endCfg.timeAspect,
 							endTimingFn
 						)
@@ -530,10 +480,8 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 							}
 						});
 
-
-
+					// todo: add time shift to setting view
 					if ( endCfg.timingFunction.name === 'bounceOut' ) {
-						console.log('sss');
 						endTween.setPosition(endCfg.time * endCfg.timeAspect * 0.30);
 					}
 
@@ -545,19 +493,12 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 			});
 
-		/*
-		 var wheel = this;
+	};
 
-		 wheel.position = wheel.getRoundPosition();
-		 wheel.state = 'spin-begin';
-		 wheel.t = 0;
-		 wheel.v = 0;
-		 wheel.a = wheel.BEGIN_A;
-		 wheel.beginSpinStartPosition = wheel.position;
-		 wheel.tInc = wheel.T_INC;
+	Wheel.prototype.endSpin = function (position) {
 
-		 wheel.updatePosition();
-		 */
+		this.endPosition = position;
+		this.tween.dispatchEvent('stop');
 
 	};
 
@@ -575,132 +516,6 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		// args is []
 		return createjs.Ease[name]();
-
-	};
-
-	Wheel.prototype.updateSpinBegin = function () {
-
-		var wheel = this;
-		var tInc = wheel.tInc;
-
-		var t = wheel.t + tInc;
-		var a = wheel.a;
-		var v = a * t;
-		var V_MAX = wheel.V_MAX;
-		var position = wheel.beginSpinStartPosition + v * t / 2 - Math.sin(v / V_MAX * Math.PI) * wheel.easingPath;
-
-		wheel.position = position;
-
-		wheel.t = Math.round(t * 1e6) / 1e6;
-
-		if (v < V_MAX) {
-			return;
-		}
-
-		// add blur
-		if (wheel.displayState !== 'blur-normal') {
-			wheel.setWheelDisplayState('blur-normal');
-		}
-
-		wheel.v = v;
-		wheel.state = 'spin-main';
-
-		wheel.beginTime = wheel.t;
-
-		wheel.beginPath = position - wheel.beginSpinStartPosition;
-
-		wheel.sInc = v * tInc;
-		wheel.needStopping = false;
-		wheel.t = 0;
-
-		if (wheel.beginSpinCb) {
-			wheel.beginSpinCb();
-			wheel.beginSpinCb = null;
-		}
-
-	};
-
-	Wheel.prototype.updateSpinMain = function () {
-
-		this.position += this.sInc;
-
-	};
-
-	Wheel.prototype.endSpin = function (position) {
-
-/*		this.state = 'spin-end';
-		this.t = 0;
-		this.a = this.END_A;
-		this.endSpinStopPosition = position;*/
-
-		this.tween.dispatchEvent('stop');
-
-	};
-
-	Wheel.prototype.updateSpinEnd = function () {
-
-		var wheel = this,
-			v = wheel.v,
-			tInc = wheel.tInc,
-			t = wheel.t,
-			position = wheel.position,
-			sInc = wheel.sInc,
-			needStopping = wheel.needStopping;
-
-		if (!v) {
-			return;
-		}
-
-		if (!needStopping) { // wait for position to begin ending
-
-			position += sInc;
-
-			wheel.position = position;
-
-			// detect starting of ending
-			var deltaPath = wheel.roundPosition(position + wheel.beginPath - wheel.endSpinStopPosition);
-
-			if (Math.abs(deltaPath) >= sInc) {
-				return;
-			}
-
-			wheel.lastPosition = position;
-			wheel.needStopping = true;
-			wheel.deltaPath = deltaPath;
-
-			return;
-
-		}
-
-		// remove blur
-		if (wheel.displayState !== 'normal-normal') {
-			wheel.setWheelDisplayState('normal-normal');
-		}
-
-		var a = wheel.a;
-
-		position = wheel.lastPosition + v * t + a * t * t / 2;
-		position += wheel.deltaPath * ( a * t / v );
-		position -= Math.sin((v - a * t) / v * Math.PI) * wheel.easingPath;
-
-		wheel.position = position;
-
-		t += tInc;
-
-		wheel.t = Math.round(t * 1e6) / 1e6;
-
-		if (t <= wheel.beginTime) {
-			return;
-		}
-
-		wheel.position = wheel.endSpinStopPosition;
-		wheel.v = 0;
-		wheel.t = 0;
-
-		if (wheel.endSpinCb) {
-			wheel.endSpinCb();
-			wheel.endSpinCb = null;
-		}
 
 	};
 
