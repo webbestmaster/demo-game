@@ -504,8 +504,7 @@ define(['./../lib/util', './items-data', './wheels-data', './texture-master', '.
 
 		// no any args - return predefined function
 		if (!args) {
-			return this.timeingFunctionsCache[name] ||
-				(this.timeingFunctionsCache[name] = createjs.Ease[name]);
+			return createjs.Ease[name];
 		}
 
 		// args look like [1, 2, 3]
