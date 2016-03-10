@@ -10,7 +10,7 @@ require(
 		settingView.init();
 
 		game.initialize(function () {
-			console.log('inited');
+			console.log('initialized');
 		});
 
 	}
