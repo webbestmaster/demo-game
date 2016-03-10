@@ -1,2 +1,112 @@
-<!doctype html><html><head><meta charset=UTF-8><title>demo-game-3</title><meta name=viewport content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta name=format-detection content="telephone=no"><meta name=keywords><meta name=description><link rel=stylesheet href=../dist/www/css/main.css><script src=../dist/www/js/main.js
-                                                                                                                                                                                                                                                                                                                                           class=js-main-js type=text/javascript async=""></script></head><body><canvas class=game-renderer></canvas><div class="js-spin spin-btn no-highlight"></div></body></html>
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>demo-game-3</title>
+
+	<!-- mobile device -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<!-- do not call phone -->
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- keywords and description -->
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+
+	<link rel="stylesheet" href="css/main.css">
+
+	<script data-main="js/0.main.js" src="js/main.js"></script>
+
+</head>
+<body>
+
+<!--<img src="i/game/frame/frame.png" alt="" style="z-index: 10; position: fixed; left: 10px; top:10px; width: 100px; height: 100px;">-->
+
+<!--<div class="js-spin" style="padding: 1rem; z-index: 10;position: absolute">spin</div>-->
+<canvas class="game-renderer" style="-webkit-transform: translate3d(0,0,0);transform: translate3d(0,0,0);"></canvas>
+<div class="js-spin spin-btn"></div>
+
+
+<script class="js-template" data-name="setting-view" type="text/x-dot">
+
+
+<div class="setting-wrapper">
+
+	{{ var config = it.wheelData.config; }}
+
+	{{~ ['begin', 'end'] :type }}
+		<section>
+
+			<header>{{= type }}</header>
+			<div>
+				<label>
+					<p>timing function name</p>
+					<select data-wheel-key="timingFunction" data-period="{{= type }}">
+						{{ for (var key in it.easing) { }}
+						<option>{{= key }}</option>
+						{{ }; }}
+					</select>
+				</label>
+				<div style="clear:both;"></div>
+
+				<label>
+					<p>first argument of timing function</p>
+					<input type="number" data-period="{{= type }}" class="js-timing-function-first-arg disabled" />
+				</label>
+				<label>
+					<p>second argument of timing function</p>
+					<input type="number" data-period="{{= type }}" class="js-timing-function-second-arg disabled" />
+				</label>
+				<div style="clear:both;"></div>
+
+			</div>
+
+			<label>
+				<p>time aspect of whole period</p>
+				<input value="{{= config[type].timeAspect }}" data-wheel-key="timeAspect" data-period="{{= type }}" type="number" />
+			</label>
+
+			<label>
+				<p>linear path size</p>
+				<input value="{{= config[type].linearPathSize }}" data-wheel-key="linearPathSize" data-period="{{= type }}" type="number" />
+			</label>
+
+			<label>
+				<p>time</p>
+				<input value="{{= config[type].time }}" data-wheel-key="time" data-period="{{= type }}" type="number" />
+			</label>
+
+		</section>
+
+		<div style="clear:both;"></div>
+
+	{{~}}
+
+	<section>
+
+		{{ var type = 'main'; }}
+
+		<header>{{= type }}</header>
+
+		<label>
+			<p>time aspect of whole period</p>
+			<input value="{{= config[type].timeAspect }}" data-wheel-key="timeAspect" data-period="{{= type }}" type="number" />
+		</label>
+
+		<label>
+			<p>speed</p>
+			<input value="{{= config[type].speed }}" data-wheel-key="speed" data-period="{{= type }}" type="number" />
+		</label>
+
+	</section>
+
+	<div style="clear:both;"></div>
+
+</div>
+
+</script>
+
+
+</body>
+</html>

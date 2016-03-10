@@ -1,0 +1,121 @@
+.spin-btn, body {
+    background-repeat: no-repeat
+}
+
+html {
+    min-height: 100%
+}
+
+body {
+    margin: 0;
+    background-image: url(../i/bg-main.jpg);
+    background-position: center center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    padding-bottom: 50px
+}
+
+.no-highlight {
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent
+}
+
+.game-renderer {
+    display: block;
+    max-width: 100%;
+    margin: 50px auto;
+    z-index: -1;
+    position: relative
+}
+
+.spin-btn {
+    width: 107px;
+    height: 36px;
+    background-image: url(../i/button-spin.png);
+    -webkit-background-size: contain;
+    background-size: contain;
+    margin: 0 auto
+}
+
+.spin-btn_disabled {
+    opacity: 0.5;
+}
+
+.fps-meter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    font-size: 16px;
+    width: 42px;
+    font-family: 'Lucida Console', Monaco, monospace;
+    text-align: center;
+    color: #eee;
+    background-color: #000
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* setting */
+
+.setting-wrapper {
+    background-color: #fff;
+}
+
+.setting-wrapper p,
+.setting-wrapper header {
+    /*text-align: center;*/
+    margin-bottom: 0;
+    text-indent: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.setting-wrapper header {
+    margin-top: 50px;
+}
+
+.setting-wrapper input,
+.setting-wrapper select {
+    display: block;
+    margin: 10px;
+    width: 70%;
+    float: left;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    line-height: 26px;
+    text-indent: 3px;
+    background-color: #ccc;
+}
+
+.setting-wrapper input {
+    text-indent: 11px;
+}
+
+.setting-wrapper select {
+    border: 2px solid #fff;
+}
+
+.setting-wrapper label {
+    width: 50%;
+    float: left;
+}
+
+.setting-wrapper .disabled {
+    opacity: 0.3;
+}
+
+
+
+
+

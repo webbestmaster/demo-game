@@ -1,0 +1,19 @@
+﻿{"frames": {
+
+"mc_weel_Spins0000":
+{
+	"frame": {"x":0,"y":0,"w":433,"h":434},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":433,"h":434},
+	"sourceSize": {"w":433,"h":434}
+}},
+"meta": {
+	"app": "Adobe Animate",
+	"version": "15.1.0.210",
+	"image": "mc_weel_Spins.png",
+	"format": "RGBA8888",
+	"size": {"w":434,"h":434},
+	"scale": "1"
+}
+}

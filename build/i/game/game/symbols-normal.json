@@ -1,0 +1,356 @@
+{
+  "frames": {
+    "item-wild-x3.png": {
+      "frame": {
+        "x": 150,
+        "y": 0,
+        "w": 149,
+        "h": 262
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 61,
+        "w": 149,
+        "h": 262
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 262
+      }
+    },
+    "item-bonus-x3.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 149,
+        "h": 266
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 58,
+        "w": 149,
+        "h": 266
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 266
+      }
+    },
+    "item-wild-violet.png": {
+      "frame": {
+        "x": 738,
+        "y": 0,
+        "w": 149,
+        "h": 105
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 142,
+        "w": 149,
+        "h": 105
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 105
+      }
+    },
+    "item-wild-green.png": {
+      "frame": {
+        "x": 588,
+        "y": 0,
+        "w": 149,
+        "h": 105
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 142,
+        "w": 149,
+        "h": 105
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 105
+      }
+    },
+    "item-girl.png": {
+      "frame": {
+        "x": 438,
+        "y": 117,
+        "w": 149,
+        "h": 104
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 138,
+        "w": 149,
+        "h": 104
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 104
+      }
+    },
+    "item-lion.png": {
+      "frame": {
+        "x": 588,
+        "y": 106,
+        "w": 149,
+        "h": 104
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 137,
+        "w": 149,
+        "h": 104
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 104
+      }
+    },
+    "item-woodcutter.png": {
+      "frame": {
+        "x": 438,
+        "y": 0,
+        "w": 149,
+        "h": 116
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 149,
+        "h": 116
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 116
+      }
+    },
+    "item-scarecrow.png": {
+      "frame": {
+        "x": 738,
+        "y": 106,
+        "w": 149,
+        "h": 104
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 138,
+        "w": 149,
+        "h": 104
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 104
+      }
+    },
+    "item-dog.png": {
+      "frame": {
+        "x": 588,
+        "y": 211,
+        "w": 149,
+        "h": 95
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 149,
+        "w": 149,
+        "h": 95
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 95
+      }
+    },
+    "item-poppy.png": {
+      "frame": {
+        "x": 427,
+        "y": 222,
+        "w": 149,
+        "h": 87
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 149,
+        "h": 87
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 87
+      }
+    },
+    "item-crow.png": {
+      "frame": {
+        "x": 738,
+        "y": 211,
+        "w": 148,
+        "h": 92
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 148,
+        "h": 92
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 92
+      }
+    },
+    "item-diamond.png": {
+      "frame": {
+        "x": 888,
+        "y": 146,
+        "w": 71,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 71,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 73
+      }
+    },
+    "item-club.png": {
+      "frame": {
+        "x": 888,
+        "y": 0,
+        "w": 75,
+        "h": 72
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 75,
+        "h": 72
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 72
+      }
+    },
+    "item-spades.png": {
+      "frame": {
+        "x": 888,
+        "y": 73,
+        "w": 74,
+        "h": 72
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 74,
+        "h": 72
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 72
+      }
+    },
+    "item-heart.png": {
+      "frame": {
+        "x": 887,
+        "y": 219,
+        "w": 76,
+        "h": 60
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 76,
+        "h": 60
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 60
+      }
+    },
+    "item-q.png": {
+      "frame": {
+        "x": 299,
+        "y": 135,
+        "w": 127,
+        "h": 134
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 127,
+        "h": 134
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 134
+      }
+    },
+    "item-ring.png": {
+      "frame": {
+        "x": 299,
+        "y": 0,
+        "w": 138,
+        "h": 135
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 135
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 135
+      }
+    }
+  },
+  "meta": {
+    "app": "http://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "symbols-normal.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 964,
+      "h": 310
+    },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:ff5b0c3a739295eff974eb366a9fd1f2:48f0610bda8a82a8c9b4ae8686e164ca:cd942146e465994cf16904bf12b41651$"
+  }
+}

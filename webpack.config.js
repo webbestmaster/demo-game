@@ -19,8 +19,8 @@ module.exports = {
             from: 'i/',
             to: './../i'
         }, {
-            from: 'hi/',
-            to: './../hi'
+            from: 'i-2/',
+            to: './../i-2'
         }, {
             from: 'css/',
             to: './../css'

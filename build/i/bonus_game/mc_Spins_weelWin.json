@@ -1,0 +1,29 @@
+﻿{"frames": {
+
+"mc_Spins_weelWin0000":
+{
+	"frame": {"x":0,"y":0,"w":0,"h":0},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":80,"y":0,"w":156,"h":209},
+	"sourceSize": {"w":156,"h":209}
+},
+"mc_Spins_weelWin0001":
+{
+	"frame": {"x":0,"y":0,"w":156,"h":209},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":156,"h":209},
+	"sourceSize": {"w":156,"h":209}
+}},
+"meta": {
+	"app": "Adobe Animate",
+	"version": "15.1.0.210",
+	"image": "mc_Spins_weelWin.png",
+	"format": "RGBA8888",
+	"size": {"w":164,"h":232},
+	"duration": 0.07,
+	"frameRate": 29,
+	"scale": "1"
+}
+}

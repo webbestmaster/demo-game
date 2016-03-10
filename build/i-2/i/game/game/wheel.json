@@ -1,0 +1,33 @@
+{
+  "frames": {
+
+    "wheels-bg-normal": {
+      "frame": { "x": 0, "y": 2, "w": 250, "h": 4 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 250, "h": 4 },
+      "sourceSize": { "w": 250, "h": 4 }
+    },
+
+    "wheels-bg-bonus": {
+      "frame": { "x": 0, "y": 10, "w": 250, "h": 4 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 250, "h": 4 },
+      "sourceSize": { "w": 250, "h": 4 }
+    }
+
+  },
+  "meta": {
+    "app": "",
+    "version": "1.0",
+    "image": "wheel.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 250,
+      "h": 16
+    },
+    "scale": "1",
+    "smartupdate": ""
+  }
+}

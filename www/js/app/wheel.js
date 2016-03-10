@@ -1,4 +1,4 @@
-define(['./../lib/util', './items-data', './wheels-data', './texture-master', './../services/mediator'], function (util, itemsData, wheelsData, textureMaster, mediator) {
+define(['./../lib/util', './items-data', './wheels-data', './texture-master', './../services/mediator', './../lib/tweenjs-0.6.2.min'], function (util, itemsData, wheelsData, textureMaster, mediator, Tween) {
 
 	function Wheel(data) {
 

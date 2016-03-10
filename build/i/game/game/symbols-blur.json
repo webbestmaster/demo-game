@@ -1,0 +1,356 @@
+{
+  "frames": {
+    "item-wild-x3_blur.png": {
+      "frame": {
+        "x": 150,
+        "y": 0,
+        "w": 149,
+        "h": 273
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 55,
+        "w": 149,
+        "h": 273
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 273
+      }
+    },
+    "item-bonus-x3_blur.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 149,
+        "h": 278
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 51,
+        "w": 149,
+        "h": 278
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 278
+      }
+    },
+    "item-wild-violet_blur.png": {
+      "frame": {
+        "x": 150,
+        "y": 274,
+        "w": 149,
+        "h": 117
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 136,
+        "w": 149,
+        "h": 117
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 117
+      }
+    },
+    "item-wild-green_blur.png": {
+      "frame": {
+        "x": 438,
+        "y": 0,
+        "w": 149,
+        "h": 117
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 136,
+        "w": 149,
+        "h": 117
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 117
+      }
+    },
+    "item-girl_blur.png": {
+      "frame": {
+        "x": 449,
+        "y": 261,
+        "w": 149,
+        "h": 116
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 132,
+        "w": 149,
+        "h": 116
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 116
+      }
+    },
+    "item-lion_blur.png": {
+      "frame": {
+        "x": 300,
+        "y": 360,
+        "w": 149,
+        "h": 117
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 131,
+        "w": 149,
+        "h": 117
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 117
+      }
+    },
+    "item-woodcutter_blur.png": {
+      "frame": {
+        "x": 0,
+        "y": 279,
+        "w": 149,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 120,
+        "w": 149,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 128
+      }
+    },
+    "item-scarecrow_blur.png": {
+      "frame": {
+        "x": 299,
+        "y": 139,
+        "w": 149,
+        "h": 117
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 132,
+        "w": 149,
+        "h": 117
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 117
+      }
+    },
+    "item-dog_blur.png": {
+      "frame": {
+        "x": 449,
+        "y": 379,
+        "w": 149,
+        "h": 107
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 143,
+        "w": 149,
+        "h": 107
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 107
+      }
+    },
+    "item-poppy_blur.png": {
+      "frame": {
+        "x": 150,
+        "y": 392,
+        "w": 149,
+        "h": 100
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 151,
+        "w": 149,
+        "h": 100
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 100
+      }
+    },
+    "item-crow_blur.png": {
+      "frame": {
+        "x": 300,
+        "y": 256,
+        "w": 148,
+        "h": 103
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 44,
+        "y": 146,
+        "w": 148,
+        "h": 103
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 103
+      }
+    },
+    "item-diamond_blur.png": {
+      "frame": {
+        "x": 588,
+        "y": 0,
+        "w": 70,
+        "h": 84
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 149,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 84
+      }
+    },
+    "item-club_blur.png": {
+      "frame": {
+        "x": 0,
+        "y": 408,
+        "w": 75,
+        "h": 83
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 75,
+        "h": 83
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 83
+      }
+    },
+    "item-spades_blur.png": {
+      "frame": {
+        "x": 75,
+        "y": 408,
+        "w": 74,
+        "h": 82
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 74,
+        "h": 82
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 82
+      }
+    },
+    "item-heart_blur.png": {
+      "frame": {
+        "x": 577,
+        "y": 118,
+        "w": 75,
+        "h": 71
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 75,
+        "h": 71
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 71
+      }
+    },
+    "item-q_blur.png": {
+      "frame": {
+        "x": 449,
+        "y": 118,
+        "w": 127,
+        "h": 143
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 127,
+        "h": 143
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 143
+      }
+    },
+    "item-ring_blur.png": {
+      "frame": {
+        "x": 299,
+        "y": 0,
+        "w": 138,
+        "h": 138
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 138
+      },
+      "sourceSize": {
+        "w": 149,
+        "h": 138
+      }
+    }
+  },
+  "meta": {
+    "app": "http://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "symbols-blur.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 659,
+      "h": 493
+    },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:2b8feef66a31cceef7031a64c4108f3b:d5642c220235869914b69d7499701553:cd942146e465994cf16904bf12b41651$"
+  }
+}
